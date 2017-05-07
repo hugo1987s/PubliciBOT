@@ -17,9 +17,8 @@ https://github-windows.s3.amazonaws.com/GitHubSetup.exe
 4) abris intelliJ -->importar proyecto --->seleccionas la ubicacion C/users/"tusuario"/documentos/GiHub/PubliciBot
 5)Seleccionas Maven y le das a todo siguiente
 6) En intelliJ vas a VIEW--->TOOL WINDOWS--->MAVEN
-7) Se despliega una barra a la derecha seleccionas plugins---jetty---run y le das click derecho y pones Create Publicibot 
-8)Importante! donde dice Command line: "jetty:run" cambiar por "package jetty:run"  y darle ok
-9) dale al boton de Play en la barra y listo vas a http://localhost:8080/debug? en el navegador
+7) Se despliega una barra a la derecha seleccionas plugins---jetty---run y le das click derecho y pones Create Publicibot
+8) dale al boton de Play en la barra y listo vas a http://localhost:8080/debug? en el navegador
 
 
 
