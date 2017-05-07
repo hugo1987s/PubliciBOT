@@ -18,6 +18,7 @@ public class MyUITest {
         try
         {
             odb = ODBFactory.open("clase1db");
+            odb.delete(obj);
             odb.store(obj);
             Objects<ObjetoNeodatisEjemplo> ej = odb.getObjects(ObjetoNeodatisEjemplo.class);
 
