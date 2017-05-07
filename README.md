@@ -13,8 +13,8 @@ https://www.jetbrains.com/idea/download/download-thanks.html?platform=windows&co
 
 https://github-windows.s3.amazonaws.com/GitHubSetup.exe
 
-3) si confirmaste un invitacion al proyecto iniciar sesion en Git Hub Desktop te si le das al (+) te deberia aparecer el proyecto y pones Clone
-4) abris intelliJ importar proyecto seleccionas la ubicacion C/users/"tusuario"/documentos/GiHub/PubliciBot
+3) si confirmaste la invitacion al proyecto iniciar sesion en Git Hub Desktop te si le das al (+) te deberia aparecer el proyecto y pones Clone
+4) abris intelliJ -->importar proyecto --->seleccionas la ubicacion C/users/"tusuario"/documentos/GiHub/PubliciBot
 5)Seleccionas Maven y le das a todo siguiente
 6) En intelliJ vas a VIEW--->TOOL WINDOWS--->MAVEN
 7) Se despliega una barra a la derecha seleccionas plugins---jetty---run y le das click derecho y pones Create Publicibot 
