@@ -2,7 +2,7 @@
 Sistema para generar camapañas publicitarias en redes sociales.
 
 BACKLOG:
-https://especificacionsoftwareungs17.myjetbrains.com/youtrack/agiles/88-4/89-4
+https://especificacionsoftwareungs17.myjetbrains.com/youtrack/agiles/88-4/89-5?backlog
 
 **Como configurar el proyecto:**
 1) Descargar IntelliJ Comunity (con eclipse funciona pero es mas complicado)
