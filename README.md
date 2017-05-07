@@ -1,7 +1,7 @@
 # PubliciBot
-Sistema generar camapañas publicitarias en redes sociales
+Sistema para generar camapañas publicitarias en redes sociales.
 
-Como configurar el proyecto:
+**Como configurar el proyecto:**
 1) Descargar IntelliJ Comunity (con eclipse deberia funcionar todavia no lo probe)
 2) Descargar Git Hub desktop (es lo mas practico aunque se puede hacer directamente desde intellij bajando Git.exe)
 3) si confirmaste un invitacion al proyecto iniciar sesion en Git Hub Desktop te si le das al (+) te deberia aparecer el proyecto y pones Clone
@@ -17,7 +17,8 @@ Como configurar el proyecto:
 
 
 
-LINKS UTILES:
+**LINKS UTILES:**
+
 Para integrar telegram
 https://gist.github.com/rubenlagus/bc36b532d975bbe5070e
 
