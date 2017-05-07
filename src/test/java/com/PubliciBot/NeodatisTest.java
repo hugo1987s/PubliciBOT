@@ -9,7 +9,7 @@ import org.neodatis.odb.Objects;
 /**
  * Created by agusa on 5/6/2017.
  */
-public class MyUITest {
+public class NeodatisTest {
 
     @Test
     public void cargarObjetoNeodatis(){
@@ -18,7 +18,6 @@ public class MyUITest {
         try
         {
             odb = ODBFactory.open("clase1db");
-            odb.delete(obj);
             odb.store(obj);
             Objects<ObjetoNeodatisEjemplo> ej = odb.getObjects(ObjetoNeodatisEjemplo.class);
 
