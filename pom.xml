@@ -25,6 +25,8 @@
 	</properties>
 
 	<repositories>
+
+
 		<repository>
 			<id>vaadin-addons</id>
 			<url>http://maven.vaadin.com/vaadin-addons</url>
@@ -44,12 +46,19 @@
 	</dependencyManagement>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org/neodatis -->
+		<dependency>
+			<groupId>org.neodatis.odb</groupId>
+			<artifactId>neodatis-odb</artifactId>
+			<version>1.9.30.689</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -148,6 +157,11 @@
 			</activation>
 
 			<repositories>
+				<repository>
+					<id>ibiblio.org</id>
+					<name>ibiblio Mirror of http://repo1.maven.org/maven2/</name>
+					<url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>
+				</repository>
 				<repository>
 					<id>vaadin-prereleases</id>
 					<url>http://maven.vaadin.com/vaadin-prereleases</url>
