@@ -21,17 +21,19 @@ public class MyUI extends UI {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
-        
-        final TextField name = new TextField();
-        name.setCaption("Type your name here:");
+        com.vaadin.ui.DateTimeField fecha = new com.vaadin.ui.DateTimeField();
 
-        Button button = new Button("Click Me");
+        final TextField name = new TextField();
+
+        name.setCaption("Escribe tu nombre aquí:");
+
+        Button button = new Button("Clickeame");
         button.addClickListener( e -> {
-            layout.addComponent(new Label("Thanks " + name.getValue() 
-                    + ", it works!"));
+            layout.addComponent(new Label("Gracias " + name.getValue()
+                    + ", funciona!"));
         });
 
-        layout.addComponents(name, button);
+        layout.addComponents(name, button, fecha);
         
         setContent(layout);
     }
