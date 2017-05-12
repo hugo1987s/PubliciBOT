@@ -1,4 +1,4 @@
-package com.PubliciBot;
+package com.PubliciBot.UI;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;

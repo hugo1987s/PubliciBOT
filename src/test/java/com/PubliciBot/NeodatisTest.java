@@ -14,6 +14,9 @@ public class NeodatisTest {
     @Test
     public void cargarObjetoNeodatis(){
         ODB odb = null;
+
+
+
         ObjetoNeodatisEjemplo obj=new ObjetoNeodatisEjemplo("UN OBJETO");
         try
         {
