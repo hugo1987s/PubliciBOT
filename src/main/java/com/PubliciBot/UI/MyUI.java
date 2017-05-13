@@ -27,9 +27,10 @@ public class MyUI extends UI {
 
         name.setCaption("Escribe tu nombre aquí:");
 
+
         Button button = new Button("Clickeame");
         button.addClickListener( e -> {
-            layout.addComponent(new Label("Gracias " + name.getValue()
+            layout.addComponent(new Label("Gracias " +System.getProperty("prop")+name.getValue()
                     + ", funciona!"));
         });
 
