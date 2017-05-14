@@ -1,6 +1,6 @@
-package com.PubliciBot.Services.Neodatis;
+package com.PubliciBot.DAO.Neodatis;
 
-import com.PubliciBot.Services.Interface.DAO;
+import com.PubliciBot.DAO.Interfaces.DAO;
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
 

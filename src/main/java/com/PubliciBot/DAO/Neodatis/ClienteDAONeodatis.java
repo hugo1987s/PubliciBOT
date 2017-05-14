@@ -1,8 +1,8 @@
-package com.PubliciBot.Services.Neodatis;
+package com.PubliciBot.DAO.Neodatis;
 
 
 import com.PubliciBot.DM.Cliente;
-import com.PubliciBot.Services.Interface.ClienteDAO;
+import com.PubliciBot.DAO.Interfaces.ClienteDAO;
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
 import org.neodatis.odb.core.query.IQuery;

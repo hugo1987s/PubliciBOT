@@ -1,4 +1,4 @@
-package com.PubliciBot.Services.Interface;
+package com.PubliciBot.DAO.Interfaces;
 
 public interface DAO<T> {
 	

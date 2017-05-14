@@ -30,7 +30,7 @@ public class MyUI extends UI {
 
         Button button = new Button("Clickeame");
         button.addClickListener( e -> {
-            layout.addComponent(new Label("Gracias " +System.getProperty("prop")+name.getValue()
+            layout.addComponent(new Label("Gracias: " +System.getProperty("prop")+name.getValue()
                     + ", funciona!"));
         });
 
