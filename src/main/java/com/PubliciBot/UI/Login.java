@@ -50,11 +50,11 @@ public class Login  extends UI {
 
 
     }
-
+/*
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = Login.class, productionMode = false)
     public static class LoginServlet extends VaadinServlet {
 
     }
-
+*/
 }
