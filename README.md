@@ -21,9 +21,13 @@ https://github-windows.s3.amazonaws.com/GitHubSetup.exe
 8) dale al boton de Play en la barra y listo vas a http://localhost:8080/debug? en el navegador
 
 
+-------------------------
+Se cambia la versión de Vaadin en el POM pues la 8 no trae los controles Tree.
+Así estaba el POM antes:
+		<vaadin.version>8.0.5</vaadin.version>
+		<vaadin.plugin.version>8.0.5</vaadin.plugin.version>
 
-
-
+-------------------------
 
 
 **LINKS UTILES:**
