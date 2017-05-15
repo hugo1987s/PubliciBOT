@@ -5,16 +5,16 @@ package com.PubliciBot.DM;
  * key: un nombre para ese recurso
  * valor: un valor para la key, como puede ser una URL, un objeto de menu, etc
  */
-public class Recurso {
+public class Privilegios {
     private String key;
     private String valor;
 
-    public Recurso()
+    public Privilegios()
     {
-        new Recurso("","");
+        new Privilegios("","");
     }
 
-    public Recurso(String key, String valor) {
+    public Privilegios(String key, String valor) {
         this.key = key;
         this.valor = valor;
     }
