@@ -16,6 +16,8 @@ public class ABMTags extends UI {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
        com.vaadin.ui.Tree arbolDeTags = new Tree();
+       arbolDeTags.addItem("hola");
+       setContent(arbolDeTags);
 
 
     }
