@@ -17,7 +17,15 @@ import java.util.Collection;
         }*/
 
         public boolean exists(Tree arbol, Tag tag){
-            return false;
+            boolean ret = false;
+            for(Tag t : obtenerTodos(arbol))
+            {
+                if (t.getAcciones().equals(tag.getNombre()))
+                    ret = true;
+
+            }
+
+            return true;
         }
 
 
