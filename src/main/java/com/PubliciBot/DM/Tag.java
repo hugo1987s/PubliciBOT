@@ -8,33 +8,34 @@ import java.util.Set;
  */
 public class Tag {
     private String nombre;
-    private Set<Tag> hijos;
+    private Set<AccionPublicitaria> acciones;
+
 
     public Tag(String nombre) {
         this.nombre = nombre;
-        this.hijos = new HashSet<>();
+        this.acciones = new HashSet<>();
     }
+
+
+
 
     public String getNombre() {
         return nombre;
+    }
+
+    public Set<AccionPublicitaria> getAcciones() {
+        return acciones;
+    }
+
+    public void setAcciones(Set<AccionPublicitaria> acciones) {
+        this.acciones = acciones;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public Set<Tag> getHijos() {
-        return hijos;
+    public String toString(){
+        return this.nombre;
     }
-
-    public void addHijo(Tag hijo)
-    {
-        this.hijos.add(hijo);
-    }
-
-    /*
-    public void setHijos(Set<Tag> hijos) {
-        this.hijos = hijos;
-    }
-    */
 }
