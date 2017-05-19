@@ -35,6 +35,7 @@ import java.util.Set;
         this.nombre = nombre;
     }
 
+    @Override
     public String toString(){
         return this.nombre;
     }

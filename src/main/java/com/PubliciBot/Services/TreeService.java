@@ -14,10 +14,12 @@ import com.vaadin.ui.Tree;
         }*/
 
         public void agregarTag(Tree arbol, Tag tag){
-            if(arbol.getItem(tag)!=null){
+        /*    if(arbol.getItem(tag)!=null){
             //TODO
-            }
-            arbol.addItem(arbol);
+                arbol.getChildren(arbol);
+
+        }*/
+            arbol.addItem(tag);
         }
     public boolean setearPadre(Tree arbol, Tag tagHijo,Tag tagPadre){
         boolean ret=false ;
