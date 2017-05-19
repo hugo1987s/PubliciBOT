@@ -9,7 +9,6 @@ import com.vaadin.ui.*;
 
 import javax.servlet.annotation.WebServlet;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Hugo on 14/05/2017.
@@ -31,7 +30,7 @@ public class ABMTags extends UI {
         TS.agregarTag(arbolDeTags,tg);
         TS.agregarTag(arbolDeTags,tg);
 
-        List<Object> rootIds =
+       ArrayList<Object> rootIds =
                 new ArrayList<Object>(arbolDeTags.rootItemIds());
 
 
@@ -44,11 +43,8 @@ public class ABMTags extends UI {
 
         //   ArrayList<Tag> tagss=(ArrayList<Tag>)arbolDeTags.getChildren(tg);
 
-
         lo.addComponent(arbolDeTags);
-      //  lo.addComponent(lb);
-
-       setContent(lo);
+        setContent(lo);
 
 
     }
