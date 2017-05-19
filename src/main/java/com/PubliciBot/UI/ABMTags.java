@@ -5,17 +5,21 @@ import com.PubliciBot.Services.TreeService;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.Tree;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.*;
 
 import javax.servlet.annotation.WebServlet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Hugo on 14/05/2017.
  */
 public class ABMTags extends UI {
+    public Label createLabel(String msg){
+       return new Label(msg);
+    }
+
+
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -23,11 +27,22 @@ public class ABMTags extends UI {
 
         Layout lo=new HorizontalLayout();
         TreeService TS=new TreeService();
-     // arbolDeTags.addItem(new Tag("Raiz"));
         Tag tg=new Tag("Raiz");
         TS.agregarTag(arbolDeTags,tg);
         TS.agregarTag(arbolDeTags,tg);
-    //   ArrayList<Tag> tagss=(ArrayList<Tag>)arbolDeTags.getChildren(tg);
+
+        List<Object> rootIds =
+                new ArrayList<Object>(arbolDeTags.rootItemIds());
+
+
+        for (Object item :rootIds
+             ) {
+            Tag tag=(Tag) item;
+            lo.addComponent(createLabel(((Tag) item).getNombre()));
+
+        }
+
+        //   ArrayList<Tag> tagss=(ArrayList<Tag>)arbolDeTags.getChildren(tg);
 
 
         lo.addComponent(arbolDeTags);
