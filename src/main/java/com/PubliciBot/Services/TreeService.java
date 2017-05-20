@@ -39,7 +39,7 @@ import java.util.Collection;
             tags.add(tag);
         }
         return tags;
-}
+    }
 
     public ArrayList<Tag> obtenerRaices(Tree arbol){
         return convertiraTags(arbol.rootItemIds());

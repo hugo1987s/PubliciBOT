@@ -2,6 +2,7 @@ package com.PubliciBot.UI;
 
 import com.PubliciBot.DM.Tag;
 import com.PubliciBot.Services.TreeService;
+import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 /**
  * Created by Hugo on 14/05/2017.
  */
+@Theme("mytheme")
 public class ABMTags extends UI {
     public Label createLabel(String msg){
        return new Label(msg);
@@ -24,8 +26,32 @@ public class ABMTags extends UI {
     protected void init(VaadinRequest vaadinRequest) {
        com.vaadin.ui.Tree arbolDeTags = new Tree();
 
-        Layout lo=new HorizontalLayout();
+        Layout lo=new VerticalLayout();
         TreeService TS=new TreeService();
+
+        TextField txtNuevoTag = new TextField("");
+        txtNuevoTag.setMaxLength(30);
+
+        Button btnAgregarTag = new Button("Agregar");
+        btnAgregarTag.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent event) {
+                Tag nuevo = new Tag("");
+                Tag temp = new Tag("");
+
+                if(txtNuevoTag.getValue().trim() != "") {
+                    nuevo.setNombre(txtNuevoTag.getValue());
+                    TS.agregarTag(arbolDeTags, nuevo);
+                }
+
+                if(arbolDeTags.getValue() != null) {
+                    temp = (Tag) arbolDeTags.getValue();
+                    TS.setearPadre(arbolDeTags, nuevo, temp);
+                }
+
+            }
+        });
+
+
         Tag tg = new Tag("Raiz");
         Tag tg1 = new Tag("Test2");
         Tag tg2 = new Tag("Test3");
@@ -57,16 +83,18 @@ public class ABMTags extends UI {
        ArrayList<Object> rootIds =
                 new ArrayList<Object>(arbolDeTags.rootItemIds());
 
-
+/*
         for (Object item :rootIds
              ) {
             Tag tag=(Tag) item;
             lo.addComponent(createLabel(((Tag) item).getNombre()));
 
         }
-
+*/
         //   ArrayList<Tag> tagss=(ArrayList<Tag>)arbolDeTags.getChildren(tg);
 
+        lo.addComponent(txtNuevoTag);
+        lo.addComponent(btnAgregarTag);
         lo.addComponent(arbolDeTags);
         setContent(lo);
 
