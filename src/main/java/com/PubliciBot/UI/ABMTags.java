@@ -33,6 +33,8 @@ public class ABMTags extends UI {
         txtNuevoTag.setMaxLength(30);
 
         Button btnAgregarTag = new Button("Agregar");
+        Button btneliminarTag = new Button ("Eliminar");
+
         btnAgregarTag.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
                 Tag nuevo = new Tag("");
@@ -40,12 +42,26 @@ public class ABMTags extends UI {
 
                 if(txtNuevoTag.getValue().trim() != "") {
                     nuevo.setNombre(txtNuevoTag.getValue());
-                    TS.agregarTag(arbolDeTags, nuevo);
-                }
+                TS.agregarTag(arbolDeTags, nuevo);
+                txtNuevoTag.setValue("");
+            }
 
                 if(arbolDeTags.getValue() != null) {
                     temp = (Tag) arbolDeTags.getValue();
                     TS.setearPadre(arbolDeTags, nuevo, temp);
+                }
+
+            }
+        });
+        btneliminarTag.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent event) {
+
+                Tag temp = new Tag("");
+
+
+                if(arbolDeTags.getValue() != null) {
+                    temp = (Tag) arbolDeTags.getValue();
+                    TS.quitarTag(arbolDeTags, temp);
                 }
 
             }
@@ -95,6 +111,7 @@ public class ABMTags extends UI {
 
         lo.addComponent(txtNuevoTag);
         lo.addComponent(btnAgregarTag);
+        lo.addComponent(btneliminarTag);
         lo.addComponent(arbolDeTags);
         setContent(lo);
 
