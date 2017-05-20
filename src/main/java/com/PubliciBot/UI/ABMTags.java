@@ -24,10 +24,10 @@ public class ABMTags extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-       com.vaadin.ui.Tree arbolDeTags = new Tree();
+        com.vaadin.ui.Tree arbolDeTags = new Tree();
 
-        Layout lo=new VerticalLayout();
-        TreeService TS=new TreeService();
+        Layout lo = new VerticalLayout();
+        TreeService TS = new TreeService();
 
         TextField txtNuevoTag = new TextField("");
         txtNuevoTag.setMaxLength(30);
@@ -42,28 +42,23 @@ public class ABMTags extends UI {
 
                 if(txtNuevoTag.getValue().trim() != "") {
                     nuevo.setNombre(txtNuevoTag.getValue());
-                TS.agregarTag(arbolDeTags, nuevo);
-                txtNuevoTag.setValue("");
-            }
-
-                if(arbolDeTags.getValue() != null) {
-                    temp = (Tag) arbolDeTags.getValue();
-                    TS.setearPadre(arbolDeTags, nuevo, temp);
+                    TS.agregarTag(arbolDeTags, nuevo);
+                    txtNuevoTag.setValue("");
                 }
+
+                temp = (Tag) arbolDeTags.getValue();
+                if(temp != null)
+                    TS.setearPadre(arbolDeTags, nuevo, temp);
 
             }
         });
         btneliminarTag.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
+                Tag temp = (Tag)arbolDeTags.getValue() ;
 
-                Tag temp = new Tag("");
-
-
-                if(arbolDeTags.getValue() != null) {
-                    temp = (Tag) arbolDeTags.getValue();
+                if(temp != null)
                     TS.quitarTag(arbolDeTags, temp);
-                }
-
+                
             }
         });
 
@@ -76,7 +71,7 @@ public class ABMTags extends UI {
         Tag tg5 = new Tag("Test2");
         Tag tg6 = new Tag("Test2.1.1");
         Tag tg7 = new Tag("Test4.1");
-        Tag tg8 = new Tag("Test2.1.1");
+        Tag tg8 = new Tag("Test4.1.1");
 
         TS.agregarTag(arbolDeTags,tg);
         TS.agregarTag(arbolDeTags,tg);
@@ -87,10 +82,14 @@ public class ABMTags extends UI {
         TS.agregarTag(arbolDeTags,tg5);
         TS.agregarTag(arbolDeTags,tg6);
         TS.agregarTag(arbolDeTags,tg7);
+        TS.agregarTag(arbolDeTags,tg8);
 
-        TS.setearPadre(arbolDeTags, tg7,  tg4);
-        TS.setearPadre(arbolDeTags, tg3,  tg1);
-        TS.setearPadre(arbolDeTags, tg8,  tg1);
+
+        System.out.println(TS.setearPadre(arbolDeTags, tg7,  tg4));
+        System.out.println(TS.setearPadre(arbolDeTags, tg3,  tg1));
+        System.out.println(TS.setearPadre(arbolDeTags, tg6,  tg1));
+        System.out.println(TS.setearPadre(arbolDeTags, tg8,  tg4));
+
 
 
 
