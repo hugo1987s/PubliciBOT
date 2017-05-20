@@ -3,24 +3,44 @@ package com.PubliciBot.DAO.Neodatis;
 import com.PubliciBot.DAO.Interfaces.DAO;
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
+import org.neodatis.odb.Objects;
+import org.neodatis.odb.core.query.IQuery;
+import org.neodatis.odb.core.query.criteria.Where;
+import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
 
+import java.util.List;
 
 
 public class DAONeodatis<T> implements DAO<T> {
 
+	private String fileNameNeodatisDB = "PubliciBOT.neoDB";
 	
 	public void guardar(T t){
-		ODB odb  = ODBFactory.open("mibase");
+		ODB odb  = ODBFactory.open(fileNameNeodatisDB);
 		odb.store(t);
 		odb.close();
 	}
-	
+
+	public void obtenerTodos(T t)
+	{
+
+	}
 
 	public void eliminar(T t){
-		ODB odb  = ODBFactory.open("mibase");
-		odb.store(t);
-		odb.close();
+		//ODB odb  = ODBFactory.open(fileNameNeodatisDB);
+		//odb.store(t);
+		//odb.close();
 	}
 
+	public List<T> buscar(T t, String campo, Object valor){
+		ODB odb  = ODBFactory.open(fileNameNeodatisDB);
+
+		IQuery query = new CriteriaQuery(t.getClass(), Where.equal(campo, valor));
+		Objects<T> objs = odb.getObjects(query);
+
+		odb.close();
+
+		return (List<T>) objs;
+	}
 	
 }
