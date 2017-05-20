@@ -20,12 +20,12 @@ import java.util.Collection;
             boolean ret = false;
             for(Tag t : obtenerTodos(arbol))
             {
-                if (t.getAcciones().equals(tag.getNombre()))
+                if (t.getNombre().equals(tag.getNombre()))
                     ret = true;
 
             }
 
-            return true;
+            return ret;
         }
 
 
@@ -46,8 +46,16 @@ import java.util.Collection;
     }
 
     public ArrayList<Tag> obtenerTodos(Tree arbol){
-        ArrayList<Tag> raices=obtenerRaices(arbol);
-       return recorrerRecursivamente(arbol,raices);
+
+        ArrayList<Tag> ret = convertiraTags(arbol.getItemIds());
+
+        return ret;
+        //ArrayList<Tag> raices=obtenerRaices(arbol);
+      // return recorrerRecursivamente(arbol,raices);
+
+
+
+
 
     }
     public ArrayList<Tag> recorrerRecursivamente(Tree arbol,ArrayList<Tag> tags){
