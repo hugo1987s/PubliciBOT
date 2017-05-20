@@ -26,9 +26,33 @@ public class ABMTags extends UI {
 
         Layout lo=new HorizontalLayout();
         TreeService TS=new TreeService();
-        Tag tg=new Tag("Raiz");
+        Tag tg = new Tag("Raiz");
+        Tag tg1 = new Tag("Test2");
+        Tag tg2 = new Tag("Test3");
+        Tag tg3 = new Tag("Test2.1");
+        Tag tg4 = new Tag("Test4");
+        Tag tg5 = new Tag("Test2");
+        Tag tg6 = new Tag("Test2.1.1");
+        Tag tg7 = new Tag("Test4.1");
+        Tag tg8 = new Tag("Test2.1.1");
+
         TS.agregarTag(arbolDeTags,tg);
         TS.agregarTag(arbolDeTags,tg);
+        TS.agregarTag(arbolDeTags,tg1);
+        TS.agregarTag(arbolDeTags,tg2);
+        TS.agregarTag(arbolDeTags,tg3);
+        TS.agregarTag(arbolDeTags,tg4);
+        TS.agregarTag(arbolDeTags,tg5);
+        TS.agregarTag(arbolDeTags,tg6);
+        TS.agregarTag(arbolDeTags,tg7);
+
+        TS.setearPadre(arbolDeTags, tg7,  tg4);
+        TS.setearPadre(arbolDeTags, tg3,  tg1);
+        TS.setearPadre(arbolDeTags, tg8,  tg1);
+
+
+
+        //TS.setearPadre(arbolDeTags, )
 
        ArrayList<Object> rootIds =
                 new ArrayList<Object>(arbolDeTags.rootItemIds());
