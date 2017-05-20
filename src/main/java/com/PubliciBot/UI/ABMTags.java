@@ -16,6 +16,9 @@ import java.util.ArrayList;
  */
 @Theme("mytheme")
 public class ABMTags extends UI {
+
+    com.vaadin.ui.Tree arbolDeTagsRecuperado;
+
     public Label createLabel(String msg){
        return new Label(msg);
     }
@@ -25,6 +28,7 @@ public class ABMTags extends UI {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         com.vaadin.ui.Tree arbolDeTags = new Tree();
+        arbolDeTagsRecuperado = new Tree();
 
         Layout lo = new VerticalLayout();
         TreeService TS = new TreeService();
@@ -34,6 +38,10 @@ public class ABMTags extends UI {
 
         Button btnAgregarTag = new Button("Agregar");
         Button btneliminarTag = new Button ("Eliminar");
+
+        Button btnGuardarArbol = new Button("Guardar Tree");
+        Button btnRecuperarArbol = new Button("Recuperar Tree");
+
 
         btnAgregarTag.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
@@ -63,6 +71,41 @@ public class ABMTags extends UI {
         });
 
 
+        btnGuardarArbol.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+               TS.guardarArbol(arbolDeTags);
+            }
+        });
+
+
+        btnRecuperarArbol.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                //arbolDeTagsRecuperado = TS.recuperarArbol();
+                arbolDeTagsRecuperado = new Tree("copia", TS.recuperarArbol());
+
+                //arbolDeTagsRecuperado = arbolDeTags;
+                arbolDeTagsRecuperado.addItem("clickeado");
+                //lo.addComponent(arbolDeTagsRecuperado);
+            }
+        });
+
+        MockObjectTest(arbolDeTags, TS); //Metodo creado para limpiar un poco el codigo, pues es de TEST
+
+        lo.addComponent(txtNuevoTag);
+        lo.addComponent(btnAgregarTag);
+        lo.addComponent(btneliminarTag);
+        lo.addComponent(arbolDeTags);
+        lo.addComponent(btnGuardarArbol);
+        lo.addComponent(btnRecuperarArbol);
+        lo.addComponent(arbolDeTagsRecuperado);
+        setContent(lo);
+
+
+    }
+
+    private void MockObjectTest(Tree arbolDeTags, TreeService TS) {
         Tag tg = new Tag("Raiz");
         Tag tg1 = new Tag("Test2");
         Tag tg2 = new Tag("Test3");
@@ -89,34 +132,7 @@ public class ABMTags extends UI {
         System.out.println(TS.setearPadre(arbolDeTags, tg3,  tg1));
         System.out.println(TS.setearPadre(arbolDeTags, tg6,  tg1));
         System.out.println(TS.setearPadre(arbolDeTags, tg8,  tg4));
-
-
-
-
-        //TS.setearPadre(arbolDeTags, )
-
-       ArrayList<Object> rootIds =
-                new ArrayList<Object>(arbolDeTags.rootItemIds());
-
-/*
-        for (Object item :rootIds
-             ) {
-            Tag tag=(Tag) item;
-            lo.addComponent(createLabel(((Tag) item).getNombre()));
-
-        }
-*/
-        //   ArrayList<Tag> tagss=(ArrayList<Tag>)arbolDeTags.getChildren(tg);
-
-        lo.addComponent(txtNuevoTag);
-        lo.addComponent(btnAgregarTag);
-        lo.addComponent(btneliminarTag);
-        lo.addComponent(arbolDeTags);
-        setContent(lo);
-
-
     }
-
 
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
