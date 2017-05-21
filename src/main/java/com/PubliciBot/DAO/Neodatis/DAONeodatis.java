@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DAONeodatis<T> implements DAO<T> {
 
-	private String fileNameNeodatisDB = "PubliciBOT.neoDB";
+	protected String fileNameNeodatisDB = "PubliciBOT.neoDB";
 	
 	public void guardar(T t){
 		ODB odb  = ODBFactory.open(fileNameNeodatisDB);
