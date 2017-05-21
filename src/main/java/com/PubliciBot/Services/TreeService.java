@@ -77,7 +77,7 @@ public class TreeService {
                     Object[] children = arbol.getChildren(tag).toArray();
                     if (children.length > 0) {
                         for (int i = 0; i < children.length; i++) {
-                            arbol.removeItem(children[i]);
+                            quitarTag( arbol, (Tag) children[i] );
                         }
                     }
                 }
@@ -89,23 +89,19 @@ public class TreeService {
 
 
     //Metodo recursivo para obtener items (ya solucionado )
-    public ArrayList<Tag> recorrerRecursivamente(Tree arbol, ArrayList<Tag> tags) {
+    public ArrayList<Tag> recorrerRecursivamente(Tree arbol,ArrayList<Tag> tags){
         ArrayList<Tag> ret = new ArrayList<Tag>();
-        if (tags.size() == 0) {
-            return tags;
-        }
-        for (Tag tag : tags) {
+
+        for(Tag tag : tags){
             ArrayList<Tag> hijosdelTag = convertiraTags(arbol.getChildren(tag));
-            ret = combinarArreglos(recorrerRecursivamente(arbol, hijosdelTag), hijosdelTag);
+            if(hijosdelTag.size() == 0)
+                ret=new ArrayList<Tag>();
+            else {
+                hijosdelTag.addAll(recorrerRecursivamente(arbol, hijosdelTag));
+                ret = hijosdelTag;
+            }
         }
         return ret;
-    }
-
-    public ArrayList<Tag> combinarArreglos(ArrayList<Tag> arreglo1, ArrayList<Tag> arreglo2) {
-        for (Tag tag : arreglo2) {
-            arreglo1.add(tag);
-        }
-        return arreglo1;
     }
     //Fin metodo recursivo para obtener items (ya solucionado )
 
