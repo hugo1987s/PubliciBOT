@@ -8,17 +8,20 @@ import java.util.Set;
  */
 public class Tag {
     private String nombre;
-    private String nombreTagPadre;
+    private Tag TagPadre;
     private Set<AccionPublicitaria> acciones;
 
     public Tag(String nombre) {
+        if(nombre.equals("")){
+            throw new RuntimeException("Tag Vacio");
+        }
         this.nombre = nombre;
         this.acciones = new HashSet<>();
     }
 
-    public Tag(String nombre, String nombreTagPadre) {
+    public Tag(String nombre, Tag TagPadre) {
         this.nombre = nombre;
-        this.nombreTagPadre = nombreTagPadre;
+        this.TagPadre = TagPadre;
         this.acciones = new HashSet<>();
 
     }
@@ -39,17 +42,32 @@ public class Tag {
         this.nombre = nombre;
     }
 
-    public String getNombreTagPadre() {
-        return nombreTagPadre;
+    public Tag getPadre() {
+        return TagPadre;
     }
 
-    public void setNombreTagPadre(String nombreTagPadre) {
-        this.nombreTagPadre = nombreTagPadre;
+    public void setTagPadre(Tag TagPadre) {
+        this.TagPadre = TagPadre;
     }
     @Override
     public String toString() {
         return this.nombre;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tag tag = (Tag) o;
+
+        if (nombre != null  && ((Tag) o).getNombre() != null)
+            return nombre.equals(((Tag) o).getNombre());
+
+       return false;
+    }
+
+
 
 
 

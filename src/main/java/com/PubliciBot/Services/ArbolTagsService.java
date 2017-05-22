@@ -1,96 +1,94 @@
 package com.PubliciBot.Services;
 
-import com.PubliciBot.DAO.Interfaces.ArbolDAO;
 import com.PubliciBot.DAO.Neodatis.ArbolDAONeodatis;
 import com.PubliciBot.DM.ArbolTags;
 import com.PubliciBot.DM.Tag;
 import com.vaadin.ui.Tree;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created by alumnos on 18/05/2017.
  */
 public class ArbolTagsService {
 
-    ArbolDAO treeDAO;
+    private ArbolDAONeodatis treeDAO=new ArbolDAONeodatis();
+    private ArbolTags arbolTags;
 
     public ArbolTagsService() {
         treeDAO = new ArbolDAONeodatis();
+        arbolTags = new ArbolTags();
+        this.recuperarArbol();
     }
 
     public void agregarTag(Tree arbol, Tag tag) {
-        if (!exists(arbol, tag)) {
+        if (!exists(tag)) {
             arbol.addItem(tag);
+            arbolTags.AgregarTag(tag);
         }
     }
 
-    public boolean exists(Tree arbol, Tag tag) {
-        boolean ret = false;
-        ArrayList<Tag> tagsArbol = obtenerTodos(arbol);
-        for (Tag t : tagsArbol) {
+    public boolean exists(Tag tag) {
+        for (Tag t : arbolTags.getTags()) {
             if (t.getNombre().equals(tag.getNombre()))
-                ret = true;
+               return true;
         }
-        return ret;
+       return false;
     }
 
-    public ArrayList<Tag> obtenerTodos(Tree arbol) {
-        ArrayList<Tag> ret = convertiraTags(arbol.getItemIds());
-        return ret;
-        //ArrayList<Tag> raices=obtenerRaices(arbol);
-        // return recorrerRecursivamente(arbol,raices);
-    }
 
-    public ArrayList<Tag> convertiraTags(Collection<?> lista) {
-        ArrayList<Object> rootIds =
-                new ArrayList<Object>(lista);
-        ArrayList<Tag> tags =
-                new ArrayList<Tag>();
-        for (Object item : rootIds) {
-            Tag tag = (Tag) item;
-            tags.add(tag);
-        }
-        return tags;
-    }
-
-    public ArrayList<Tag> obtenerRaices(Tree arbol) {
-        return convertiraTags(arbol.rootItemIds());
-    }
 
     public boolean setearPadre(Tree arbol, Tag tagHijo, Tag tagPadre) {
         boolean ret = false;
         try {
             ret = arbol.setParent(tagHijo, tagPadre);
+            for (Tag tg:
+            this.arbolTags.getTags()) {
+                if(tg.equals(tagHijo)){
+                    tg.setTagPadre(tagPadre);
+                }
+
+            }
         } catch (Exception e) {
             throw new IllegalArgumentException("No se encuentra el tag padre o hijo");
         }
         return ret;
     }
 
-    public boolean quitarTag(Tree arbol, Tag tag) {
-        if (exists(arbol, tag)) {
+    private boolean quitarTagTree(Tree arbol, Tag tag) {
+
             boolean hasChildren = arbol.getChildren(tag) != null;
             if (hasChildren) {
-                int amountchildren = arbol.getChildren(tag).size();
-                if (amountchildren > 0) {
                     Object[] children = arbol.getChildren(tag).toArray();
-                    if (children.length > 0) {
-                        for (int i = 0; i < children.length; i++) {
-                            quitarTag( arbol, (Tag) children[i] );
+
+                        for (Object o: children) {
+                            Tag child=(Tag) o;
+                            quitarTagTree(arbol,child);
                         }
-                    }
-                }
+
+
             }
             return arbol.removeItem(tag);
-        }
-        return false;
+
     }
 
 
+    public void quitarTag(Tree arbol, Tag tag){
+        quitarTagTree(arbol,tag);
+        quitarTagArbol(this.arbolTags,tag);
+    }
+
+    private void quitarTagArbol(ArbolTags arbolTags, Tag tag){
+        ArrayList<Tag> hijos = buscarTagPorPadre(arbolTags,tag);
+        for(Tag tagtemp : hijos){
+            quitarTagArbol(arbolTags, tagtemp);
+            arbolTags.getTags().remove(tagtemp);
+        }
+        arbolTags.getTags().remove(tag);
+    }
+
     //Metodo recursivo para obtener items (ya solucionado )
-    public ArrayList<Tag> recorrerRecursivamente(Tree arbol,ArrayList<Tag> tags){
+  /*  public ArrayList<Tag> recorrerRecursivamente(Tree arbol,ArrayList<Tag> tags){
         ArrayList<Tag> ret = new ArrayList<Tag>();
 
         for(Tag tag : tags){
@@ -103,26 +101,58 @@ public class ArbolTagsService {
             }
         }
         return ret;
-    }
+    }*/
     //Fin metodo recursivo para obtener items (ya solucionado )
 
 
-    public void guardarArbol(ArbolTags arbol) {
-        treeDAO.guardar(arbol);
+    public void guardarArbol() {
+        treeDAO.guardar(arbolTags);
     }
 
-    public Tag buscarTagPorPadre(ArbolTags arbol, String idTagPadre) {
+    public ArrayList<Tag> buscarTagPorPadre(ArbolTags arbol, Tag tagPadre) {
+        ArrayList<Tag> ret = new ArrayList<Tag>();
         for (Tag tagTemp : arbol.getTags()) {
-            if (tagTemp.getNombre().equals(idTagPadre))
-                return tagTemp;
+            if(tagTemp.getPadre() != null) {
+                if (tagTemp.getPadre().equals(tagPadre))
+                    ret.add(tagTemp);
+            }
         }
 
-        return null;
+        return ret;
     }
 
 
-    public ArbolTags recuperarArbol() {
-        return treeDAO.recuperarArbol();
+    public void recuperarArbol() {
+        this.arbolTags = treeDAO.recuperar();
+
     }
 
+
+
+
+    public Tree convertirArbolaTree (Tree treeVaadin) {
+        //Limpio el arbol para no repetir los items
+        treeVaadin.removeAllItems();
+
+
+        for (Tag tag : arbolTags.getTags()) {
+            treeVaadin.addItem(tag);
+        }
+
+        for (Tag tag : arbolTags.getTags()) {
+            if (tag.getPadre() != null)
+                treeVaadin.setParent(tag,tag.getPadre());
+        }
+
+        return treeVaadin;
+    }
+
+
+    public ArbolTags getArbolTags() {
+        return arbolTags;
+    }
+
+    public void setArbolTags(ArbolTags arbolTags) {
+        this.arbolTags = arbolTags;
+    }
 }

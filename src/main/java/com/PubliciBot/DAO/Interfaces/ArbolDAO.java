@@ -8,6 +8,6 @@ import com.PubliciBot.DM.ArbolTags;
  */
 public interface ArbolDAO extends DAO<ArbolTags> {
 
-    ArbolTags recuperarArbol();
+    ArbolTags recuperar();
 
 }
