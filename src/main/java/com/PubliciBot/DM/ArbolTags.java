@@ -28,7 +28,7 @@ public class ArbolTags {
         this.tags.add(tag);
     }
 
-    public void AgregarTag(String nombre, String tagPadre)
+    public void AgregarTag(String nombre, Tag tagPadre)
     {
         this.tags.add(new Tag(nombre, tagPadre));
     }

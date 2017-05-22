@@ -13,8 +13,9 @@ import java.util.List;
 
 public class DAONeodatis<T> implements DAO<T> {
 
-	protected String fileNameNeodatisDB = "PubliciBOT.neoDB";
-	
+	protected String fileNameNeodatisDB = "PubliciBOT.DB";
+
+
 	public void guardar(T t){
 		ODB odb  = null;
 

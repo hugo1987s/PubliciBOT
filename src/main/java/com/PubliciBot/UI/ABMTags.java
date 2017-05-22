@@ -1,6 +1,5 @@
 package com.PubliciBot.UI;
 
-import com.PubliciBot.DM.ArbolTags;
 import com.PubliciBot.DM.Tag;
 import com.PubliciBot.Services.ArbolTagsService;
 import com.vaadin.annotations.Theme;
@@ -17,7 +16,7 @@ import javax.servlet.annotation.WebServlet;
 @Theme("mytheme")
 public class ABMTags extends UI {
 
-    ArbolTags arbol2Tags;
+    Tree treeVaadin;
     public Label createLabel(String msg) {
         return new Label(msg);
     }
@@ -25,9 +24,8 @@ public class ABMTags extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        com.vaadin.ui.Tree arbolContenedorDeTags = new Tree();
 
-        arbol2Tags = new ArbolTags();
+        treeVaadin=new Tree();
         //arbol3Tags = new ArbolTags();
 
         Layout lo = new VerticalLayout();
@@ -47,25 +45,26 @@ public class ABMTags extends UI {
         //TODO CADA VEZ QUE HAYAN CAMBIOS PERSISTIR EL ARBOL
         btnAgregarTag.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
-                    Tag nuevo = new Tag("");
-                    Tag temp = new Tag("");
+                    Tag nuevo=null ;
+                    Tag temp=null;
 
                     if (txtNuevoTag.getValue().trim() != "") {
-                    nuevo.setNombre(txtNuevoTag.getValue());
+                        nuevo=new Tag(txtNuevoTag.getValue());
 
                     txtNuevoTag.setValue("");
                 }
 
-                temp = (Tag) arbolContenedorDeTags.getValue();
+                temp = (Tag) treeVaadin.getValue();
 
                 if (temp != null) {
-                     arbol2Tags.AgregarTag(nuevo.getNombre(), temp.getNombre());
+                     TS.agregarTag(treeVaadin,nuevo);
+                     TS.setearPadre(treeVaadin, nuevo, temp);
                 }
-                else
-                    arbol2Tags.AgregarTag(nuevo);
+                else if(nuevo!=null) {
+                    TS.agregarTag(treeVaadin, nuevo);
+                }
 
-
-                cargarTreeVaadin(arbol2Tags, arbolContenedorDeTags);
+               // TS.cargarTreeVaadin(arbol2Tags, treeVaadin);
 /*
                 if (txtNuevoTag.getValue().trim() != "") {
                     nuevo.setNombre(txtNuevoTag.getValue());
@@ -73,9 +72,9 @@ public class ABMTags extends UI {
                     txtNuevoTag.setValue("");
                 }
 
-                temp = (Tag) arbolContenedorDeTags.getValue();
+                temp = (Tag) treeVaadin.getValue();
                 if (temp != null) {
-                    TS.setearPadre(arbolContenedorDeTags, nuevo, temp);
+                    TS.setearPadre(treeVaadin, nuevo, temp);
 
                 }
 */
@@ -96,10 +95,10 @@ public class ABMTags extends UI {
 
         btneliminarTag.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
-                Tag temp = (Tag) arbolContenedorDeTags.getValue();
+                Tag temp = (Tag) treeVaadin.getValue();
 
                 if (temp != null)
-                    TS.quitarTag(arbolContenedorDeTags, temp);
+                    TS.quitarTag(treeVaadin, temp);
 
             }
         });
@@ -110,7 +109,7 @@ public class ABMTags extends UI {
             public void buttonClick(Button.ClickEvent clickEvent) {
                 //TS.guardarArbol(arbolDeTags);
                 //arbol2Tags.PersistirArbol();
-                TS.guardarArbol(arbol2Tags);
+                TS.guardarArbol();
             }
         });
 
@@ -118,10 +117,9 @@ public class ABMTags extends UI {
         btnRecuperarArbol.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                arbol2Tags = TS.recuperarArbol();
-                //arbol3Tags = arbol2Tags.RecuperarArbol();
+                TS.recuperarArbol();
 
-                cargarTreeVaadin(arbol2Tags, arbolContenedorDeTags);
+                treeVaadin = TS.convertirArbolaTree(treeVaadin);
             }
         });
 
@@ -129,7 +127,7 @@ public class ABMTags extends UI {
         lo.addComponent(txtNuevoTag);
         lo.addComponent(btnAgregarTag);
         lo.addComponent(btneliminarTag);
-        lo.addComponent(arbolContenedorDeTags);
+        lo.addComponent(treeVaadin);
         lo.addComponent(btnGuardarArbol);
         lo.addComponent(btnRecuperarArbol);
 
@@ -138,23 +136,7 @@ public class ABMTags extends UI {
 
 
     }
-    //TODO mover esto a Tree service
-    private void cargarTreeVaadin(ArbolTags arbolTags, Tree treeVaadin) {
-        //Limpio el arbol para no repetir los items
-        ArbolTagsService TS = new ArbolTagsService();
 
-        treeVaadin.removeAllItems();
-
-        for (Tag tag : arbolTags.getTags()) {
-            treeVaadin.addItem(tag);
-        }
-
-        for (Tag tag : arbolTags.getTags()) {
-            if (tag.getNombreTagPadre() != null)
-                treeVaadin.setParent(tag, TS.buscarTagPorPadre(arbolTags, tag.getNombreTagPadre()));
-        }
-
-    }
 
 
 
