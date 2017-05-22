@@ -4,7 +4,6 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.UI;
 
@@ -17,15 +16,14 @@ import javax.servlet.annotation.WebServlet;
 public class ABMTags extends UI {
 
     Tree treeVaadin;
-    public Label createLabel(String msg) {
-        return new Label(msg);
-    }
+
 
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-    ABMTagsController ABCTRL=new ABMTagsController();
+    ABMTagsController ABCTRL=new ABMTagsController(this);
     setContent(ABCTRL);
+
 
     }
 

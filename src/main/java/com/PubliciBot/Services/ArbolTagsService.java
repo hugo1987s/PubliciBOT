@@ -1,13 +1,11 @@
 package com.PubliciBot.Services;
 
-import com.PubliciBot.DAO.Interfaces.ArbolDAO;
 import com.PubliciBot.DAO.Neodatis.ArbolDAONeodatis;
 import com.PubliciBot.DM.ArbolTags;
 import com.PubliciBot.DM.Tag;
 import com.vaadin.ui.Tree;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created by alumnos on 18/05/2017.
@@ -20,6 +18,7 @@ public class ArbolTagsService {
     public ArbolTagsService() {
         treeDAO = new ArbolDAONeodatis();
         arbolTags = new ArbolTags();
+        this.recuperarArbol();
     }
 
     public void agregarTag(Tree arbol, Tag tag) {
@@ -43,7 +42,13 @@ public class ArbolTagsService {
         boolean ret = false;
         try {
             ret = arbol.setParent(tagHijo, tagPadre);
-            this.arbolTags.AgregarTag(tagHijo.getNombre(), tagPadre);
+            for (Tag tg:
+            this.arbolTags.getTags()) {
+                if(tg.equals(tagHijo)){
+                    tg.setTagPadre(tagPadre);
+                }
+
+            }
         } catch (Exception e) {
             throw new IllegalArgumentException("No se encuentra el tag padre o hijo");
         }
@@ -76,6 +81,7 @@ public class ArbolTagsService {
     private void quitarTagArbol(ArbolTags arbolTags, Tag tag){
         ArrayList<Tag> hijos = buscarTagPorPadre(arbolTags,tag);
         for(Tag tagtemp : hijos){
+            quitarTagArbol(arbolTags, tagtemp);
             arbolTags.getTags().remove(tagtemp);
         }
         arbolTags.getTags().remove(tag);
