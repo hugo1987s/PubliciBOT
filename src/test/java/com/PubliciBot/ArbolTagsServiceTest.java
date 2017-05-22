@@ -14,8 +14,8 @@ import java.util.Collection;
  */
 public class ArbolTagsServiceTest {
     @Test
-    public void exists(){
-       Tag a=new Tag("A");
+    public void existsTest(){
+        Tag a=new Tag("A");
         Tag b=new Tag("A");
         b.setTagPadre(a);
         ArbolTagsService arbol=new ArbolTagsService();
@@ -28,7 +28,7 @@ public class ArbolTagsServiceTest {
 
     }
     @Test
-    public void agregarTags(){
+    public void agregarTagsTest(){
         ArbolTagsService arbol=new ArbolTagsService();
         Tree tree=new Tree();
         Tag a=new Tag("A");
@@ -49,7 +49,7 @@ public class ArbolTagsServiceTest {
         arbol.quitarTag(tree,a);
     }
     @Test
-    public void convertirArbolaTree(){
+    public void convertirArbolaTreeTest(){
         ArbolTagsService arbol=new ArbolTagsService();
         Tree tree=new Tree();
         Tag a=new Tag("A");
@@ -69,31 +69,31 @@ public class ArbolTagsServiceTest {
     }
 
 
-@Test
-    public void quitarTagTree(){
+    @Test
+    public void quitarTagTreeTest(){
 
-    ArbolTagsService arbol=new ArbolTagsService();
-    Tree tree=new Tree();
-    Tag a=new Tag("A");
-    arbol.agregarTag(tree,a);
-    arbol.quitarTag(tree,a);
-    Collection<Object> tgs=new ArrayList<Object>(tree.getItemIds());
+        ArbolTagsService arbol=new ArbolTagsService();
+        Tree tree=new Tree();
+        Tag a=new Tag("A");
+        arbol.agregarTag(tree,a);
+        arbol.quitarTag(tree,a);
+        Collection<Object> tgs=new ArrayList<Object>(tree.getItemIds());
 
-    boolean estaenTree=false;
-    for(Object o:tgs){
-        Tag temp=(Tag) o;
-        if(temp.equals(a)){
-            estaenTree=true;
+        boolean estaenTree=false;
+        for(Object o:tgs){
+            Tag temp=(Tag) o;
+            if(temp.equals(a)){
+                estaenTree=true;
+            }
         }
+
+        Assert.assertFalse(estaenTree);
+
+
+
     }
-
-    Assert.assertFalse(estaenTree);
-
-
-
-}
-@Test
-    public void quitarTagArbol(){
+    @Test
+    public void quitarTagArbolTest(){
 
         ArbolTagsService arbol=new ArbolTagsService();
         Tree tree=new Tree();
@@ -103,11 +103,73 @@ public class ArbolTagsServiceTest {
         arbol.quitarTag(tree,a);
         Assert.assertFalse(arbol.getArbolTags().getTags().contains(a));
 
+    }
 
+    @Test
+    public void setearPadreTest(){
+        ArbolTagsService arbol = new ArbolTagsService();
+        Tree tree = new Tree();
+        Tag tagPadre = new Tag ("Padre");
+        Tag tagHijo1 = new Tag ("Hijo 1");
+        Tag tagHijo2 = new Tag ("Hijo 2");
+        arbol.agregarTag(tree,tagPadre);
+        arbol.agregarTag(tree,tagHijo1);
+        arbol.agregarTag(tree,tagHijo2);
+        arbol.setearPadre(tree,tagHijo1,tagPadre);
+        arbol.setearPadre(tree,tagHijo2,tagPadre);
 
+        Collection<Object> tgs=new ArrayList<Object>(tree.getItemIds());
+        Assert.assertEquals(3,tgs.size());
+
+        ArrayList<Tag> hijos = arbol.buscarTagPorPadre(arbol.getArbolTags(),tagPadre);
+        Assert.assertEquals(2,hijos.size());
+    }
+
+    @Test
+    public void buscarTagPorPadreTest() {
+        ArbolTagsService arbol = new ArbolTagsService();
+        Tree tree = new Tree();
+        Tag tagPadre = new Tag ("Padre");
+        Tag tagHijo1 = new Tag ("Hijo 1");
+        Tag tagHijo2 = new Tag ("Hijo 2");
+        arbol.agregarTag(tree,tagPadre);
+        arbol.agregarTag(tree,tagHijo1);
+        arbol.agregarTag(tree,tagHijo2);
+        arbol.setearPadre(tree,tagHijo1,tagPadre);
+        arbol.setearPadre(tree,tagHijo2,tagPadre);
+
+        Collection<Object> tgs=new ArrayList<Object>(tree.getItemIds());
+        Assert.assertEquals(3,tgs.size());
+
+        ArrayList<Tag> hijos = arbol.buscarTagPorPadre(arbol.getArbolTags(),tagPadre);
+        Assert.assertEquals(2,hijos.size());
     }
 
 
+    @Test
+    public void DAOTest(){
+        ArbolTagsService arbol = new ArbolTagsService();
+        Tree tree = new Tree();
+        Tag tagPadre = new Tag ("Padre");
+        Tag h1p1 = new Tag ("Hijo 1 P1");
+        Tag h2p1 = new Tag ("Hijo 2 P1");
+        Tag tagPadre2 = new Tag ("Padre 2");
+        Tag h1p2 = new Tag ("Hijo 1 P2");
+
+        arbol.agregarTag(tree,tagPadre);
+        arbol.agregarTag(tree,h1p1);
+        arbol.agregarTag(tree,h2p1);
+        arbol.agregarTag(tree,tagPadre2);
+        arbol.agregarTag(tree,h1p2);
+
+        arbol.setearPadre(tree,h1p1,tagPadre);
+        arbol.setearPadre(tree,h2p1,tagPadre);
+        arbol.setearPadre(tree,h1p2,tagPadre2);
 
 
+        arbol.guardarArbol();
+        arbol.recuperarArbol();
+        Assert.assertEquals(5,arbol.getArbolTags().getTags().size());
+
+    }
 }
