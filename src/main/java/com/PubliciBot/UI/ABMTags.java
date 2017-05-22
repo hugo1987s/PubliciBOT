@@ -16,7 +16,7 @@ import javax.servlet.annotation.WebServlet;
  */
 @Theme("mytheme")
 public class ABMTags extends UI {
-    //ArbolTags arbol3Tags;
+
     ArbolTags arbol2Tags;
     public Label createLabel(String msg) {
         return new Label(msg);
@@ -57,8 +57,7 @@ public class ABMTags extends UI {
                 temp = (Tag) arbolContenedorDeTags.getValue();
 
                 if (temp != null) {
-                    //TS.setearPadre(arbolContenedorDeTags, nuevo, temp);
-                    arbol2Tags.AgregarTag(nuevo.getNombre(), temp.getNombre());
+                     arbol2Tags.AgregarTag(nuevo.getNombre(), temp.getNombre());
                 }
                 else
                     arbol2Tags.AgregarTag(nuevo);
