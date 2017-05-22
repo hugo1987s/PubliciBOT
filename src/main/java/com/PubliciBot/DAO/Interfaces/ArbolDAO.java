@@ -9,6 +9,7 @@ import com.vaadin.ui.Tree;
  */
 public interface ArbolDAO extends DAO<Tree> {
 
-    ArbolTags recuperarArbol();
     void PersistirArbol(ArbolTags arbol);
+    ArbolTags recuperarArbol();
+
 }

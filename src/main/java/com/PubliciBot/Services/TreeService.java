@@ -115,10 +115,6 @@ public class TreeService {
         treeDAO.PersistirArbol(arbol);
     }
 
-    public ArbolTags recuperarArbol() {
-        return treeDAO.recuperarArbol();
-    }
-
     public Tag buscarTagPorPadre(ArbolTags arbol, String idTagPadre) {
         for (Tag tagTemp : arbol.getTags()) {
             if (tagTemp.getNombre().equals(idTagPadre))
@@ -127,4 +123,10 @@ public class TreeService {
 
         return null;
     }
+
+
+    public ArbolTags recuperarArbol() {
+        return treeDAO.recuperarArbol();
+    }
+
 }

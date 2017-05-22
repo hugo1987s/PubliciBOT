@@ -16,6 +16,15 @@ import java.util.List;
  */
 public class ArbolDAONeodatis extends DAONeodatis<Tree> implements ArbolDAO {
 
+
+
+    @Override
+    public void PersistirArbol(ArbolTags arbol) {
+        ODB odb = ODBFactory.open(fileNameNeodatisDB);
+        odb.store(arbol);
+        odb.close();
+    }
+
     @Override
     public ArbolTags recuperarArbol() {
         ODB odb = ODBFactory.open(fileNameNeodatisDB);
@@ -29,13 +38,6 @@ public class ArbolDAONeodatis extends DAONeodatis<Tree> implements ArbolDAO {
             return (ArbolTags) objs.getFirst();
 
         return new ArbolTags();
-    }
-
-    @Override
-    public void PersistirArbol(ArbolTags arbol) {
-        ODB odb = ODBFactory.open(fileNameNeodatisDB);
-        odb.store(arbol);
-        odb.close();
     }
 
 }

@@ -33,12 +33,13 @@ public class ArbolTags {
         this.tags.add(new Tag(nombre, tagPadre));
     }
 
-    public ArrayList<Tag> getTags() {
-        return tags;
-    }
 
     public void setTags(ArrayList<Tag> tags) {
         this.tags = tags;
+    }
+
+    public ArrayList<Tag> getTags() {
+        return tags;
     }
 
 
