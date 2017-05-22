@@ -2,18 +2,19 @@ package com.PubliciBot.UI;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.*;
 import com.vaadin.ui.*;
+import javafx.scene.layout.StackPane;
 
 import javax.servlet.annotation.WebServlet;
+import java.io.File;
 
 /**
  * Created by Hugo on 14/05/2017.
  */
 
 @Theme("mytheme")
-public class Login  extends UI {
+public class Login extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -22,27 +23,75 @@ public class Login  extends UI {
         final HorizontalLayout layoutHorizontal = new HorizontalLayout();
 
 
-        TextField txtUsuario = new TextField("Usuario: ");
+        TextField txtUsuario = new TextField();
         txtUsuario.setMaxLength(30);
+        txtUsuario.setInputPrompt("Ingrese su Email");
 
 
-        PasswordField txtContrasena = new PasswordField("Contraseña: ");
+        PasswordField txtContrasena = new PasswordField();
         txtContrasena.setMaxLength(30);
+        txtContrasena.setInputPrompt("Ingrese su contraseña");
 
         Button btnIngresar = new Button("Ingresar");
 
-        layoutVertical.setWidthUndefined();
 
+        ////////////
+
+        // Find the application directory
+        String basepath = VaadinService.getCurrent()
+                .getBaseDirectory().getAbsolutePath();
+
+// Image as a file resource
+        FileResource resource = new FileResource(new File(basepath +
+                "/WEB-INF/images/Megafono3.PNG"));
+
+// Show the image in the application
+        Image image = new Image("", resource);
+
+
+        ///////////
+
+        // Create a grid layout
+        GridLayout grid = new GridLayout(1, 4);
+
+        grid.setWidth(600, Sizeable.UNITS_PIXELS);
+        grid.setHeight(400, Sizeable.UNITS_PIXELS);
+
+        grid.addComponent(image, 0, 0);
+        grid.setComponentAlignment(image, Alignment.TOP_CENTER);
+
+        grid.addComponent(txtUsuario, 0, 1);
+        grid.setComponentAlignment(txtUsuario, Alignment.TOP_CENTER);
+
+        grid.addComponent(txtContrasena, 0, 2);
+        grid.setComponentAlignment(txtContrasena, Alignment.TOP_CENTER);
+
+        grid.addComponent(btnIngresar, 0, 3);
+        grid.setComponentAlignment(btnIngresar, Alignment.TOP_CENTER);
+
+
+
+        layoutVertical.setSizeFull();
+        layoutVertical.addComponent(grid);
+        layoutVertical.setComponentAlignment(grid, Alignment.MIDDLE_CENTER);
+/*
+        layoutVertical.setHeight(600, Unit.PIXELS);
+
+        layoutVertical.addComponent(image);
         layoutVertical.addComponent(txtUsuario);
         layoutVertical.addComponent(txtContrasena);
         layoutVertical.addComponent(btnIngresar);
-        layoutVertical.setWidth(100, Unit.PERCENTAGE);
 
+        layoutVertical.setComponentAlignment(image, Alignment.MIDDLE_CENTER);
+        layoutVertical.setComponentAlignment(txtUsuario, Alignment.MIDDLE_CENTER);
+        layoutVertical.setComponentAlignment(txtContrasena, Alignment.MIDDLE_CENTER);
+        layoutVertical.setComponentAlignment(btnIngresar, Alignment.MIDDLE_CENTER);
 
+*/
 
-       // layoutHorizontal.addComponent(layoutVertical);
-       // layoutHorizontal.setWidth(100, Unit.PERCENTAGE);
-       // layoutHorizontal.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+        // layoutHorizontal.addComponent(layoutVertical);
+        // layoutHorizontal.setWidth(100, Unit.PERCENTAGE);
+        // layoutHorizontal.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         //layoutHorizontal.setComponentAlignment(layoutVertical, Alignment.MIDDLE_CENTER);
 
 
@@ -50,11 +99,11 @@ public class Login  extends UI {
 
 
     }
-/*
+
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = Login.class, productionMode = false)
     public static class LoginServlet extends VaadinServlet {
 
     }
-*/
+
 }

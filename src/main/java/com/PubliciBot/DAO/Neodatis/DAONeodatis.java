@@ -13,17 +13,44 @@ import java.util.List;
 
 public class DAONeodatis<T> implements DAO<T> {
 
-	protected String fileNameNeodatisDB = "PubliciBOT.neoDB";
-	
+	protected String fileNameNeodatisDB = "PubliciBOT.DB";
+
+
 	public void guardar(T t){
-		ODB odb  = ODBFactory.open(fileNameNeodatisDB);
-		odb.store(t);
-		odb.close();
+		ODB odb  = null;
+
+			try {
+				ODBFactory.open(fileNameNeodatisDB);
+				odb.store(t);
+
+
+			}
+			catch (Exception e){
+				e.printStackTrace();
+			}
+			finally {
+				odb.close();
+			}
+
 	}
 
-	public void obtenerTodos(T t)
+	public Objects<T> obtenerTodos(Class<T> c)
 	{
+		ODB odb  = null;
+		Objects<T> ret=null;
+			try {
+				odb  =ODBFactory.open(fileNameNeodatisDB);
+				ret = odb.getObjects(c);
 
+
+			}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		finally {
+			odb.close();
+		}
+		return ret;
 	}
 
 	public void eliminar(T t){
