@@ -12,7 +12,7 @@ import org.neodatis.odb.Objects;
 public class ArbolDaoNeodatisTest {
 
     @Test
-    public void cargarObjetoNeodatis(){
+    public void guardar(){
         ArbolTags obj=new ArbolTags();
         ArbolDAONeodatis dao=new ArbolDAONeodatis();
         try

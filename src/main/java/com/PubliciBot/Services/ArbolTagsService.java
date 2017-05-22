@@ -122,7 +122,7 @@ public class ArbolTagsService {
 
 
     public ArbolTags recuperarArbol() {
-        return treeDAO.recuperarArbol();
+        return treeDAO.recuperar();
     }
 
 }
