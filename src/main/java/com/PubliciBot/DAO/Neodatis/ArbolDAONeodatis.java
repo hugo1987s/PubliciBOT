@@ -2,28 +2,40 @@ package com.PubliciBot.DAO.Neodatis;
 
 import com.PubliciBot.DAO.Interfaces.ArbolDAO;
 import com.PubliciBot.DM.ArbolTags;
-import com.vaadin.ui.Tree;
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
 import org.neodatis.odb.Objects;
 import org.neodatis.odb.core.query.IQuery;
 import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Hugo on 20/05/2017.
  */
-public class ArbolDAONeodatis extends DAONeodatis<Tree> implements ArbolDAO {
+public class ArbolDAONeodatis extends DAONeodatis<ArbolTags> implements ArbolDAO {
 
 
 
-    @Override
-    public void PersistirArbol(ArbolTags arbol) {
-        ODB odb = ODBFactory.open(fileNameNeodatisDB);
-        odb.store(arbol);
-        odb.close();
+
+    public void guardar(ArbolTags arbol) {
+       try {
+           ODB odb = ODBFactory.open(fileNameNeodatisDB);
+           ArrayList<Object> objs =
+                   new ArrayList<Object>(odb.getObjects(ArbolTags.class));
+           for (Object o : objs) {
+               odb.delete(o);
+
+           }
+            odb.store(arbol);
+            odb.close();
+       }
+       catch (Exception e){
+           e.printStackTrace();
+       }
+
     }
+
 
     @Override
     public ArbolTags recuperarArbol() {

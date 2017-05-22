@@ -12,11 +12,11 @@ import java.util.Collection;
 /**
  * Created by alumnos on 18/05/2017.
  */
-public class TreeService {
+public class ArbolTagsService {
 
     ArbolDAO treeDAO;
 
-    public TreeService() {
+    public ArbolTagsService() {
         treeDAO = new ArbolDAONeodatis();
     }
 
@@ -108,7 +108,7 @@ public class TreeService {
 
 
     public void guardarArbol(ArbolTags arbol) {
-        treeDAO.PersistirArbol(arbol);
+        treeDAO.guardar(arbol);
     }
 
     public Tag buscarTagPorPadre(ArbolTags arbol, String idTagPadre) {

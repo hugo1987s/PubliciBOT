@@ -2,7 +2,7 @@ package com.PubliciBot.UI;
 
 import com.PubliciBot.DM.ArbolTags;
 import com.PubliciBot.DM.Tag;
-import com.PubliciBot.Services.TreeService;
+import com.PubliciBot.Services.ArbolTagsService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
@@ -31,7 +31,7 @@ public class ABMTags extends UI {
         //arbol3Tags = new ArbolTags();
 
         Layout lo = new VerticalLayout();
-        TreeService TS = new TreeService();
+        ArbolTagsService TS = new ArbolTagsService();
 
         TextField txtNuevoTag = new TextField("");
         txtNuevoTag.setMaxLength(30);
@@ -42,13 +42,15 @@ public class ABMTags extends UI {
         Button btnGuardarArbol = new Button("Guardar Tree");
         Button btnRecuperarArbol = new Button("Recuperar Tree");
 
-
+        //TODO mover esto a un controller?
+        //TODO MODIFICAR SOLO EL TREE Y GENERAR DE NUEVO EL ARBOLTAG
+        //TODO CADA VEZ QUE HAYAN CAMBIOS PERSISTIR EL ARBOL
         btnAgregarTag.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
-                Tag nuevo = new Tag("");
-                Tag temp = new Tag("");
+                    Tag nuevo = new Tag("");
+                    Tag temp = new Tag("");
 
-                if (txtNuevoTag.getValue().trim() != "") {
+                    if (txtNuevoTag.getValue().trim() != "") {
                     nuevo.setNombre(txtNuevoTag.getValue());
 
                     txtNuevoTag.setValue("");
@@ -136,10 +138,10 @@ public class ABMTags extends UI {
 
 
     }
-
+    //TODO mover esto a Tree service
     private void cargarTreeVaadin(ArbolTags arbolTags, Tree treeVaadin) {
         //Limpio el arbol para no repetir los items
-        TreeService TS = new TreeService();
+        ArbolTagsService TS = new ArbolTagsService();
 
         treeVaadin.removeAllItems();
 
