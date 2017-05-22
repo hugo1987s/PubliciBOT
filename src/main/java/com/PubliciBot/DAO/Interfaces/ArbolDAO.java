@@ -1,6 +1,7 @@
 package com.PubliciBot.DAO.Interfaces;
 
 
+import com.PubliciBot.DM.ArbolTags;
 import com.vaadin.ui.Tree;
 
 /**
@@ -8,6 +9,6 @@ import com.vaadin.ui.Tree;
  */
 public interface ArbolDAO extends DAO<Tree> {
 
-    void guardarArbol(Tree arbol);
-    Tree recuperarArbol ();
+    ArbolTags recuperarArbol();
+    void PersistirArbol(ArbolTags arbol);
 }

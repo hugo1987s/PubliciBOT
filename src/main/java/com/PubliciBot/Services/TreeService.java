@@ -2,6 +2,7 @@ package com.PubliciBot.Services;
 
 import com.PubliciBot.DAO.Interfaces.ArbolDAO;
 import com.PubliciBot.DAO.Neodatis.ArbolDAONeodatis;
+import com.PubliciBot.DM.ArbolTags;
 import com.PubliciBot.DM.Tag;
 import com.vaadin.ui.Tree;
 
@@ -110,13 +111,20 @@ public class TreeService {
     //Fin metodo recursivo para obtener items (ya solucionado )
 
 
-    public void guardarArbol(Tree arbol) {
-        treeDAO.guardarArbol(arbol);
+    public void guardarArbol(ArbolTags arbol) {
+        treeDAO.PersistirArbol(arbol);
     }
 
-    public Tree recuperarArbol() {
+    public ArbolTags recuperarArbol() {
         return treeDAO.recuperarArbol();
     }
 
+    public Tag buscarTagPorPadre(ArbolTags arbol, String idTagPadre) {
+        for (Tag tagTemp : arbol.getTags()) {
+            if (tagTemp.getNombre().equals(idTagPadre))
+                return tagTemp;
+        }
 
+        return null;
+    }
 }
