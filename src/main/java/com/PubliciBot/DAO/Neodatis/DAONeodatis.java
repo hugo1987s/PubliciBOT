@@ -60,12 +60,23 @@ public class DAONeodatis<T> implements DAO<T> {
 	}
 
 	public List<T> buscar(T t, String campo, Object valor){
-		ODB odb  = ODBFactory.open(fileNameNeodatisDB);
+		ODB odb = null;
+		Objects<T> objs =null;
 
-		IQuery query = new CriteriaQuery(t.getClass(), Where.equal(campo, valor));
-		Objects<T> objs = odb.getObjects(query);
+		try {
+			odb = ODBFactory.open(fileNameNeodatisDB);
 
-		odb.close();
+			IQuery query = new CriteriaQuery(t.getClass(), Where.equal(campo, valor));
+			objs = odb.getObjects(query);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+
+		}
+    finally{
+			odb.close();
+		}
+
 
 		return (List<T>) objs;
 	}
