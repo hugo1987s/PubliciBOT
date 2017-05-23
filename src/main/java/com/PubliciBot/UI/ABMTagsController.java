@@ -2,6 +2,7 @@ package com.PubliciBot.UI;
 
 import com.PubliciBot.DM.Tag;
 import com.PubliciBot.Services.ArbolTagsService;
+import com.PubliciBot.Services.TreeService;
 import com.vaadin.ui.*;
 
 public class ABMTagsController extends VerticalLayout {
@@ -9,11 +10,10 @@ public class ABMTagsController extends VerticalLayout {
 
     public ABMTagsController(ABMTags abmtag){
         super();
-        treeVaadin=new Tree();
+        treeVaadin = new Tree();
 
-
-
-        ArbolTagsService TS = new ArbolTagsService();
+        ArbolTagsService arbolTagService = new ArbolTagsService();
+        TreeService treeService = new TreeService();
 
         TextField txtNuevoTag = new TextField("");
         txtNuevoTag.setMaxLength(30);
@@ -21,8 +21,8 @@ public class ABMTagsController extends VerticalLayout {
         Button btnAgregarTag = new Button("Agregar");
         Button btneliminarTag = new Button("Eliminar");
 
-        TS.recuperarArbol();
-        treeVaadin = TS.convertirArbolaTree(treeVaadin);
+        arbolTagService.recuperarArbol();
+        treeVaadin = arbolTagService.convertirArbolaTree(treeVaadin);
 
 
         btnAgregarTag.addClickListener(new Button.ClickListener() {
@@ -38,18 +38,21 @@ public class ABMTagsController extends VerticalLayout {
 
                 temp = (Tag) treeVaadin.getValue();
 
-                if (temp != null&&nuevo!=null) {
-                    TS.agregarTag(treeVaadin,nuevo);
-                    TS.setearPadre(treeVaadin, nuevo, temp);
+                if (temp != null && nuevo!=null) {
+                    arbolTagService.agregarTag(nuevo);
+                    arbolTagService.setearPadre(nuevo, temp);
+                    treeService.agregarTag(treeVaadin,nuevo);
+                    treeService.setearPadre(treeVaadin,nuevo,temp);
                 }
-                else if(nuevo!=null) {
-                    TS.agregarTag(treeVaadin, nuevo);
+                else if(nuevo != null) {
+                    arbolTagService.agregarTag(nuevo);
+                    treeService.agregarTag(treeVaadin,nuevo);
                 }
-                if(nuevo==null){
+                if(nuevo == null){
                     abmtag.showNotification("No es posible agregar un tag Vacio");
                 }
-                abmtag.showNotification(TS.getArbolTags().getTags().toString());
-                TS.guardarArbol();
+                abmtag.showNotification(arbolTagService.getArbolTags().getTags().toString());
+                arbolTagService.guardarArbol();
 
             }
         });
@@ -58,12 +61,14 @@ public class ABMTagsController extends VerticalLayout {
             public void buttonClick(Button.ClickEvent event) {
                 Tag temp = (Tag) treeVaadin.getValue();
 
-                if (temp != null)
-                    TS.quitarTag(treeVaadin, temp);
-                if(temp==null)
+                if (temp != null) {
+                    treeService.quitarTagTree(treeVaadin, temp);
+                    arbolTagService.quitarTagArbolTags(temp);
+                }
+                if(temp == null)
                     abmtag.showNotification("No se ha seleccionado ningun tag");
-                abmtag.showNotification(TS.getArbolTags().getTags().toString());
-                TS.guardarArbol();
+                abmtag.showNotification(arbolTagService.getArbolTags().getTags().toString());
+                arbolTagService.guardarArbol();
 
             }
         });
