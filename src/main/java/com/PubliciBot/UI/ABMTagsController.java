@@ -49,9 +49,9 @@ public class ABMTagsController extends VerticalLayout {
                     agregarTag(treeVaadin,nuevo);
                 }
                 if(nuevo == null){
-                    abmtag.showNotification("No es posible agregar un tag Vacio");
+                   Notification.show("No es posible agregar un tag Vacio");
                 }
-                abmtag.showNotification(arbolTagService.getArbolTags().getTags().toString());
+                Notification.show(arbolTagService.getArbolTags().getTags().toString());
                 arbolTagService.guardarArbol();
 
             }
@@ -66,8 +66,8 @@ public class ABMTagsController extends VerticalLayout {
                     arbolTagService.quitarTagArbolTags(temp);
                 }
                 if(temp == null)
-                    abmtag.showNotification("No se ha seleccionado ningun tag");
-                abmtag.showNotification(arbolTagService.getArbolTags().getTags().toString());
+                    Notification.show("No se ha seleccionado ningun tag");
+                    Notification.show(arbolTagService.getArbolTags().getTags().toString());
                 arbolTagService.guardarArbol();
 
             }

@@ -2,6 +2,9 @@ package com.PubliciBot.UI;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.*;
 import com.vaadin.ui.*;
 import javafx.scene.layout.StackPane;
@@ -14,14 +17,16 @@ import java.io.File;
  */
 
 @Theme("mytheme")
-public class Login extends UI {
+public class Login extends VerticalLayout implements View {
 
-    @Override
-    protected void init(VaadinRequest vaadinRequest) {
+
+    //protected void init(VaadinRequest vaadinRequest)
+
+    public Login (Navigator navigator)
+    {
 
         final VerticalLayout layoutVertical = new VerticalLayout();
         final HorizontalLayout layoutHorizontal = new HorizontalLayout();
-
 
         TextField txtUsuario = new TextField();
         txtUsuario.setMaxLength(30);
@@ -69,11 +74,16 @@ public class Login extends UI {
         grid.addComponent(btnIngresar, 0, 3);
         grid.setComponentAlignment(btnIngresar, Alignment.TOP_CENTER);
 
+        btnIngresar.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent event) {
+                navigator.navigateTo("ABMTAGS");
+            }});
+
+       this.setSizeFull();
+        this.addComponent(grid);
+        this.setComponentAlignment(grid, Alignment.MIDDLE_CENTER);
 
 
-        layoutVertical.setSizeFull();
-        layoutVertical.addComponent(grid);
-        layoutVertical.setComponentAlignment(grid, Alignment.MIDDLE_CENTER);
 /*
         layoutVertical.setHeight(600, Unit.PIXELS);
 
@@ -95,15 +105,19 @@ public class Login extends UI {
         //layoutHorizontal.setComponentAlignment(layoutVertical, Alignment.MIDDLE_CENTER);
 
 
-        setContent(layoutVertical);
+        //setContent(this);
 
 
     }
 
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+
+    }
+/*
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = Login.class, productionMode = false)
     public static class LoginServlet extends VaadinServlet {
 
-    }
-
+    }*/
 }
