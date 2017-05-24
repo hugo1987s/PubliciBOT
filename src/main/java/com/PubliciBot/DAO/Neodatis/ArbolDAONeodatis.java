@@ -39,7 +39,6 @@ public class ArbolDAONeodatis extends DAONeodatis<ArbolTags> implements ArbolDAO
             odb.close();
         }
 
-
     }
 
     @Override
@@ -50,6 +49,24 @@ public class ArbolDAONeodatis extends DAONeodatis<ArbolTags> implements ArbolDAO
                 return todos.getFirst();
 
         return new ArbolTags();
+    }
+
+
+    public void eliminarTags(){
+        ODB odb = null;
+        try {
+            odb = ODBFactory.open(fileNameNeodatisDB);
+            ArrayList<Object> objs = new ArrayList<Object>(odb.getObjects(Tag.class));
+            for (Object o : objs) {
+                odb.delete(o);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally{
+            odb.close();
+        }
     }
 
 }

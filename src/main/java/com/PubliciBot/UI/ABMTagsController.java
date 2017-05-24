@@ -17,7 +17,7 @@ public class ABMTagsController extends VerticalLayout {
 
         TextField txtNuevoTag = new TextField("");
         txtNuevoTag.setMaxLength(30);
-        Label Title=new Label("Administracion de Tags");
+        Label Title = new Label("Administracion de Tags");
         Button btnAgregarTag = new Button("Agregar");
         Button btneliminarTag = new Button("Eliminar");
 
@@ -27,8 +27,8 @@ public class ABMTagsController extends VerticalLayout {
 
         btnAgregarTag.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
-                Tag nuevo=null ;
-                Tag temp=null;
+                Tag nuevo = null ;
+                Tag temp = null;
 
                 if (txtNuevoTag.getValue().trim() != "") {
                     nuevo=new Tag(txtNuevoTag.getValue());
