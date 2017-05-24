@@ -4,16 +4,16 @@ import com.PubliciBot.DM.Tag;
 import com.PubliciBot.Services.ArbolTagsService;
 import com.vaadin.ui.*;
 
+import java.util.Collection;
+
 public class ABMTagsController extends VerticalLayout {
     Tree treeVaadin;
 
     public ABMTagsController(ABMTags abmtag){
         super();
-        treeVaadin=new Tree();
+        treeVaadin = new Tree();
 
-
-
-        ArbolTagsService TS = new ArbolTagsService();
+        ArbolTagsService arbolTagService = new ArbolTagsService();
 
         TextField txtNuevoTag = new TextField("");
         txtNuevoTag.setMaxLength(30);
@@ -21,8 +21,8 @@ public class ABMTagsController extends VerticalLayout {
         Button btnAgregarTag = new Button("Agregar");
         Button btneliminarTag = new Button("Eliminar");
 
-        TS.recuperarArbol();
-        treeVaadin = TS.convertirArbolaTree(treeVaadin);
+        arbolTagService.recuperarArbol();
+        treeVaadin = arbolTagService.convertirArbolaTree(treeVaadin);
 
 
         btnAgregarTag.addClickListener(new Button.ClickListener() {
@@ -38,18 +38,21 @@ public class ABMTagsController extends VerticalLayout {
 
                 temp = (Tag) treeVaadin.getValue();
 
-                if (temp != null&&nuevo!=null) {
-                    TS.agregarTag(treeVaadin,nuevo);
-                    TS.setearPadre(treeVaadin, nuevo, temp);
+                if (temp != null && nuevo!=null) {
+                    arbolTagService.agregarTag(nuevo);
+                    arbolTagService.setearPadre(nuevo, temp);
+                    agregarTag(treeVaadin,nuevo);
+                    setearPadre(treeVaadin,nuevo,temp);
                 }
-                else if(nuevo!=null) {
-                    TS.agregarTag(treeVaadin, nuevo);
+                else if(nuevo != null) {
+                    arbolTagService.agregarTag(nuevo);
+                    agregarTag(treeVaadin,nuevo);
                 }
-                if(nuevo==null){
+                if(nuevo == null){
                     abmtag.showNotification("No es posible agregar un tag Vacio");
                 }
-                abmtag.showNotification(TS.getArbolTags().getTags().toString());
-                TS.guardarArbol();
+                abmtag.showNotification(arbolTagService.getArbolTags().getTags().toString());
+                arbolTagService.guardarArbol();
 
             }
         });
@@ -58,12 +61,14 @@ public class ABMTagsController extends VerticalLayout {
             public void buttonClick(Button.ClickEvent event) {
                 Tag temp = (Tag) treeVaadin.getValue();
 
-                if (temp != null)
-                    TS.quitarTag(treeVaadin, temp);
-                if(temp==null)
+                if (temp != null) {
+                    quitarTagTree(treeVaadin, temp);
+                    arbolTagService.quitarTagArbolTags(temp);
+                }
+                if(temp == null)
                     abmtag.showNotification("No se ha seleccionado ningun tag");
-                abmtag.showNotification(TS.getArbolTags().getTags().toString());
-                TS.guardarArbol();
+                abmtag.showNotification(arbolTagService.getArbolTags().getTags().toString());
+                arbolTagService.guardarArbol();
 
             }
         });
@@ -86,6 +91,49 @@ public class ABMTagsController extends VerticalLayout {
 
 
     }
+
+
+
+
+    private void agregarTag(Tree arbol, Tag tag) {
+        if (!exists(arbol,tag)) {
+            arbol.addItem(tag);
+        }
+    }
+
+    private boolean exists(Tree arbol, Tag tag) {
+        Collection<Object> treeTags = (Collection<Object>) arbol.getItemIds();
+        for (Object t :treeTags) {
+            Tag auxTag = (Tag) t;
+            if (auxTag.equals(tag))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean setearPadre(Tree arbol, Tag tagHijo, Tag tagPadre) {
+        boolean ret;
+        try {ret = arbol.setParent(tagHijo, tagPadre);
+
+        } catch (Exception e) {
+            throw new IllegalArgumentException("No se encuentra el tag padre o hijo");
+        }
+        return ret;
+    }
+
+    private boolean quitarTagTree(Tree arbol, Tag tag) {
+        boolean hasChildren = arbol.getChildren(tag) != null;
+        if (hasChildren) {
+            Object[] children = arbol.getChildren(tag).toArray();
+            for (Object o: children) {
+                Tag child =(Tag) o;
+                quitarTagTree(arbol,child);
+            }
+        }
+        return arbol.removeItem(tag);
+    }
+
+
 
 
 }

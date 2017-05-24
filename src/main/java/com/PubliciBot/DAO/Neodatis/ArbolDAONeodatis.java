@@ -2,6 +2,7 @@ package com.PubliciBot.DAO.Neodatis;
 
 import com.PubliciBot.DAO.Interfaces.ArbolDAO;
 import com.PubliciBot.DM.ArbolTags;
+import com.PubliciBot.DM.Tag;
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
 import org.neodatis.odb.Objects;
@@ -23,15 +24,20 @@ public class ArbolDAONeodatis extends DAONeodatis<ArbolTags> implements ArbolDAO
            ArrayList<Object> objs =
                    new ArrayList<Object>(odb.getObjects(ArbolTags.class));
            for (Object o : objs) {
+               ArbolTags viejosarboles=(ArbolTags)o;
+               for(Tag tag : viejosarboles.getTags()) {
+                   odb.delete(tag);
+               }
                odb.delete(o);
-
            }
             odb.store(arbol);
-           odb.close();
        }
        catch (Exception e){
            e.printStackTrace();
        }
+       finally{
+            odb.close();
+        }
 
 
     }

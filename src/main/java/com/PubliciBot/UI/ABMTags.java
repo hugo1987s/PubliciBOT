@@ -17,19 +17,11 @@ public class ABMTags extends UI {
 
     Tree treeVaadin;
 
-
-
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-    ABMTagsController ABCTRL=new ABMTagsController(this);
-    setContent(ABCTRL);
-
-
+        ABMTagsController ABCTRL=new ABMTagsController(this);
+        setContent(ABCTRL);
     }
-
-
-
-
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = ABMTags.class, productionMode = false)

@@ -1,12 +1,5 @@
 package com.PubliciBot.DM;
 
-import com.vaadin.ui.Tree;
-import org.neodatis.odb.ODB;
-import org.neodatis.odb.ODBFactory;
-import org.neodatis.odb.Objects;
-import org.neodatis.odb.core.query.IQuery;
-import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
-
 import java.util.ArrayList;
 
 /**
@@ -27,12 +20,6 @@ public class ArbolTags {
     {
         this.tags.add(tag);
     }
-
-    public void AgregarTag(String nombre, Tag tagPadre)
-    {
-        this.tags.add(new Tag(nombre, tagPadre));
-    }
-
 
     public void setTags(ArrayList<Tag> tags) {
         this.tags = tags;
