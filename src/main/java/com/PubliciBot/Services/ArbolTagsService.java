@@ -19,6 +19,7 @@ public class ArbolTagsService {
         treeDAO = new ArbolDAONeodatis();
         arbolTags = new ArbolTags();
         this.recuperarArbol();
+        //treeDAO.eliminarTags();
     }
 
     public void agregarTag(Tag tag) {
