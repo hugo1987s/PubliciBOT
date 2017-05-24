@@ -76,6 +76,7 @@ public class ArbolTagsServiceTest {
     @Test
     public void setearPadreTest(){
         ArbolTagsService arbol = new ArbolTagsService();
+        arbol.setArbolTags(new ArbolTags());
 
         Tag tagPadre = new Tag ("Padre");
         Tag tagHijo1 = new Tag ("Hijo 1");
@@ -94,6 +95,7 @@ public class ArbolTagsServiceTest {
     @Test
     public void buscarTagPorPadreTest() {
         ArbolTagsService arbol = new ArbolTagsService();
+        arbol.setArbolTags(new ArbolTags());
 
         Tag tagPadre = new Tag ("Padre");
         Tag tagHijo1 = new Tag ("Hijo 1");
@@ -116,6 +118,7 @@ public class ArbolTagsServiceTest {
         //PARA NO SOBREESCRIBIR LA DB
         ArbolTagsService arbolDeDB = new ArbolTagsService();
         arbolDeDB.recuperarArbol();
+        arbol.setArbolTags(new ArbolTags());
 
 
         Tag tagPadre = new Tag ("Padre");

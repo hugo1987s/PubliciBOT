@@ -2,8 +2,9 @@ package com.PubliciBot.UI;
 
 import com.PubliciBot.DM.Tag;
 import com.PubliciBot.Services.ArbolTagsService;
-import com.PubliciBot.Services.TreeService;
 import com.vaadin.ui.*;
+
+import java.util.Collection;
 
 public class ABMTagsController extends VerticalLayout {
     Tree treeVaadin;
@@ -13,7 +14,6 @@ public class ABMTagsController extends VerticalLayout {
         treeVaadin = new Tree();
 
         ArbolTagsService arbolTagService = new ArbolTagsService();
-        TreeService treeService = new TreeService();
 
         TextField txtNuevoTag = new TextField("");
         txtNuevoTag.setMaxLength(30);
@@ -41,12 +41,12 @@ public class ABMTagsController extends VerticalLayout {
                 if (temp != null && nuevo!=null) {
                     arbolTagService.agregarTag(nuevo);
                     arbolTagService.setearPadre(nuevo, temp);
-                    treeService.agregarTag(treeVaadin,nuevo);
-                    treeService.setearPadre(treeVaadin,nuevo,temp);
+                    agregarTag(treeVaadin,nuevo);
+                    setearPadre(treeVaadin,nuevo,temp);
                 }
                 else if(nuevo != null) {
                     arbolTagService.agregarTag(nuevo);
-                    treeService.agregarTag(treeVaadin,nuevo);
+                    agregarTag(treeVaadin,nuevo);
                 }
                 if(nuevo == null){
                     abmtag.showNotification("No es posible agregar un tag Vacio");
@@ -62,7 +62,7 @@ public class ABMTagsController extends VerticalLayout {
                 Tag temp = (Tag) treeVaadin.getValue();
 
                 if (temp != null) {
-                    treeService.quitarTagTree(treeVaadin, temp);
+                    quitarTagTree(treeVaadin, temp);
                     arbolTagService.quitarTagArbolTags(temp);
                 }
                 if(temp == null)
@@ -91,6 +91,49 @@ public class ABMTagsController extends VerticalLayout {
 
 
     }
+
+
+
+
+    private void agregarTag(Tree arbol, Tag tag) {
+        if (!exists(arbol,tag)) {
+            arbol.addItem(tag);
+        }
+    }
+
+    private boolean exists(Tree arbol, Tag tag) {
+        Collection<Object> treeTags = (Collection<Object>) arbol.getItemIds();
+        for (Object t :treeTags) {
+            Tag auxTag = (Tag) t;
+            if (auxTag.equals(tag))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean setearPadre(Tree arbol, Tag tagHijo, Tag tagPadre) {
+        boolean ret;
+        try {ret = arbol.setParent(tagHijo, tagPadre);
+
+        } catch (Exception e) {
+            throw new IllegalArgumentException("No se encuentra el tag padre o hijo");
+        }
+        return ret;
+    }
+
+    private boolean quitarTagTree(Tree arbol, Tag tag) {
+        boolean hasChildren = arbol.getChildren(tag) != null;
+        if (hasChildren) {
+            Object[] children = arbol.getChildren(tag).toArray();
+            for (Object o: children) {
+                Tag child =(Tag) o;
+                quitarTagTree(arbol,child);
+            }
+        }
+        return arbol.removeItem(tag);
+    }
+
+
 
 
 }

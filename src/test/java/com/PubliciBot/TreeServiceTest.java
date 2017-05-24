@@ -1,18 +1,10 @@
 package com.PubliciBot;
 
-import com.PubliciBot.DM.Tag;
-import com.PubliciBot.Services.TreeService;
-import com.vaadin.ui.Tree;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.util.Collection;
-
 /**
  * Created by Max on 5/23/2017.
  */
 public class TreeServiceTest {
-
+/*
     @Test
     public void agregarTest(){
         TreeService ts = new TreeService();
@@ -94,5 +86,6 @@ public class TreeServiceTest {
 
     }
 
+*/
 
 }
