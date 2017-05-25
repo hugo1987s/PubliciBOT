@@ -1,5 +1,6 @@
 package com.PubliciBot.UI;
 
+import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
@@ -13,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
  * Created by monzon on 24/05/17.
  */
 
+@Theme("mytheme")
 public class NavigatorUI extends UI {
 
 
