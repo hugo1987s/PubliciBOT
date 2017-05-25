@@ -50,5 +50,5 @@ public class ArbolDAONeodatis extends DAONeodatis<ArbolTags> implements ArbolDAO
 
         return new ArbolTags();
     }
-    
+
 }
