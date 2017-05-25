@@ -20,10 +20,14 @@ public class Tag {
     }
 
     public Tag(String nombre, Tag TagPadre) {
-        this.nombre = nombre;
-        this.TagPadre = TagPadre;
-        this.acciones = new HashSet<>();
-
+        if(TagPadre==this){
+            throw new IllegalArgumentException("Padre no puede ser el mismo");
+        }
+        else {
+            this.nombre = nombre;
+            this.TagPadre = TagPadre;
+            this.acciones = new HashSet<>();
+        }
     }
 
     public String getNombre() {
@@ -46,7 +50,7 @@ public class Tag {
         return TagPadre;
     }
 
-    public void setTagPadre(Tag TagPadre) {
+    private void setTagPadre(Tag TagPadre) {
         this.TagPadre = TagPadre;
     }
     @Override
