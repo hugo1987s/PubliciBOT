@@ -39,7 +39,6 @@ public class ArbolDAONeodatis extends DAONeodatis<ArbolTags> implements ArbolDAO
             odb.close();
         }
 
-
     }
 
     @Override
