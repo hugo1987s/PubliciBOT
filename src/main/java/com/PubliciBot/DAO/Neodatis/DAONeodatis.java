@@ -18,31 +18,24 @@ public class DAONeodatis<T> implements DAO<T> {
 
 	public void guardar(T t){
 		ODB odb  = null;
-
-			try {
-				ODBFactory.open(fileNameNeodatisDB);
-				odb.store(t);
-
-
-			}
-			catch (Exception e){
-				e.printStackTrace();
-			}
-			finally {
-				odb.close();
-			}
-
+		try {
+			ODBFactory.open(fileNameNeodatisDB);
+			odb.store(t);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		finally {
+			odb.close();
+		}
 	}
 
-	public Objects<T> obtenerTodos(Class<T> c)
-	{
+	public Objects<T> obtenerTodos(Class<T> c) {
 		ODB odb  = null;
 		Objects<T> ret=null;
 			try {
 				odb  =ODBFactory.open(fileNameNeodatisDB);
 				ret = odb.getObjects(c);
-
-
 			}
 		catch (Exception e){
 			e.printStackTrace();
@@ -62,7 +55,6 @@ public class DAONeodatis<T> implements DAO<T> {
 	public List<T> buscar(T t, String campo, Object valor){
 		ODB odb = null;
 		Objects<T> objs =null;
-
 		try {
 			odb = ODBFactory.open(fileNameNeodatisDB);
 
@@ -71,14 +63,10 @@ public class DAONeodatis<T> implements DAO<T> {
 		}
 		catch (Exception e){
 			e.printStackTrace();
-
 		}
-    finally{
+        finally{
 			odb.close();
 		}
-
-
 		return (List<T>) objs;
 	}
-	
 }

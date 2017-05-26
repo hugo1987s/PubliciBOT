@@ -21,6 +21,7 @@ public class Usuario {
         this.rol = rol;
     }
 
+
     public String getMail() {
         return mail;
     }

@@ -18,7 +18,7 @@ public class ArbolDAONeodatis extends DAONeodatis<ArbolTags> implements ArbolDAO
 
     @Override
     public void guardar(ArbolTags arbol) {
-        ODB odb =null;
+        ODB odb = null;
         try {
            odb = ODBFactory.open(fileNameNeodatisDB);
            ArrayList<Object> objs =
@@ -43,7 +43,7 @@ public class ArbolDAONeodatis extends DAONeodatis<ArbolTags> implements ArbolDAO
 
     @Override
     public ArbolTags recuperar() {
-        Objects<ArbolTags> todos=super.obtenerTodos(ArbolTags.class);
+        Objects<ArbolTags> todos = super.obtenerTodos(ArbolTags.class);
         if(todos!=null)
             if(todos.size()>0)
                 return todos.getFirst();

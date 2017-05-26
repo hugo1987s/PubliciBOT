@@ -1,8 +1,7 @@
 package com.PubliciBot.UI;
 
-import com.PubliciBot.DM.Privilegio;
-import com.PubliciBot.DM.Rol;
 import com.PubliciBot.DM.Usuario;
+import com.PubliciBot.Services.UsuarioService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -22,12 +21,15 @@ public class Login extends VerticalLayout implements View {
 
 
     //protected void init(VaadinRequest vaadinRequest)
+    private UsuarioService userService ;
 
     public Login ()
     {
 
         final VerticalLayout layoutVertical = new VerticalLayout();
         final HorizontalLayout layoutHorizontal = new HorizontalLayout();
+
+        this.userService = new UsuarioService();
 
         TextField txtUsuario = new TextField();
         txtUsuario.setMaxLength(30);
@@ -79,20 +81,43 @@ public class Login extends VerticalLayout implements View {
         //TODO se va a crear un usuario nuevo y este se va a comparar con el que exista en la base de datos
         btnIngresar.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
-                String userName = txtUsuario.getValue();
-                String password = txtContrasena.getValue();
-                boolean invalidUser = userName.equals("");
-                boolean invalidPassword = password.equals("");
-                if(!invalidUser ){
-                    Privilegio<ABMTags> privilegioTecnico = new Privilegio<>(ABMTags.class);
-                    Rol role = new Rol("Tecnico");
-                    role.add(privilegioTecnico);
-                    Usuario user = new Usuario(userName,password,role);
-                    NavigatorUI currentNavigator = ((NavigatorUI)UI.getCurrent());
-                    currentNavigator.setLoggedInUser(user);
-                    getUI().getNavigator().navigateTo("ABMTAGS");
-                }
+                String userMail = txtUsuario.getValue();
+                String userPassword = txtContrasena.getValue();
+                boolean invalidUser = userMail.equals("");
+                boolean invalidPassword = userPassword.equals("");
+                NavigatorUI currentNavigator = ((NavigatorUI)UI.getCurrent());
 
+                if(!invalidUser && !invalidPassword ){
+                    Usuario user = null;
+                    String savedUserMail;
+                    String savedUserPassword;
+
+                    for(Usuario savedUser : userService.getSystemUsers()){
+                        savedUserMail = savedUser.getMail();
+                        savedUserPassword = savedUser.getContrasena();
+                        if(savedUserMail.equals(userMail) && savedUserPassword.equals(userPassword)) {
+                            user = savedUser;
+                            System.out.println(user.getRol().getListaPrivilegios());
+                        }
+                    }
+
+                    if(user != null){
+                        currentNavigator.setLoggedInUser(user);
+                        boolean esTecnico = user.getRol().tienePrivilegio("class com.PubliciBot.UI.ABMTags");
+                        boolean esCliente = user.getRol().tienePrivilegio("class com.PubliciBot.UI.ABMCampanas");
+                        System.out.println(esCliente);
+                        if(esTecnico)
+                            getUI().getNavigator().navigateTo("ABMTAGS");
+                        else if(esCliente)
+                            getUI().getNavigator().navigateTo("ABMCAMPANAS");
+                    }
+                    else{
+                        Notification.show("Usuario y/o contraseña incorrectos", Notification.Type.HUMANIZED_MESSAGE);
+                    }
+                }
+                else{
+                    Notification.show("Usuario y/o contraseña incorrectos", Notification.Type.HUMANIZED_MESSAGE);
+                }
             }});
 
 

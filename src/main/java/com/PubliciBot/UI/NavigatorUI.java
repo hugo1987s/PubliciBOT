@@ -1,7 +1,5 @@
 package com.PubliciBot.UI;
 
-import com.PubliciBot.DM.Privilegio;
-import com.PubliciBot.DM.Rol;
 import com.PubliciBot.DM.Usuario;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -13,8 +11,6 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 
 import javax.servlet.annotation.WebServlet;
-import java.util.HashSet;
-import java.util.Set;
 
 @Theme("mytheme")
 public class NavigatorUI extends UI {
@@ -50,31 +46,14 @@ public class NavigatorUI extends UI {
 
             @Override
             public boolean beforeViewChange(ViewChangeEvent event) {
-               Usuario user = ((NavigatorUI) UI.getCurrent()).getLoggedInUser();
+                Usuario user = ((NavigatorUI) UI.getCurrent()).getLoggedInUser();
 
-                if (user != null) {
-                    //TODO arreglar para que se cargue un usuario
-                    //TODO deberian quedar fijos estos privilegios o cargar privilegios guardados? 
-                    if (event.getNewView() instanceof ABMTags) {
-                        Privilegio <ABMTags> privilegioTecnico = new Privilegio<>(ABMTags.class);
-                        Set<Privilegio> privilegiosTecnico = new HashSet<Privilegio>();
-                        privilegiosTecnico.add(privilegioTecnico);
-                        Rol role = new Rol("Tecnico");
-                        role.add(privilegioTecnico);
-                        if (user.getRol().equals(role) && !user.getContrasena().equals("")) {
-                            return true;
-                        }
-                        //else
-                        //    Notification.show("Credenciales incorrectas, falta contraseña", Notification.Type.HUMANIZED_MESSAGE);
-                    }
-
-                    if (event.getNewView() instanceof ABMCampanas) {
-                        if (!user.equals("")) {
-                            return true;
-                        }
-
-                    }
+                if (event.getNewView() instanceof ABMTags) {
+                    return true;
                 }
+
+                if(event.getNewView() instanceof ABMCampanas)
+                    return true;
 
                 if(event.getNewView() instanceof Login)
                     return true;
@@ -84,6 +63,7 @@ public class NavigatorUI extends UI {
                 else
                     Notification.show("403 Acceso Denegado", Notification.Type.ERROR_MESSAGE);
                 return false;
+
             }
 
             @Override

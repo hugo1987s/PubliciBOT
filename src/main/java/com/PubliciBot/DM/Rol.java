@@ -44,6 +44,14 @@ public class Rol {
         this.listaPrivilegios = listaPrivilegios;
     }
 
+    public boolean tienePrivilegio(String privilegio){
+        for(Privilegio<?> privilegio1 : listaPrivilegios){
+            if(privilegio1.toString().equals(privilegio))
+                return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean equals(Object role){
         if(role == null) return false;
@@ -63,13 +71,7 @@ public class Rol {
 
     @Override
     public String toString(){
-        String permisos = "";
-        String permiso ;
-        for(Privilegio<?> privilegio: listaPrivilegios){
-            permiso = privilegio.toString()+", ";
-            permisos += permiso;
-        }
         return this.descripcion+
-                "\nPermisos: "+ permisos;
+                "\nPermisos: "+ listaPrivilegios.toString();
     }
 }
