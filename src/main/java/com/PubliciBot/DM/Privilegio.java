@@ -11,10 +11,8 @@ public class Privilegio<T> {
 
     private Class<T> pantalla;
 
-
-
     public Privilegio(Class<T> c) {
-        pantalla=c;
+        pantalla = c;
     }
 
     @Override
@@ -34,4 +32,6 @@ public class Privilegio<T> {
     public int hashCode() {
         return Objects.hash(pantalla);
     }
+
+
 }

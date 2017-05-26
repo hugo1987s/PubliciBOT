@@ -21,7 +21,7 @@ public class ABMTags extends VerticalLayout implements View{
     //protected void init(VaadinRequest vaadinRequest)
     ABMTags()
     {
-        ABMTagsController ABCTRL=new ABMTagsController(this);
+        ABMTagsController ABCTRL = new ABMTagsController(this);
         this.addComponent(ABCTRL);
     }
 

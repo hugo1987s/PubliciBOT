@@ -29,40 +29,33 @@ public class ABMTagsController extends VerticalLayout {
             public void buttonClick(Button.ClickEvent event) {
                 Tag nuevo = null;
                 Tag temp = null;
-                String nombre=txtNuevoTag.getValue().trim();
+                String nombre = txtNuevoTag.getValue().trim();
                 if (!nombre.isEmpty()) {
                     txtNuevoTag.setValue("");
 
                     temp = (Tag) treeVaadin.getValue();
-
                     if (temp != null ) {
-
                         nuevo = new Tag(nombre,temp);
                         arbolTagService.agregarTag(nuevo);
                         agregarTag(treeVaadin, nuevo);
                         setearPadre(treeVaadin, nuevo, temp);
-
-
-                    } else  {
+                    }
+                    else {
                         nuevo = new Tag(nombre);
                         arbolTagService.agregarTag(nuevo);
                         agregarTag(treeVaadin, nuevo);
                     }
-
                 }
                 else
                     Notification.show("Imposible crear un Tag vacío.");
-
               //  Notification.show(arbolTagService.getArbolTags().getTags().toString());
                 arbolTagService.guardarArbol();
-
             }
         });
 
         btneliminarTag.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
                 Tag temp = (Tag) treeVaadin.getValue();
-
                 if (temp != null) {
                     quitarTagTree(treeVaadin, temp);
                     arbolTagService.quitarTagArbolTags(temp);
@@ -71,7 +64,6 @@ public class ABMTagsController extends VerticalLayout {
                     Notification.show("No se ha seleccionado ningun tag");
                 Notification.show(arbolTagService.getArbolTags().getTags().toString());
                 arbolTagService.guardarArbol();
-
             }
         });
         HorizontalLayout HL = new HorizontalLayout();
@@ -83,15 +75,12 @@ public class ABMTagsController extends VerticalLayout {
         this.setComponentAlignment(Title, Alignment.BOTTOM_CENTER);
         this.addComponent(HL);
         this.addComponent(treeVaadin);
+
         HorizontalLayout HL2 = new HorizontalLayout();
-
-
         HL2.addComponent(btneliminarTag);
         HL2.setComponentAlignment(btneliminarTag, Alignment.BOTTOM_RIGHT);
         HL2.setSpacing(true);
         this.addComponent(HL2);
-
-
     }
 
 
@@ -108,7 +97,6 @@ public class ABMTagsController extends VerticalLayout {
         for (Object t : treeTags) {
             Tag auxTag = (Tag) t;
             if (auxTag.equals(tag))
-
                 return true;
         }
         return false;
@@ -118,8 +106,8 @@ public class ABMTagsController extends VerticalLayout {
         boolean ret;
         try {
             ret = arbol.setParent(tagHijo, tagPadre);
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new IllegalArgumentException("No se encuentra el tag padre o hijo");
         }
         return ret;
@@ -136,6 +124,4 @@ public class ABMTagsController extends VerticalLayout {
         }
         return arbol.removeItem(tag);
     }
-
-
 }

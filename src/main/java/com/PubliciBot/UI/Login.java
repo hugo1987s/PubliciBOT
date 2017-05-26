@@ -1,5 +1,8 @@
 package com.PubliciBot.UI;
 
+import com.PubliciBot.DM.Privilegio;
+import com.PubliciBot.DM.Rol;
+import com.PubliciBot.DM.Usuario;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -72,18 +75,31 @@ public class Login extends VerticalLayout implements View {
         grid.addComponent(btnIngresar, 0, 3);
         grid.setComponentAlignment(btnIngresar, Alignment.TOP_CENTER);
 
+
+        //TODO se va a crear un usuario nuevo y este se va a comparar con el que exista en la base de datos
         btnIngresar.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
+                String userName = txtUsuario.getValue();
+                String password = txtContrasena.getValue();
+                boolean invalidUser = userName.equals("");
+                boolean invalidPassword = password.equals("");
+                if(!invalidUser && !invalidPassword){
+                    Privilegio<ABMTags> privilegioTecnico = new Privilegio<>(ABMTags.class);
+                    Rol role = new Rol("Tecnico");
+                    role.add(privilegioTecnico);
+                    Usuario user = new Usuario(userName,password,role);
+                    NavigatorUI currentNavigator = ((NavigatorUI)UI.getCurrent());
+                    currentNavigator.setLoggedInUser(user);
+                    getUI().getNavigator().navigateTo("ABMTAGS");
+                }
 
-                ((NavigatorUI)UI.getCurrent()).setLoggedInUser(txtUsuario.getValue());
-                getUI().getNavigator().navigateTo("ABMTAGS");
             }});
 
 
 
 
 
-       this.setSizeFull();
+        this.setSizeFull();
         this.addComponent(grid);
         this.setComponentAlignment(grid, Alignment.MIDDLE_CENTER);
 

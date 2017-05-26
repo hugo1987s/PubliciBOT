@@ -1,5 +1,8 @@
 package com.PubliciBot.UI;
 
+import com.PubliciBot.DM.Privilegio;
+import com.PubliciBot.DM.Rol;
+import com.PubliciBot.DM.Usuario;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
@@ -10,12 +13,17 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 
 import javax.servlet.annotation.WebServlet;
+import java.util.HashSet;
+import java.util.Set;
+
 @Theme("mytheme")
 public class NavigatorUI extends UI {
 
     Navigator navigator;
 
-    String loggedInUser;
+
+    Usuario loggedInUser;
+
     //TODO ELABORAR TESTS DE TODO LO QUE SE NOS ROMPIO ALGUNA VEZ Y MAS
     //TODO RESOLVER TEMA LOGINS PRIVILEGIOS ---> MAXI LO QUIERE HACER
     //TODO CRAR PANTALLA ABM USUARIOS
@@ -26,7 +34,7 @@ public class NavigatorUI extends UI {
         navigator = new Navigator(this, this);
 
         // Add some Views
-        Login login= new Login();
+        Login login = new Login();
         ABMTags aBMtags = new ABMTags();
         ABMCampanas abmCampanas = new ABMCampanas();
 
@@ -42,14 +50,20 @@ public class NavigatorUI extends UI {
 
             @Override
             public boolean beforeViewChange(ViewChangeEvent event) {
-                String user=((NavigatorUI) UI.getCurrent()).getLoggedInUser();
-                if (user != null) {
+               Usuario user = ((NavigatorUI) UI.getCurrent()).getLoggedInUser();
 
+                if (user != null) {
+                    //TODO arreglar para que se cargue un usuario
+                    //TODO deberian quedar fijos estos privilegios o cargar privilegios guardados? 
                     if (event.getNewView() instanceof ABMTags) {
-                        if (!user.equals("")) {
+                        Privilegio <ABMTags> privilegioTecnico = new Privilegio<>(ABMTags.class);
+                        Set<Privilegio> privilegiosTecnico = new HashSet<Privilegio>();
+                        privilegiosTecnico.add(privilegioTecnico);
+                        Rol role = new Rol("Tecnico");
+                        role.add(privilegioTecnico);
+                        if (user.getRol().equals(role)) {
                             return true;
                         }
-
                     }
 
                     if (event.getNewView() instanceof ABMCampanas) {
@@ -78,11 +92,11 @@ public class NavigatorUI extends UI {
         });
     }
 
-    public String getLoggedInUser(){
+    public Usuario getLoggedInUser(){
         return loggedInUser;
     }
 
-    public void setLoggedInUser(String user){
+    public void setLoggedInUser(Usuario user){
         loggedInUser = user;
     }
 
