@@ -41,7 +41,7 @@ public class Login extends VerticalLayout implements View {
         txtContrasena.setInputPrompt("Ingrese su contraseña");
 
         Button btnIngresar = new Button("Ingresar");
-
+        Button btnTecnico = new Button("Tecnico");
 
         ////////////
 
@@ -60,7 +60,7 @@ public class Login extends VerticalLayout implements View {
         ///////////
 
         // Create a grid layout
-        GridLayout grid = new GridLayout(1, 4);
+        GridLayout grid = new GridLayout(1, 5);
 
         grid.setWidth(600, Sizeable.UNITS_PIXELS);
         grid.setHeight(400, Sizeable.UNITS_PIXELS);
@@ -76,6 +76,20 @@ public class Login extends VerticalLayout implements View {
 
         grid.addComponent(btnIngresar, 0, 3);
         grid.setComponentAlignment(btnIngresar, Alignment.TOP_CENTER);
+
+        grid.addComponent(btnTecnico,0, 4);
+        grid.setComponentAlignment(btnTecnico, Alignment.TOP_CENTER);
+
+        txtUsuario.setValue("ivocliente@megafono.com");
+        txtContrasena.setValue("soycliente");
+
+        btnTecnico.addClickListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent event) {
+
+                txtUsuario.setValue("ivotecnico@megafono.com");
+                txtContrasena.setValue("soytecnico");
+            }
+        });
 
 
         //TODO se va a crear un usuario nuevo y este se va a comparar con el que exista en la base de datos
