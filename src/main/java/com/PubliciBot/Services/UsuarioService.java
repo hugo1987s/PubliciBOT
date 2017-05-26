@@ -21,13 +21,13 @@ public class UsuarioService {
         Privilegio<ABMTags> privilegioTecnico = new Privilegio<>(ABMTags.class);
         Rol tecnico = new Rol("Tecnico");
         tecnico.add(privilegioTecnico);
-        Usuario user = crearUsuario("IvoTecnico@megafono.com","soytecnico",tecnico);
+        Usuario user = crearUsuario("ivotecnico@megafono.com","soytecnico",tecnico);
 
         //USUARIO CLIENTE
         Privilegio<ABMCampanas> privilegioCliente = new Privilegio<>(ABMCampanas.class);
         Rol cliente = new Rol("Cliente");
         cliente.add(privilegioCliente);
-        Usuario user2 = crearUsuario("IvoCliente@megafono.com","soycliente",cliente);
+        Usuario user2 = crearUsuario("ivocliente@megafono.com","soycliente",cliente);
 
         this.systemUsers.add(user);
         this.systemUsers.add(user2);

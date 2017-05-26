@@ -17,3 +17,4 @@ target/
 clase1db
 *.DB
 *.transaction
+*.css
