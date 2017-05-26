@@ -27,6 +27,7 @@ public class ArbolTagsService {
         }
     }
 
+
     public boolean exists(Tag tag) {
         for (Tag t : arbolTags.getTags()) {
             if (t.getNombre().equals(tag.getNombre()))
@@ -35,36 +36,29 @@ public class ArbolTagsService {
        return false;
     }
 
-    public boolean setearPadre(Tag tagHijo, Tag tagPadre) {
-        boolean ret = false;
-        try {
-            for (Tag tg : this.arbolTags.getTags()) {
-                if(tg.equals(tagHijo)){
-                    tg.setTagPadre(tagPadre);
-                }
-            }
-        } catch (Exception e) {
-            throw new IllegalArgumentException("No se encuentra el tag padre o hijo");
-        }
-        return ret;
-    }
+
 
     public void quitarTagArbolTags(Tag tag){
         ArrayList<Tag> hijos = buscarTagPorPadre(tag);
         for(Tag tagtemp : hijos){
             quitarTagArbolTags(tagtemp);
+        }
+        for(Tag tagtemp : hijos){
             arbolTags.getTags().remove(tagtemp);
         }
+
         arbolTags.getTags().remove(tag);
     }
 
     public ArrayList<Tag> buscarTagPorPadre(Tag tagPadre) {
         ArrayList<Tag> ret = new ArrayList<Tag>();
         for (Tag tagTemp : this.arbolTags.getTags()) {
+
             if(tagTemp.getPadre() != null) {
                 if (tagTemp.getPadre().equals(tagPadre))
                     ret.add(tagTemp);
             }
+
         }
         return ret;
     }

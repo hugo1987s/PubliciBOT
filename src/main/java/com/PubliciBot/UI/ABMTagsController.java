@@ -29,41 +29,33 @@ public class ABMTagsController extends VerticalLayout {
             public void buttonClick(Button.ClickEvent event) {
                 Tag nuevo = null;
                 Tag temp = null;
-
-                if (!txtNuevoTag.getValue().trim().isEmpty()) {
-                    nuevo = new Tag(txtNuevoTag.getValue().trim());
-
+                String nombre = txtNuevoTag.getValue().trim();
+                if (!nombre.isEmpty()) {
                     txtNuevoTag.setValue("");
 
-
                     temp = (Tag) treeVaadin.getValue();
-
-                    if (temp != null && nuevo != null) {
+                    if (temp != null ) {
+                        nuevo = new Tag(nombre,temp);
                         arbolTagService.agregarTag(nuevo);
-                        arbolTagService.setearPadre(nuevo, temp);
                         agregarTag(treeVaadin, nuevo);
                         setearPadre(treeVaadin, nuevo, temp);
-                    } else if (nuevo != null) {
+                    }
+                    else {
+                        nuevo = new Tag(nombre);
                         arbolTagService.agregarTag(nuevo);
                         agregarTag(treeVaadin, nuevo);
-                    }
-                    if (nuevo == null) {
-                        Notification.show("No es posible agregar un tag Vacio");
                     }
                 }
                 else
                     Notification.show("Imposible crear un Tag vacío.");
-
-                Notification.show(arbolTagService.getArbolTags().getTags().toString());
+              //  Notification.show(arbolTagService.getArbolTags().getTags().toString());
                 arbolTagService.guardarArbol();
-
             }
         });
 
         btneliminarTag.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
                 Tag temp = (Tag) treeVaadin.getValue();
-
                 if (temp != null) {
                     quitarTagTree(treeVaadin, temp);
                     arbolTagService.quitarTagArbolTags(temp);
@@ -72,7 +64,6 @@ public class ABMTagsController extends VerticalLayout {
                     Notification.show("No se ha seleccionado ningun tag");
                 Notification.show(arbolTagService.getArbolTags().getTags().toString());
                 arbolTagService.guardarArbol();
-
             }
         });
         HorizontalLayout HL = new HorizontalLayout();
@@ -84,15 +75,12 @@ public class ABMTagsController extends VerticalLayout {
         this.setComponentAlignment(Title, Alignment.BOTTOM_CENTER);
         this.addComponent(HL);
         this.addComponent(treeVaadin);
+
         HorizontalLayout HL2 = new HorizontalLayout();
-
-
         HL2.addComponent(btneliminarTag);
         HL2.setComponentAlignment(btneliminarTag, Alignment.BOTTOM_RIGHT);
         HL2.setSpacing(true);
         this.addComponent(HL2);
-
-
     }
 
 
@@ -100,6 +88,8 @@ public class ABMTagsController extends VerticalLayout {
         if (!exists(arbol, tag)) {
             arbol.addItem(tag);
         }
+     //   Notification.show("No se puede agregar un tag duplicado");
+        Notification.show(tag.getNombre());
     }
 
     private boolean exists(Tree arbol, Tag tag) {
@@ -116,8 +106,8 @@ public class ABMTagsController extends VerticalLayout {
         boolean ret;
         try {
             ret = arbol.setParent(tagHijo, tagPadre);
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new IllegalArgumentException("No se encuentra el tag padre o hijo");
         }
         return ret;
@@ -134,6 +124,4 @@ public class ABMTagsController extends VerticalLayout {
         }
         return arbol.removeItem(tag);
     }
-
-
 }

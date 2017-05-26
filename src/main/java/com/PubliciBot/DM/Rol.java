@@ -1,14 +1,13 @@
 package com.PubliciBot.DM;
 
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by Hugo on 14/05/2017.
  */
 public class Rol {
     private String descripcion;
-    private Set<Privilegios> listaPrivilegios;
+    private HashSet<Privilegio> listaPrivilegios;
 
     public Rol() {
         this.descripcion = "";
@@ -20,7 +19,7 @@ public class Rol {
         this.listaPrivilegios = new HashSet<>() ;
     }
 
-    public Rol(String descripcion, Set<Privilegios> listaPrivilegios) {
+    public Rol(String descripcion, HashSet<Privilegio> listaPrivilegios) {
         this.descripcion = descripcion;
         this.listaPrivilegios = listaPrivilegios;
     }
@@ -33,15 +32,46 @@ public class Rol {
         this.descripcion = descripcion;
     }
 
-    public Set<Privilegios> getListaPrivilegios() {
+    public HashSet<Privilegio> getListaPrivilegios() {
         return listaPrivilegios;
     }
 
-    public void add(Privilegios privilegios) {
-        this.listaPrivilegios.add(privilegios);
+    public void add(Privilegio privilegio) {
+        this.listaPrivilegios.add(privilegio);
     }
 
-    public void setListaPrivilegios(Set<Privilegios> listaPrivilegios) {
+    public void setListaPrivilegios(HashSet<Privilegio> listaPrivilegios) {
         this.listaPrivilegios = listaPrivilegios;
+    }
+
+    public boolean tienePrivilegio(String privilegio){
+        for(Privilegio<?> privilegio1 : listaPrivilegios){
+            if(privilegio1.toString().equals(privilegio))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object role){
+        if(role == null) return false;
+        if(this == role) return true;
+
+        if(role instanceof Rol) {
+            Rol other = (Rol) role;
+            if (this.descripcion == null || other.descripcion == null)
+                return false;
+            if (this.listaPrivilegios == null || other.listaPrivilegios == null)
+                return false;
+            return  this.descripcion.equals(other.descripcion) &&
+                    this.listaPrivilegios.equals(other.listaPrivilegios);
+        }
+        return false;
+    }
+
+    @Override
+    public String toString(){
+        return this.descripcion+
+                "\nPermisos: "+ listaPrivilegios.toString();
     }
 }
