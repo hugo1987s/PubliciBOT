@@ -1,5 +1,6 @@
 package com.PubliciBot.UI;
 
+import com.PubliciBot.DM.DuracionCampana;
 import com.vaadin.ui.*;
 
 /**
@@ -7,21 +8,44 @@ import com.vaadin.ui.*;
  */
 public class ABMCampanasController extends VerticalLayout {
 
-    public ABMCampanasController()
-    {
+    Label lblTitulo;
+    TextField txtNombreCampana;
+    TextArea txtDescripcion;
+    DateField dfFechaInicio;
+    TextField txtDuracion;
+    ComboBox cboUnidadTiempo;
+    TextArea txtMensaje;
+    Image imgImgenMensaje;
+    Button btnGuardarCampana;
+
+
+    public ABMCampanasController() {
         super();
 
-        Label lblTitulo = new Label("Administración de Campañas");
-        TextField txtNombreCampana = new TextField("Nombre");
-        TextArea txtDescripcion = new TextArea("Descripción");
-        DateField dfFechaInicio = new DateField("Fecha de inicio");
-        TextField txtDuracion = new TextField("Duracion");
-        ComboBox cboUnidadTiempo = new ComboBox("Unidad");
-        TextArea txtMensaje = new TextArea("Mensaje adjunto");
-        Image imgImgenMensaje = new Image("Imagen adjunta");
+        initComponents();
+        dibujarControles();
+        cargarComboDuracion();
 
-        Button btnGuardarCampana = new Button("Guardar");
+    }
 
+    private void initComponents() {
+
+        lblTitulo = new Label("Administración de Campañas");
+
+        txtNombreCampana = new TextField("Nombre");
+        txtDescripcion = new TextArea("Descripción");
+        dfFechaInicio = new DateField("Fecha de inicio");
+        txtDuracion = new TextField("Duracion");
+        cboUnidadTiempo = new ComboBox("Unidad");
+        txtMensaje = new TextArea("Mensaje adjunto");
+        imgImgenMensaje = new Image("Imagen adjunta");
+        btnGuardarCampana = new Button("Guardar");
+    }
+
+    private void dibujarControles() {
+
+        VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout.addComponent(lblTitulo);
 
         FormLayout formLayout = new FormLayout();
 
@@ -34,8 +58,14 @@ public class ABMCampanasController extends VerticalLayout {
         formLayout.addComponent(imgImgenMensaje);
         formLayout.addComponent(btnGuardarCampana);
 
-        this.addComponent(formLayout);
+        verticalLayout.addComponent(formLayout);
 
+        this.addComponent(verticalLayout);
+    }
 
+    private void cargarComboDuracion()
+    {
+
+        cboUnidadTiempo.addItems(DuracionCampana.values());
     }
 }
