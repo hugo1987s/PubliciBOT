@@ -1,6 +1,7 @@
 package com.PubliciBot.UI;
 
 import com.PubliciBot.DM.Usuario;
+import com.PubliciBot.Services.RolService;
 import com.PubliciBot.Services.UsuarioService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
@@ -22,6 +23,7 @@ public class Login extends VerticalLayout implements View {
 
     //protected void init(VaadinRequest vaadinRequest)
     private UsuarioService userService ;
+    private RolService rolService;
 
     public Login ()
     {
@@ -30,6 +32,7 @@ public class Login extends VerticalLayout implements View {
         final HorizontalLayout layoutHorizontal = new HorizontalLayout();
 
         this.userService = new UsuarioService();
+        this.rolService = new RolService();
 
         TextField txtUsuario = new TextField();
         txtUsuario.setMaxLength(30);
@@ -111,14 +114,14 @@ public class Login extends VerticalLayout implements View {
                         savedUserPassword = savedUser.getContrasena();
                         if(savedUserMail.equals(userMail) && savedUserPassword.equals(userPassword)) {
                             user = savedUser;
-                            System.out.println(user.getRol().getListaPrivilegios());
+
                         }
                     }
 
                     if(user != null){
                         currentNavigator.setLoggedInUser(user);
-                        boolean esTecnico = user.getRol().tienePrivilegio("class com.PubliciBot.UI.ABMTags");
-                        boolean esCliente = user.getRol().tienePrivilegio("class com.PubliciBot.UI.ABMCampanas");
+                        boolean esTecnico = rolService.tienePrivilegio(ABMTags.class,user.getRol());
+                        boolean esCliente = rolService.tienePrivilegio(ABMCampanas.class,user.getRol());
                         System.out.println(esCliente);
                         if(esTecnico)
                             getUI().getNavigator().navigateTo("ABMTAGS");
