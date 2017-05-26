@@ -29,32 +29,31 @@ public class ABMTagsController extends VerticalLayout {
             public void buttonClick(Button.ClickEvent event) {
                 Tag nuevo = null;
                 Tag temp = null;
-
-                if (!txtNuevoTag.getValue().trim().isEmpty()) {
-                    nuevo = new Tag(txtNuevoTag.getValue().trim());
-
+                String nombre=txtNuevoTag.getValue().trim();
+                if (!nombre.isEmpty()) {
                     txtNuevoTag.setValue("");
-
 
                     temp = (Tag) treeVaadin.getValue();
 
-                    if (temp != null && nuevo != null) {
+                    if (temp != null ) {
+
+                        nuevo = new Tag(nombre,temp);
                         arbolTagService.agregarTag(nuevo);
-                        arbolTagService.setearPadre(nuevo, temp);
                         agregarTag(treeVaadin, nuevo);
                         setearPadre(treeVaadin, nuevo, temp);
-                    } else if (nuevo != null) {
+
+
+                    } else  {
+                        nuevo = new Tag(nombre);
                         arbolTagService.agregarTag(nuevo);
                         agregarTag(treeVaadin, nuevo);
                     }
-                    if (nuevo == null) {
-                        Notification.show("No es posible agregar un tag Vacio");
-                    }
+
                 }
                 else
                     Notification.show("Imposible crear un Tag vacío.");
 
-                Notification.show(arbolTagService.getArbolTags().getTags().toString());
+              //  Notification.show(arbolTagService.getArbolTags().getTags().toString());
                 arbolTagService.guardarArbol();
 
             }
@@ -100,6 +99,8 @@ public class ABMTagsController extends VerticalLayout {
         if (!exists(arbol, tag)) {
             arbol.addItem(tag);
         }
+     //   Notification.show("No se puede agregar un tag duplicado");
+        Notification.show(tag.getNombre());
     }
 
     private boolean exists(Tree arbol, Tag tag) {
@@ -107,6 +108,7 @@ public class ABMTagsController extends VerticalLayout {
         for (Object t : treeTags) {
             Tag auxTag = (Tag) t;
             if (auxTag.equals(tag))
+
                 return true;
         }
         return false;

@@ -8,7 +8,7 @@ import java.util.Set;
  */
 public class Rol {
     private String descripcion;
-    private Set<Privilegios> listaPrivilegios;
+    private Set<Privilegio> listaPrivilegios;
 
     public Rol() {
         this.descripcion = "";
@@ -20,7 +20,7 @@ public class Rol {
         this.listaPrivilegios = new HashSet<>() ;
     }
 
-    public Rol(String descripcion, Set<Privilegios> listaPrivilegios) {
+    public Rol(String descripcion, Set<Privilegio> listaPrivilegios) {
         this.descripcion = descripcion;
         this.listaPrivilegios = listaPrivilegios;
     }
@@ -33,15 +33,15 @@ public class Rol {
         this.descripcion = descripcion;
     }
 
-    public Set<Privilegios> getListaPrivilegios() {
+    public Set<Privilegio> getListaPrivilegios() {
         return listaPrivilegios;
     }
 
-    public void add(Privilegios privilegios) {
+    public void add(Privilegio privilegios) {
         this.listaPrivilegios.add(privilegios);
     }
 
-    public void setListaPrivilegios(Set<Privilegios> listaPrivilegios) {
+    public void setListaPrivilegios(Set<Privilegio> listaPrivilegios) {
         this.listaPrivilegios = listaPrivilegios;
     }
 }

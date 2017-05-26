@@ -1,15 +1,13 @@
 package com.PubliciBot.UI;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.*;
+import com.vaadin.server.FileResource;
+import com.vaadin.server.Sizeable;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
-import javafx.scene.layout.StackPane;
 
-import javax.servlet.annotation.WebServlet;
 import java.io.File;
 
 /**
@@ -22,7 +20,7 @@ public class Login extends VerticalLayout implements View {
 
     //protected void init(VaadinRequest vaadinRequest)
 
-    public Login (Navigator navigator)
+    public Login ()
     {
 
         final VerticalLayout layoutVertical = new VerticalLayout();
@@ -76,8 +74,14 @@ public class Login extends VerticalLayout implements View {
 
         btnIngresar.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
-                navigator.navigateTo("ABMTAGS");
+
+                ((NavigatorUI)UI.getCurrent()).setLoggedInUser(txtUsuario.getValue());
+                getUI().getNavigator().navigateTo("ABMTAGS");
             }});
+
+
+
+
 
        this.setSizeFull();
         this.addComponent(grid);

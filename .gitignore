@@ -15,7 +15,5 @@
 log/
 target/
 clase1db
-clase1db
 *.DB
-PubliciBOT.DB
-PubliciBOT.DB-1495569054931-local 14955690549291271691856.transaction
+*.transaction
