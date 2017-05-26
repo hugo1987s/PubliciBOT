@@ -83,7 +83,7 @@ public class Login extends VerticalLayout implements View {
                 String password = txtContrasena.getValue();
                 boolean invalidUser = userName.equals("");
                 boolean invalidPassword = password.equals("");
-                if(!invalidUser && !invalidPassword){
+                if(!invalidUser ){
                     Privilegio<ABMTags> privilegioTecnico = new Privilegio<>(ABMTags.class);
                     Rol role = new Rol("Tecnico");
                     role.add(privilegioTecnico);

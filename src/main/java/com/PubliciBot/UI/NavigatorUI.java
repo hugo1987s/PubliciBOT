@@ -61,9 +61,11 @@ public class NavigatorUI extends UI {
                         privilegiosTecnico.add(privilegioTecnico);
                         Rol role = new Rol("Tecnico");
                         role.add(privilegioTecnico);
-                        if (user.getRol().equals(role)) {
+                        if (user.getRol().equals(role) && !user.getContrasena().equals("")) {
                             return true;
                         }
+                        //else
+                        //    Notification.show("Credenciales incorrectas, falta contraseña", Notification.Type.HUMANIZED_MESSAGE);
                     }
 
                     if (event.getNewView() instanceof ABMCampanas) {
