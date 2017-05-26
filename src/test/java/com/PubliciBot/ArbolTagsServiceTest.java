@@ -18,8 +18,7 @@ public class ArbolTagsServiceTest {
     @Test
     public void existsTest(){
         Tag a = new Tag("A");
-        Tag b = new Tag("A");
-        b.setTagPadre(a);
+        Tag b = new Tag("A",a);
 
         ArbolTagsService arbol = new ArbolTagsService();
         arbol.agregarTag(a);
@@ -79,13 +78,12 @@ public class ArbolTagsServiceTest {
         arbol.setArbolTags(new ArbolTags());
 
         Tag tagPadre = new Tag ("Padre");
-        Tag tagHijo1 = new Tag ("Hijo 1");
-        Tag tagHijo2 = new Tag ("Hijo 2");
+        Tag tagHijo1 = new Tag ("Hijo 1",tagPadre);
+        Tag tagHijo2 = new Tag ("Hijo 2",tagPadre);
         arbol.agregarTag(tagPadre);
         arbol.agregarTag(tagHijo1);
         arbol.agregarTag(tagHijo2);
-        arbol.setearPadre(tagHijo1,tagPadre);
-        arbol.setearPadre(tagHijo2,tagPadre);
+
 
         Assert.assertEquals(tagPadre,tagHijo1.getPadre());
         Assert.assertEquals(tagPadre,tagHijo2.getPadre());
@@ -98,13 +96,11 @@ public class ArbolTagsServiceTest {
         arbol.setArbolTags(new ArbolTags());
 
         Tag tagPadre = new Tag ("Padre");
-        Tag tagHijo1 = new Tag ("Hijo 1");
-        Tag tagHijo2 = new Tag ("Hijo 2");
+        Tag tagHijo1 = new Tag ("Hijo 1",tagPadre);
+        Tag tagHijo2 = new Tag ("Hijo 2",tagPadre);
         arbol.agregarTag(tagPadre);
         arbol.agregarTag(tagHijo1);
         arbol.agregarTag(tagHijo2);
-        arbol.setearPadre(tagHijo1,tagPadre);
-        arbol.setearPadre(tagHijo2,tagPadre);
 
 
         ArrayList<Tag> hijos = arbol.buscarTagPorPadre(tagPadre);
@@ -122,10 +118,10 @@ public class ArbolTagsServiceTest {
 
 
         Tag tagPadre = new Tag ("Padre");
-        Tag h1p1 = new Tag ("Hijo 1 P1");
-        Tag h2p1 = new Tag ("Hijo 2 P1");
+        Tag h1p1 = new Tag ("Hijo 1 P1",tagPadre);
+        Tag h2p1 = new Tag ("Hijo 2 P1",tagPadre);
         Tag tagPadre2 = new Tag ("Padre 2");
-        Tag h1p2 = new Tag ("Hijo 1 P2");
+        Tag h1p2 = new Tag ("Hijo 1 P2",tagPadre2);
 
         arbol.agregarTag(tagPadre);
         arbol.agregarTag(h1p1);
@@ -133,9 +129,6 @@ public class ArbolTagsServiceTest {
         arbol.agregarTag(tagPadre2);
         arbol.agregarTag(h1p2);
 
-        arbol.setearPadre(h1p1,tagPadre);
-        arbol.setearPadre(h2p1,tagPadre);
-        arbol.setearPadre(h1p2,tagPadre2);
 
         arbol.guardarArbol();
         arbol.recuperarArbol();

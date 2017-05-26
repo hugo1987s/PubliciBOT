@@ -16,7 +16,10 @@ public class NavigatorUI extends UI {
     Navigator navigator;
 
     String loggedInUser;
-
+    //TODO ELABORAR TESTS DE TODO LO QUE SE NOS ROMPIO ALGUNA VEZ Y MAS
+    //TODO RESOLVER TEMA LOGINS PRIVILEGIOS ---> MAXI LO QUIERE HACER
+    //TODO CRAR PANTALLA ABM USUARIOS
+    //TODO CREAR PANTALLA CAMPAÑAS--->Hugo?
     @Override
     public void init(VaadinRequest request) {
         // Create Navigator, make it control the ViewDisplay
