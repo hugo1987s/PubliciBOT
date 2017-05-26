@@ -28,10 +28,13 @@ public class NavigatorUI extends UI {
         // Add some Views
         Login login= new Login();
         ABMTags aBMtags = new ABMTags();
+        ABMCampanas abmCampanas = new ABMCampanas();
 
 
         navigator.addView("", login);
         navigator.addView("ABMTAGS", aBMtags);
+        navigator.addView("ABMCAMPANAS", abmCampanas);
+
         // we'll handle permissions with a listener here, you could also do
         // that in the View itself.
 
@@ -43,6 +46,13 @@ public class NavigatorUI extends UI {
                 if (user != null) {
 
                     if (event.getNewView() instanceof ABMTags) {
+                        if (!user.equals("")) {
+                            return true;
+                        }
+
+                    }
+
+                    if (event.getNewView() instanceof ABMCampanas) {
                         if (!user.equals("")) {
                             return true;
                         }
