@@ -46,7 +46,7 @@ public class Login extends VerticalLayout implements View {
 
 // Image as a file resource
         FileResource resource = new FileResource(new File(basepath +
-                "/WEB-INF/images/Megafono3.PNG"));
+                "/WEB-INF/images/Megafono4.PNG"));
 
 // Show the image in the application
         Image image = new Image("", resource);
