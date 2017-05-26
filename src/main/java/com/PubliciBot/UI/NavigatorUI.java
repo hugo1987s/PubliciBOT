@@ -53,7 +53,10 @@ public class NavigatorUI extends UI {
                 if(event.getNewView() instanceof Login)
                     return true;
 
-                Notification.show("403 Acceso Denegado", Notification.Type.ERROR_MESSAGE);
+                if(event.getOldView() instanceof Login)
+                    Notification.show("Credenciales incorrectas", Notification.Type.HUMANIZED_MESSAGE);
+                else
+                    Notification.show("403 Acceso Denegado", Notification.Type.ERROR_MESSAGE);
                 return false;
             }
 
