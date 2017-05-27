@@ -44,13 +44,7 @@ public class Rol {
         this.listaPrivilegios = listaPrivilegios;
     }
 
-    public boolean tienePrivilegio(String privilegio){
-        for(Privilegio<?> privilegio1 : listaPrivilegios){
-            if(privilegio1.toString().equals(privilegio))
-                return true;
-        }
-        return false;
-    }
+
 
     @Override
     public boolean equals(Object role){

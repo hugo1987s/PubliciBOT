@@ -13,4 +13,15 @@ public class RolService {
     {
         return new Rol(nombreRol, privilegios);
     }
+
+    public boolean tienePrivilegio(Class<?> privilegio, Rol rol){
+
+        for(Privilegio<?> privilegio1 : rol.getListaPrivilegios()){
+            if(privilegio1.toString().equals(privilegio.toString()))
+                return true;
+        }
+        return false;
+    }
+
+
 }

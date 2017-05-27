@@ -33,6 +33,11 @@ public class UsuarioService {
         this.systemUsers.add(user2);
     }
 
+    public boolean tienePrivilegio(Usuario user,Class<?> privilegio){
+        RolService rls=new RolService();
+        return rls.tienePrivilegio(privilegio,user.getRol());
+    }
+
     public Usuario iniciarSesion(String email, String password)
     {
         return null;

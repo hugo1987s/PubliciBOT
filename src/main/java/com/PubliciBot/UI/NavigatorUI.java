@@ -1,6 +1,7 @@
 package com.PubliciBot.UI;
 
 import com.PubliciBot.DM.Usuario;
+import com.PubliciBot.Services.UsuarioService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
@@ -47,21 +48,34 @@ public class NavigatorUI extends UI {
             @Override
             public boolean beforeViewChange(ViewChangeEvent event) {
                 Usuario user = ((NavigatorUI) UI.getCurrent()).getLoggedInUser();
+                UsuarioService uService=new UsuarioService();
 
-                if (event.getNewView() instanceof ABMTags) {
-                    return true;
+                if(user!=null) {
+
+                    if (event.getNewView() instanceof Login) {
+                       ((NavigatorUI) UI.getCurrent()).setLoggedInUser(null);
+                        return true;
+                    }
+
+                    if (event.getNewView() instanceof ABMTags) {
+                        if(uService.tienePrivilegio(user,ABMTags.class)){
+                            return true;
+                        }
+                    }
+
+                    if (event.getNewView() instanceof ABMCampanas) {
+                        if(uService.tienePrivilegio(user,ABMCampanas.class)) {
+                            return true;
+                        }
+                    }
+
                 }
 
-                if(event.getNewView() instanceof ABMCampanas)
+                if (event.getNewView() instanceof Login)
                     return true;
 
-                if(event.getNewView() instanceof Login)
-                    return true;
 
-                if(event.getOldView() instanceof Login)
-                    Notification.show("Credenciales incorrectas", Notification.Type.HUMANIZED_MESSAGE);
-                else
-                    Notification.show("403 Acceso Denegado", Notification.Type.ERROR_MESSAGE);
+                Notification.show("403 Acceso Denegado", Notification.Type.ERROR_MESSAGE);
                 return false;
 
             }
