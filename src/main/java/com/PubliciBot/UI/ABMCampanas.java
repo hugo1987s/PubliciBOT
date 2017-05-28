@@ -24,6 +24,7 @@ public class ABMCampanas  extends VerticalLayout implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         Notification.show("Bienvenido "+((NavigatorUI) UI.getCurrent()).getLoggedInUser());
+
     }
 
 

@@ -26,6 +26,15 @@ public class ABMCampanasController extends VerticalLayout {
         dibujarControles();
         cargarComboDuracion();
 
+        btnGuardarCampana.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                SelectorTags tagger = new SelectorTags();
+                tagger.setModal(true);
+                UI.getCurrent().addWindow(tagger);
+
+            }
+        });
     }
 
     private void initComponents() {
@@ -61,6 +70,7 @@ public class ABMCampanasController extends VerticalLayout {
         verticalLayout.addComponent(formLayout);
 
         this.addComponent(verticalLayout);
+
     }
 
     private void cargarComboDuracion()
