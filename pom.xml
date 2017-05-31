@@ -46,6 +46,12 @@
 	</dependencyManagement>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/com.vaadin/vaadin-icons -->
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-icons</artifactId>
+			<version>3.0.1</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org/neodatis -->
 		<dependency>
 			<groupId>org.neodatis.odb</groupId>

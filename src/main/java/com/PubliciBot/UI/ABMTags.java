@@ -3,9 +3,7 @@ package com.PubliciBot.UI;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.Tree;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -27,7 +25,7 @@ public class ABMTags extends VerticalLayout implements View{
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        Notification.show("Bienvenido "+((NavigatorUI) UI.getCurrent()).getLoggedInUser());
+       // Notification.show("Bienvenido "+((NavigatorUI) UI.getCurrent()).getLoggedInUser());
     }
 /*
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)

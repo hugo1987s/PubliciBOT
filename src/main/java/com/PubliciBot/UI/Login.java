@@ -102,7 +102,7 @@ public class Login extends VerticalLayout implements View {
                 String userPassword = txtContrasena.getValue();
                 boolean invalidUser = userMail.equals("");
                 boolean invalidPassword = userPassword.equals("");
-                NavigatorUI currentNavigator = ((NavigatorUI)UI.getCurrent());
+                //NavigatorUI currentNavigator = ((NavigatorUI)UI.getCurrent());
 
                 if(!invalidUser && !invalidPassword ){
                     Usuario user = null;
@@ -119,7 +119,7 @@ public class Login extends VerticalLayout implements View {
                     }
 
                     if(user != null){
-                        currentNavigator.setLoggedInUser(user);
+                        //currentNavigator.setLoggedInUser(user);
                         boolean esTecnico = rolService.tienePrivilegio(ABMTags.class,user.getRol());
                         boolean esCliente = rolService.tienePrivilegio(ABMCampanas.class,user.getRol());
                         System.out.println(esCliente);
