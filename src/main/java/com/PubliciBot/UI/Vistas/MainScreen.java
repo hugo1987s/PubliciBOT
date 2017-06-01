@@ -27,10 +27,22 @@ public class MainScreen extends HorizontalLayout {
         final Navigator navigator = new Navigator(ui, viewContainer);
         navigator.setErrorView(ErrorView.class);
         menu = new Menu(navigator);
-       menu.addView(new ABMTagsView(), ABMTagsView.VIEW_NAME,
-               ABMTagsView.VIEW_NAME, VaadinIcons.EDIT);
+     //TODO CARGAR LOS BOTONES SEGUN EL ROL
 
-       menu.addView(new AboutView(), AboutView.VIEW_NAME, AboutView.VIEW_NAME,
+        menu.addView(new HomeView(), HomeView.VIEW_NAME,"Inicio",
+                VaadinIcons.HOME);
+
+
+
+        if(ui.getAccessControl().isUserInRole("admin")) {
+            menu.addView(new ABMTagsView(), ABMTagsView.VIEW_NAME,
+                    ABMTagsView.VIEW_NAME, VaadinIcons.EDIT);
+
+            menu.addView(new ABMCampanasView(), ABMCampanasView.VIEW_NAME,
+                    ABMCampanasView.VIEW_NAME, VaadinIcons.FIRE);
+        }
+
+        menu.addView(new AboutView(), AboutView.VIEW_NAME, AboutView.VIEW_NAME,
                 VaadinIcons.INFO_CIRCLE);
 
         navigator.addViewChangeListener(viewChangeListener);
@@ -47,7 +59,8 @@ public class MainScreen extends HorizontalLayout {
 
         @Override
         public boolean beforeViewChange(ViewChangeEvent event) {
-            return true;
+            //TODO verficar que el usuario pueda acceder
+        return true;
         }
 
         @Override

@@ -41,7 +41,7 @@ public class Menu extends CssLayout {
         final HorizontalLayout top = new HorizontalLayout();
         top.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         top.addStyleName(ValoTheme.MENU_TITLE);
-        Label title = new Label("My CRUD");
+        Label title = new Label("PubliciBot");
         title.addStyleName(ValoTheme.LABEL_H3);
         title.setSizeUndefined();
         Image image = new Image(null, new ThemeResource("img/table-logo.png"));
