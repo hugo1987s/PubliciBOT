@@ -1,4 +1,4 @@
-package com.PubliciBot.demoVaadinArchetipo.samples.authentication;
+package com.PubliciBot.UI.authentication;
 
 /**
  * Default mock implementation of {@link AccessControl}. This implementation

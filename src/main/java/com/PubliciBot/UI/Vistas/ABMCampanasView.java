@@ -1,5 +1,6 @@
-package com.PubliciBot.UI;
+package com.PubliciBot.UI.Vistas;
 
+import com.PubliciBot.UI.Vistas.Controladores.ABMCampanasController;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -9,10 +10,10 @@ import com.vaadin.ui.VerticalLayout;
  * Created by Hugo on 25/05/2017.
  */
 @Theme("mytheme")
-public class ABMCampanas  extends VerticalLayout implements View {
+public class ABMCampanasView extends VerticalLayout implements View {
+    public static final String VIEW_NAME = "Creación de Campañas";
 
-
-    public ABMCampanas()
+    public ABMCampanasView()
     {
         ABMCampanasController abmCampanasController = new ABMCampanasController();
         this.addComponent(abmCampanasController);

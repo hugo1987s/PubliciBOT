@@ -1,4 +1,4 @@
-package com.PubliciBot.demoVaadinArchetipo;
+package com.PubliciBot.UI;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -8,10 +8,10 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
-import com.PubliciBot.demoVaadinArchetipo.samples.MainScreen;
-import com.PubliciBot.demoVaadinArchetipo.samples.authentication.AccessControl;
-import com.PubliciBot.demoVaadinArchetipo.samples.authentication.BasicAccessControl;
-import com.PubliciBot.demoVaadinArchetipo.samples.authentication.LoginScreen;
+import com.PubliciBot.UI.Vistas.MainScreen;
+import com.PubliciBot.UI.authentication.AccessControl;
+import com.PubliciBot.UI.authentication.BasicAccessControl;
+import com.PubliciBot.UI.authentication.LoginScreen;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -49,7 +49,7 @@ public class MyUI extends UI {
     protected void showMainView() {
         addStyleName(ValoTheme.UI_WITH_MENU);
         setContent(new MainScreen(MyUI.this));
-        getNavigator().navigateTo(getNavigator().getState());
+       getNavigator().navigateTo(getNavigator().getState());
     }
 
     public static MyUI get() {

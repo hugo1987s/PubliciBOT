@@ -1,6 +1,7 @@
-package com.PubliciBot.UI;
+package com.PubliciBot.UI.Vistas.Controladores;
 
 import com.PubliciBot.DM.DuracionCampana;
+import com.PubliciBot.UI.Vistas.SelectorTags;
 import com.vaadin.ui.*;
 
 /**

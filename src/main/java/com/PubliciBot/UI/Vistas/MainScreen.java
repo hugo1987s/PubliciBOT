@@ -1,8 +1,6 @@
-package com.PubliciBot.demoVaadinArchetipo.samples;
+package com.PubliciBot.UI.Vistas;
 
-import com.PubliciBot.demoVaadinArchetipo.MyUI;
-import com.PubliciBot.demoVaadinArchetipo.samples.about.AboutView;
-
+import com.PubliciBot.UI.MyUI;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
@@ -29,9 +27,10 @@ public class MainScreen extends HorizontalLayout {
         final Navigator navigator = new Navigator(ui, viewContainer);
         navigator.setErrorView(ErrorView.class);
         menu = new Menu(navigator);
-       /* menu.addView(new SampleCrudView(), SampleCrudView.VIEW_NAME,
-                SampleCrudView.VIEW_NAME, VaadinIcons.EDIT);*/
-        menu.addView(new AboutView(), AboutView.VIEW_NAME, AboutView.VIEW_NAME,
+       menu.addView(new ABMTagsView(), ABMTagsView.VIEW_NAME,
+               ABMTagsView.VIEW_NAME, VaadinIcons.EDIT);
+
+       menu.addView(new AboutView(), AboutView.VIEW_NAME, AboutView.VIEW_NAME,
                 VaadinIcons.INFO_CIRCLE);
 
         navigator.addViewChangeListener(viewChangeListener);

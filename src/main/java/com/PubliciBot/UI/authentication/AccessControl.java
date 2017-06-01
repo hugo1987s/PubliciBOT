@@ -1,4 +1,4 @@
-package com.PubliciBot.demoVaadinArchetipo.samples.authentication;
+package com.PubliciBot.UI.authentication;
 
 import java.io.Serializable;
 

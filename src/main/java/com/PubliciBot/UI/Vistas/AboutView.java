@@ -1,4 +1,4 @@
-package com.PubliciBot.demoVaadinArchetipo.samples.about;
+package com.PubliciBot.UI.Vistas;
 
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;

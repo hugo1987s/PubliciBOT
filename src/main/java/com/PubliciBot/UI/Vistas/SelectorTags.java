@@ -1,8 +1,6 @@
-package com.PubliciBot.UI;
+package com.PubliciBot.UI.Vistas;
 
 import com.PubliciBot.Services.ArbolTagsService;
-import com.PubliciBot.Services.TreeService;
-import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 
 /**

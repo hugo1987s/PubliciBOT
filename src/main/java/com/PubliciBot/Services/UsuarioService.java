@@ -3,8 +3,8 @@ package com.PubliciBot.Services;
 import com.PubliciBot.DM.Privilegio;
 import com.PubliciBot.DM.Rol;
 import com.PubliciBot.DM.Usuario;
-import com.PubliciBot.UI.ABMCampanas;
-import com.PubliciBot.UI.ABMTags;
+import com.PubliciBot.UI.Vistas.ABMCampanasView;
+import com.PubliciBot.UI.Vistas.ABMTagsView;
 
 import java.util.ArrayList;
 
@@ -18,13 +18,13 @@ public class UsuarioService {
         systemUsers = new ArrayList<>();
 
         //USUARIO TECNICO
-        Privilegio<ABMTags> privilegioTecnico = new Privilegio<>(ABMTags.class);
+        Privilegio<ABMTagsView> privilegioTecnico = new Privilegio<>(ABMTagsView.class);
         Rol tecnico = new Rol("Tecnico");
         tecnico.add(privilegioTecnico);
         Usuario user = crearUsuario("ivotecnico@megafono.com","soytecnico",tecnico);
 
         //USUARIO CLIENTE
-        Privilegio<ABMCampanas> privilegioCliente = new Privilegio<>(ABMCampanas.class);
+        Privilegio<ABMCampanasView> privilegioCliente = new Privilegio<>(ABMCampanasView.class);
         Rol cliente = new Rol("Cliente");
         cliente.add(privilegioCliente);
         Usuario user2 = crearUsuario("ivocliente@megafono.com","soycliente",cliente);
