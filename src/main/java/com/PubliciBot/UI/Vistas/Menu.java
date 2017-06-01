@@ -1,5 +1,6 @@
 package com.PubliciBot.UI.Vistas;
 
+import com.PubliciBot.UI.MyUI;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -41,7 +42,7 @@ public class Menu extends CssLayout {
         final HorizontalLayout top = new HorizontalLayout();
         top.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         top.addStyleName(ValoTheme.MENU_TITLE);
-        Label title = new Label("PubliciBot");
+        Label title = new Label(" PubliciBot");
         title.addStyleName(ValoTheme.LABEL_H3);
         title.setSizeUndefined();
         Image image = new Image(null, new ThemeResource("img/table-logo.png"));
@@ -52,7 +53,7 @@ public class Menu extends CssLayout {
 
         // logout menu item
         MenuBar logoutMenu = new MenuBar();
-        logoutMenu.addItem("Logout", VaadinIcons.SIGN_OUT, new Command() {
+        logoutMenu.addItem(MyUI.get().getAccessControl().getPrincipalName()+" Logout", VaadinIcons.SIGN_OUT, new Command() {
 
             @Override
             public void menuSelected(MenuItem selectedItem) {

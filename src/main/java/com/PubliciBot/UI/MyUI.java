@@ -33,7 +33,7 @@ public class MyUI extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         Responsive.makeResponsive(this);
         setLocale(vaadinRequest.getLocale());
-        getPage().setTitle("My");
+        getPage().setTitle("PubliciBot");
         if (!accessControl.isUserSignedIn()) {
             setContent(new LoginScreen(accessControl, new LoginScreen.LoginListener() {
                 @Override
