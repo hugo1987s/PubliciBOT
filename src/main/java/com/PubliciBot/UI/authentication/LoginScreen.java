@@ -58,11 +58,11 @@ public class LoginScreen extends CssLayout {
         loginForm.setSizeUndefined();
         loginForm.setMargin(false);
 
-        loginForm.addComponent(username = new TextField("Username", "admin"));
+        loginForm.addComponent(username = new TextField("Usuario", "admin"));
         username.setWidth(15, Unit.EM);
-        loginForm.addComponent(password = new PasswordField("Password"));
+        loginForm.addComponent(password = new PasswordField("Contraseña"));
         password.setWidth(15, Unit.EM);
-        password.setDescription("Write anything");
+        password.setDescription("Escribe cualquier cosa");
         CssLayout buttons = new CssLayout();
         buttons.setStyleName("buttons");
         loginForm.addComponent(buttons);
@@ -82,11 +82,11 @@ public class LoginScreen extends CssLayout {
         login.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         login.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 
-        buttons.addComponent(forgotPassword = new Button("Forgot password?"));
+        buttons.addComponent(forgotPassword = new Button("Olvidaste tu contraseña?"));
         forgotPassword.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                showNotification(new Notification("Hint: Try anything"));
+                showNotification(new Notification("Pista: Prueba cualquier cosa"));
             }
         });
         forgotPassword.addStyleName(ValoTheme.BUTTON_LINK);
@@ -97,8 +97,8 @@ public class LoginScreen extends CssLayout {
         CssLayout loginInformation = new CssLayout();
         loginInformation.setStyleName("login-information");
         Label loginInfoText = new Label(
-                "<h1>Login Information</h1>"
-                        + "Log in as &quot;admin&quot; to have full access. Log in with any other username to have read-only access. For all users, any password is fine",
+                "<h1>Información de inicio de Sesion</h1>"
+                        + "Loggearse como &quot;admin&quot; para control total. No es necesaria una contraseña",
                 ContentMode.HTML);
         loginInfoText.setSizeFull();
         loginInformation.addComponent(loginInfoText);
@@ -109,8 +109,8 @@ public class LoginScreen extends CssLayout {
         if (accessControl.signIn(username.getValue(), password.getValue())) {
             loginListener.loginSuccessful();
         } else {
-            showNotification(new Notification("Login failed",
-                    "Please check your username and password and try again.",
+            showNotification(new Notification("Credenciales Incorrectas",
+                    "Porfavor revisa las credenciales e intenta nuevamente",
                     Notification.Type.HUMANIZED_MESSAGE));
             username.focus();
         }
