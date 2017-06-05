@@ -28,6 +28,7 @@ import javax.servlet.annotation.WebServlet;
 public class MyUI extends UI {
 
     private AccessControl accessControl = new BasicAccessControl();
+    private LoginScreen login;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -35,7 +36,7 @@ public class MyUI extends UI {
         setLocale(vaadinRequest.getLocale());
         getPage().setTitle("PubliciBot");
         if (!accessControl.isUserSignedIn()) {
-            setContent(new LoginScreen(accessControl, new LoginScreen.LoginListener() {
+            setContent(login = new LoginScreen(accessControl, new LoginScreen.LoginListener() {
                 @Override
                 public void loginSuccessful() {
                     showMainView();
@@ -49,7 +50,7 @@ public class MyUI extends UI {
     protected void showMainView() {
         addStyleName(ValoTheme.UI_WITH_MENU);
         setContent(new MainScreen(MyUI.this));
-       getNavigator().navigateTo(getNavigator().getState());
+        getNavigator().navigateTo(getNavigator().getState());
     }
 
     public static MyUI get() {
@@ -57,7 +58,7 @@ public class MyUI extends UI {
     }
 
     public AccessControl getAccessControl() {
-        return accessControl;
+        return login.getAccessControl();
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)

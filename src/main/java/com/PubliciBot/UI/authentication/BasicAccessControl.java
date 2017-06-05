@@ -37,4 +37,5 @@ public class BasicAccessControl implements AccessControl {
         return CurrentUser.get();
     }
 
+
 }

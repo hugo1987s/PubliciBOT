@@ -17,12 +17,16 @@ public class LoginScreen extends CssLayout {
     private PasswordField password;
     private Button login;
     private Button forgotPassword;
+    private Button changeControl;   //boton para cambiar entre control basico a estricto
     private LoginListener loginListener;
     private AccessControl accessControl;
+    private MenuControl control;
+
 
     public LoginScreen(AccessControl accessControl, LoginListener loginListener) {
         this.loginListener = loginListener;
         this.accessControl = accessControl;
+        this.control = MenuControl.basic;
         buildUI();
         username.focus();
     }
@@ -82,6 +86,15 @@ public class LoginScreen extends CssLayout {
         login.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         login.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 
+        //Linea boton de cambio de control
+        buttons.addComponent(changeControl = new Button("Basico/Estricto"));
+        changeControl.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                changeControl();
+            }
+        });
+
         buttons.addComponent(forgotPassword = new Button("Olvidaste tu contraseña?"));
         forgotPassword.addClickListener(new Button.ClickListener() {
             @Override
@@ -123,7 +136,27 @@ public class LoginScreen extends CssLayout {
         notification.show(Page.getCurrent());
     }
 
+    public AccessControl getAccessControl(){
+        return  this.accessControl;
+    }
+
+
     public interface LoginListener extends Serializable {
         void loginSuccessful();
     }
+
+    private void changeControl(){
+        if(this.control == MenuControl.basic){
+            this.accessControl = new StrictAccesControl();
+            this.control = MenuControl.strict;
+            this.username.setValue("");
+        }
+        else{
+            this.accessControl = new BasicAccessControl();
+            this.control = MenuControl.basic;
+            this.username.setValue("admin");
+        }
+    }
+
+    public enum MenuControl{ basic, strict}
 }

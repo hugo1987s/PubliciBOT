@@ -1,7 +1,9 @@
 package com.PubliciBot.UI.Vistas.Controladores;
 
 import com.PubliciBot.DM.DuracionCampana;
+import com.PubliciBot.Services.CampanaService;
 import com.PubliciBot.UI.Vistas.SelectorTags;
+import com.PubliciBot.UI.authentication.CurrentUser;
 import com.vaadin.ui.*;
 
 /**
@@ -18,6 +20,11 @@ public class ABMCampanasController extends VerticalLayout {
     TextArea txtMensaje;
     Image imgImgenMensaje;
     Button btnGuardarCampana;
+    Button btnVerCampanasGuardadas;
+    Button detalleCampanaSeleccionada;
+    CampanaService campanaService;
+    ListSelect campanasGuardadas;
+
 
 
     public ABMCampanasController() {
@@ -36,10 +43,13 @@ public class ABMCampanasController extends VerticalLayout {
 
             }
         });
+
+
     }
 
     private void initComponents() {
 
+        campanaService = new CampanaService();
         lblTitulo = new Label("Administración de Campañas");
 
         txtNombreCampana = new TextField("Nombre");
@@ -50,6 +60,9 @@ public class ABMCampanasController extends VerticalLayout {
         txtMensaje = new TextArea("Mensaje adjunto");
         imgImgenMensaje = new Image("Imagen adjunta");
         btnGuardarCampana = new Button("Guardar");
+        btnVerCampanasGuardadas = new Button("Cargar");
+        detalleCampanaSeleccionada = new Button("Detalles Campana");
+        campanasGuardadas = new ListSelect("Campañas guardadas");
     }
 
     private void dibujarControles() {
@@ -67,6 +80,7 @@ public class ABMCampanasController extends VerticalLayout {
         formLayout.addComponent(txtMensaje);
         formLayout.addComponent(imgImgenMensaje);
         formLayout.addComponent(btnGuardarCampana);
+        formLayout.addComponent(btnVerCampanasGuardadas);
 
         verticalLayout.addComponent(formLayout);
 
@@ -76,7 +90,14 @@ public class ABMCampanasController extends VerticalLayout {
 
     private void cargarComboDuracion()
     {
-
         cboUnidadTiempo.addItems(DuracionCampana.values());
     }
+
+    private void agregarListaCampanas(){
+        String currentUserMail = CurrentUser.get();
+
+        //ArrayList<Campana> campanas = campanaService.recuperarCampanas(new Usuario);
+        this.addComponent(campanasGuardadas);
+    }
+
 }
