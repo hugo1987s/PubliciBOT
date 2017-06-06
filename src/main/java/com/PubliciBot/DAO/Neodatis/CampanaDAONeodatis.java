@@ -24,8 +24,9 @@ public class CampanaDAONeodatis extends DAONeodatis<Campana> implements CampanaD
         try {
             odb = ODBFactory.open(fileNameNeodatisDB);
             IQuery usuarioDeCampana = new CriteriaQuery(Campana.class, Where.equal("usuario", usuario));
-            Objects<Campana> campanasDeUsuario = odb.getObjects(usuarioDeCampana);
-            return (List<Campana>) campanasDeUsuario;
+            //TODO revisar porque no funciona la query
+            Objects<Object> campanasDeUsuario = odb.getObjects(usuarioDeCampana);
+            return new ArrayList<>();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

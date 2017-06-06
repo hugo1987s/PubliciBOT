@@ -34,7 +34,7 @@ public class DAONeodatis<T> implements DAO<T> {
 		ODB odb  = null;
 		Objects<T> ret=null;
 			try {
-				odb  =ODBFactory.open(fileNameNeodatisDB);
+				odb = ODBFactory.open(fileNameNeodatisDB);
 				ret = odb.getObjects(c);
 			}
 		catch (Exception e){

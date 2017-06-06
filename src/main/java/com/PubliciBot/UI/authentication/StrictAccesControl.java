@@ -22,7 +22,7 @@ public class StrictAccesControl implements AccessControl {
     @Override
     public boolean signIn(String username, String password) {
         //descomentar las lineas de abajo para crear un usuario la primera vez que se ejecute, luego comentarla
-       /*
+        /*
         crearAdmin();
         crearCliente();
         crearTecnico();
@@ -34,6 +34,7 @@ public class StrictAccesControl implements AccessControl {
        String recoveredPassword = recoveredUser.getContrasena();
        if(recoveredName.equals(username) && recoveredPassword.equals(password)){
            CurrentUser.set(username);
+           CurrentUser.setPassword(password);
            return true;
        }
        return false;
@@ -60,14 +61,14 @@ public class StrictAccesControl implements AccessControl {
         Privilegio<ABMTagsView> tecnico = new Privilegio<>(ABMTagsView.class);
         Rol rolTecnico = new Rol("Tecnico");
         rolTecnico.add(tecnico);
-        usuarioService.guardarUsuario( new Usuario("Max","1234",rolTecnico) );
+        usuarioService.guardarUsuario( new Usuario("tecnico","tecnico",rolTecnico) );
     }
 
     private void crearCliente(){
         Privilegio<ABMCampanasView> cliente = new Privilegio<>(ABMCampanasView.class);
         Rol rolCliente = new Rol("Cliente");
         rolCliente.add(cliente);
-        usuarioService.guardarUsuario( new Usuario("Hugo","5678",rolCliente) );
+        usuarioService.guardarUsuario( new Usuario("cliente","cliente",rolCliente) );
     }
 
     private void crearAdmin(){
@@ -78,6 +79,10 @@ public class StrictAccesControl implements AccessControl {
         rolAdmin.add(admin);
         rolAdmin.add(tecnico);
         rolAdmin.add(cliente);
-        usuarioService.guardarUsuario( new Usuario("Agus","contraseña",rolAdmin) );
+        usuarioService.guardarUsuario( new Usuario("admin","admin",rolAdmin) );
+    }
+
+    public Usuario getRecoveredUser(){
+        return this.recoveredUser;
     }
 }

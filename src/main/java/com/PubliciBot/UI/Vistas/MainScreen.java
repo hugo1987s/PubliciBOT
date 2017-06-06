@@ -32,21 +32,24 @@ public class MainScreen extends HorizontalLayout {
         menu.addView(new HomeView(), HomeView.VIEW_NAME,"Inicio",
                 VaadinIcons.HOME);
 
+        boolean esAdmin = ui.getAccessControl().isUserInRole("admin");
+        boolean esTecnico = ui.getAccessControl().isUserInRole("Tecnico");
+        boolean esCliente = ui.getAccessControl().isUserInRole("Cliente");
 
 
-        if(ui.getAccessControl().isUserInRole("admin")) {
+        if(esAdmin) {
             menu.addView(new ABMTagsView(), ABMTagsView.VIEW_NAME,
                     ABMTagsView.VIEW_NAME, VaadinIcons.EDIT);
 
             menu.addView(new ABMCampanasView(), ABMCampanasView.VIEW_NAME,
                     ABMCampanasView.VIEW_NAME, VaadinIcons.FIRE);
         }
-        else if(ui.getAccessControl().isUserInRole("Tecnico")){
+        else if(esTecnico){
             menu.addView(new ABMTagsView(), ABMTagsView.VIEW_NAME,
                     ABMTagsView.VIEW_NAME, VaadinIcons.EDIT);
         }
 
-        else if(ui.getAccessControl().isUserInRole("Cliente")){
+        else if(esCliente){
             menu.addView(new ABMCampanasView(), ABMCampanasView.VIEW_NAME,
                     ABMCampanasView.VIEW_NAME, VaadinIcons.FIRE);
         }

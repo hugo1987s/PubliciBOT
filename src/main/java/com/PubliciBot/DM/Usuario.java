@@ -22,6 +22,7 @@ public class Usuario {
     }
 
 
+
     public String getMail() {
         return mail;
     }
@@ -60,8 +61,7 @@ public class Usuario {
             if (this.rol == null || other.rol == null)
                 return false;
             return  this.mail.equals(other.mail) &&
-                    this.contrasena.equals(other.contrasena)&&
-                    this.rol.equals(other.rol);
+                    this.contrasena.equals(other.contrasena);
         }
         return false;
     }

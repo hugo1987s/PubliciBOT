@@ -1,10 +1,14 @@
 package com.PubliciBot.UI.Vistas.Controladores;
 
-import com.PubliciBot.DM.DuracionCampana;
+import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.CampanaService;
+import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.SelectorTags;
-import com.PubliciBot.UI.authentication.CurrentUser;
+import com.PubliciBot.UI.authentication.StrictAccesControl;
 import com.vaadin.ui.*;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Hugo on 25/05/2017.
@@ -12,6 +16,7 @@ import com.vaadin.ui.*;
 public class ABMCampanasController extends VerticalLayout {
 
     Label lblTitulo;
+
     TextField txtNombreCampana;
     TextArea txtDescripcion;
     DateField dfFechaInicio;
@@ -19,12 +24,12 @@ public class ABMCampanasController extends VerticalLayout {
     ComboBox cboUnidadTiempo;
     TextArea txtMensaje;
     Image imgImgenMensaje;
+
     Button btnGuardarCampana;
     Button btnVerCampanasGuardadas;
     Button detalleCampanaSeleccionada;
     CampanaService campanaService;
     ListSelect campanasGuardadas;
-
 
 
     public ABMCampanasController() {
@@ -37,10 +42,57 @@ public class ABMCampanasController extends VerticalLayout {
         btnGuardarCampana.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
+                String nombreCampana = txtNombreCampana.getValue();
+                String descripcion = txtDescripcion.getValue();
+                Date fechaCreacion = dfFechaInicio.getValue();
+                int duracion = Integer.parseInt(txtDuracion.getValue());
+                String mensajeTxt = txtMensaje.getValue();
+                Mensaje mensaje = null;
+                if(imgImgenMensaje == null){
+                    mensaje = new Mensaje(mensajeTxt);
+                }
+                if(mensajeTxt == null || mensajeTxt.equals("")){
+                    mensaje = new Mensaje(imgImgenMensaje);
+                }
+                else
+                    mensaje = new Mensaje(mensajeTxt,imgImgenMensaje);
+
+
+                StrictAccesControl strictAccesControl = (StrictAccesControl) ((MyUI)getUI()).getAccessControl();
+                Usuario actual = strictAccesControl.getRecoveredUser();
+
+                Campana nuevaCampana = new Campana(nombreCampana,descripcion,fechaCreacion,duracion,mensaje,actual);
+
                 SelectorTags tagger = new SelectorTags();
                 tagger.setModal(true);
+                tagger.getSeleccionar().addClickListener(new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(Button.ClickEvent clickEvent) {
+                        ArrayList<Tag> tagsCampana = tagger.getSeleccionados();
+                        for(Tag t : tagsCampana){
+                            campanaService.agregarTagACampana(nuevaCampana,t);
+                        }
+                        //TODO revisar por que se guarda todos los objetos del proyecto
+                        campanaService.guardarCampana(nuevaCampana);
+                        tagger.vaciarSeleccionados();
+                    }
+                });
+                tagger.getCerrar().addClickListener(new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(Button.ClickEvent clickEvent) {
+                        tagger.close();
+                        tagger.vaciarSeleccionados();
+                    }
+                });
                 UI.getCurrent().addWindow(tagger);
 
+            }
+        });
+
+        btnVerCampanasGuardadas.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                agregarListaCampanas();
             }
         });
 
@@ -94,10 +146,16 @@ public class ABMCampanasController extends VerticalLayout {
     }
 
     private void agregarListaCampanas(){
-        String currentUserMail = CurrentUser.get();
-
-        //ArrayList<Campana> campanas = campanaService.recuperarCampanas(new Usuario);
-        this.addComponent(campanasGuardadas);
+        StrictAccesControl strictAccesControl = (StrictAccesControl) ((MyUI)getUI()).getAccessControl();
+        Usuario actual = strictAccesControl.getRecoveredUser();
+        if(actual != null){
+            campanaService.recuperarCampanas(actual);
+            ArrayList<Campana> campanas = campanaService.getCampanasGuardadas();
+            for(Campana camp : campanas)
+                campanasGuardadas.addItem(camp);
+            this.addComponent(campanasGuardadas);
+            this.addComponent(detalleCampanaSeleccionada);
+        }
     }
 
 }

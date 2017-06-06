@@ -48,4 +48,12 @@ public class CampanaService {
         this.campanasGuardadas = (ArrayList<Campana>) campanaDao.recuperarCampanas(usuario);
     }
 
+    public ArrayList<Campana> getCampanasGuardadas(){
+        return this.campanasGuardadas;
+    }
+
+    public void guardarCampana(Campana campana){
+        this.campanaDao.guardar(campana);
+    }
+
 }

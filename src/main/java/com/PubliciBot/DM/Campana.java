@@ -25,6 +25,7 @@ public class Campana {
         this.estadoCampana = EstadoCampana.PRELIMINAR;
         this.mensaje = mensaje;
         this.usuario = usuario;
+        this.tags = new ArrayList<Tag>();
     }
 
     public String getNombre() {

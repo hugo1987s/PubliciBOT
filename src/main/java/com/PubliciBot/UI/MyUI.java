@@ -1,5 +1,9 @@
 package com.PubliciBot.UI;
 
+import com.PubliciBot.UI.Vistas.MainScreen;
+import com.PubliciBot.UI.authentication.AccessControl;
+import com.PubliciBot.UI.authentication.LoginScreen;
+import com.PubliciBot.UI.authentication.StrictAccesControl;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Viewport;
@@ -8,10 +12,6 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
-import com.PubliciBot.UI.Vistas.MainScreen;
-import com.PubliciBot.UI.authentication.AccessControl;
-import com.PubliciBot.UI.authentication.BasicAccessControl;
-import com.PubliciBot.UI.authentication.LoginScreen;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -27,7 +27,7 @@ import javax.servlet.annotation.WebServlet;
 @Theme("mytheme")
 public class MyUI extends UI {
 
-    private AccessControl accessControl = new BasicAccessControl();
+    private AccessControl accessControl = new StrictAccesControl();
     private LoginScreen login;
 
     @Override
@@ -36,12 +36,13 @@ public class MyUI extends UI {
         setLocale(vaadinRequest.getLocale());
         getPage().setTitle("PubliciBot");
         if (!accessControl.isUserSignedIn()) {
-            setContent(login = new LoginScreen(accessControl, new LoginScreen.LoginListener() {
+            login = new LoginScreen(accessControl, new LoginScreen.LoginListener() {
                 @Override
                 public void loginSuccessful() {
                     showMainView();
                 }
-            }));
+            });
+            setContent(login);
         } else {
             showMainView();
         }
@@ -58,7 +59,7 @@ public class MyUI extends UI {
     }
 
     public AccessControl getAccessControl() {
-        return login.getAccessControl();
+        return this.accessControl;
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)

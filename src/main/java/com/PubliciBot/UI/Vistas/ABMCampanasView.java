@@ -11,6 +11,7 @@ import com.vaadin.ui.HorizontalLayout;
  */
 @Theme("mytheme")
 public class ABMCampanasView extends HorizontalLayout implements View {
+
     public static final String VIEW_NAME = "Creación de Campañas";
 
     public ABMCampanasView()
@@ -25,6 +26,5 @@ public class ABMCampanasView extends HorizontalLayout implements View {
       //  Notification.show("Bienvenido "+((NavigatorUI) UI.getCurrent()).getLoggedInUser());
 
     }
-
 
 }
