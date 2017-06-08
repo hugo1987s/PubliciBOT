@@ -41,9 +41,7 @@ public class ArbolDaoNeodatisTest {
 
         //DEVOLVER A LA DB A SU ESTADO PREVIO AL TEST
         arbolDeDB.guardarArbol();
-
     }
-
 }
 
 

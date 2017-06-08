@@ -15,14 +15,17 @@ public class Campana {
     private ArrayList<Tag> tags;
     private ArrayList<AccionPublicitaria> acciones;
     private EstadoCampana estadoCampana;
+    private Usuario usuario;
 
-    public Campana(String nombre, String descripcion, Date fechaInicio, int duracion, Mensaje mensaje) {
+    public Campana(String nombre, String descripcion, Date fechaInicio, int duracion, Mensaje mensaje,Usuario usuario) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaInicio = fechaInicio;
         this.duracion = duracion;
         this.estadoCampana = EstadoCampana.PRELIMINAR;
         this.mensaje = mensaje;
+        this.usuario = usuario;
+        this.tags = new ArrayList<Tag>();
     }
 
     public String getNombre() {
@@ -91,5 +94,13 @@ public class Campana {
 
     public void setEstadoCampana(EstadoCampana estadoCampana) {
         this.estadoCampana = estadoCampana;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

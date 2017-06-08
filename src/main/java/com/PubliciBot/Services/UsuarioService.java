@@ -1,36 +1,19 @@
 package com.PubliciBot.Services;
 
-import com.PubliciBot.DM.Privilegio;
+import com.PubliciBot.DAO.Interfaces.UsuarioDAO;
+import com.PubliciBot.DAO.Neodatis.UsuarioDAONeodatis;
 import com.PubliciBot.DM.Rol;
 import com.PubliciBot.DM.Usuario;
-import com.PubliciBot.UI.ABMCampanas;
-import com.PubliciBot.UI.ABMTags;
-
-import java.util.ArrayList;
 
 /**
  * Created by Hugo on 22/05/2017.
  */
 public class UsuarioService {
 
-    private ArrayList<Usuario> systemUsers;
+    private UsuarioDAO usuarioDao;
+
     public UsuarioService(){
-        systemUsers = new ArrayList<>();
-
-        //USUARIO TECNICO
-        Privilegio<ABMTags> privilegioTecnico = new Privilegio<>(ABMTags.class);
-        Rol tecnico = new Rol("Tecnico");
-        tecnico.add(privilegioTecnico);
-        Usuario user = crearUsuario("ivotecnico@megafono.com","soytecnico",tecnico);
-
-        //USUARIO CLIENTE
-        Privilegio<ABMCampanas> privilegioCliente = new Privilegio<>(ABMCampanas.class);
-        Rol cliente = new Rol("Cliente");
-        cliente.add(privilegioCliente);
-        Usuario user2 = crearUsuario("ivocliente@megafono.com","soycliente",cliente);
-
-        this.systemUsers.add(user);
-        this.systemUsers.add(user2);
+        usuarioDao = new UsuarioDAONeodatis();
     }
 
     public boolean tienePrivilegio(Usuario user,Class<?> privilegio){
@@ -39,11 +22,6 @@ public class UsuarioService {
     }
 
     public Usuario iniciarSesion(String email, String password)
-    {
-        return null;
-    }
-
-    public Usuario buscarUsuario(String emailUsuario)
     {
         return null;
     }
@@ -58,7 +36,12 @@ public class UsuarioService {
         usuario.setRol(rol);
     }
 
-    public ArrayList<Usuario> getSystemUsers(){
-        return this.systemUsers;
+    public Usuario buscarUsuario(String mail,String contraseña) {
+        return this.usuarioDao.recuperarUsuario(mail,contraseña);
     }
+
+    public void guardarUsuario(Usuario user){
+        this.usuarioDao.guardar(user);
+    }
+
 }

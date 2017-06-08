@@ -1,7 +1,8 @@
-package com.PubliciBot.UI;
+package com.PubliciBot.UI.Vistas.Controladores;
 
 import com.PubliciBot.DM.Tag;
 import com.PubliciBot.Services.ArbolTagsService;
+import com.PubliciBot.UI.Vistas.ABMTagsView;
 import com.vaadin.ui.*;
 
 import java.util.Collection;
@@ -9,7 +10,7 @@ import java.util.Collection;
 public class ABMTagsController extends VerticalLayout {
     Tree treeVaadin;
 
-    public ABMTagsController(ABMTags abmtag) {
+    public ABMTagsController(ABMTagsView abmtag) {
         super();
         treeVaadin = new Tree();
 
