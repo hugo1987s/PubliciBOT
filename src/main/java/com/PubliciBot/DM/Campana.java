@@ -103,4 +103,15 @@ public class Campana {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    @Override
+    public String toString(){
+        return "Nombre Campaña "+this.nombre+"\n"+
+                "Descripcion "+ this.descripcion+"\n"+
+                "Duracion "+ this.duracion+"\n"+
+                "Mensaje "+this.mensaje.toString()+"\n"+
+                "Inicio "+ this.fechaInicio.toString()+"\n"+
+                "Estado "+ this.estadoCampana.toString()+"\n"+
+                "Usuario "+this.usuario.toString()+"\n";
+    }
 }

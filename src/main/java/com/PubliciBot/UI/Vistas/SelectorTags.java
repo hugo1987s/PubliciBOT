@@ -41,10 +41,11 @@ public class SelectorTags extends Window {
             public void itemClick(ItemClickEvent itemClickEvent) {
                 Object item = itemClickEvent.getItemId();
                 Tag tag = (Tag) item;
-                if(!seleccionados.contains(tag))
-                    seleccionados.add(tag);
+                Tag nuevo = new Tag(tag.getNombre());
+                if(!seleccionados.contains(nuevo))
+                    seleccionados.add(nuevo);
                 else
-                    seleccionados.remove(tag);
+                    seleccionados.remove(nuevo);
             }
         });
 
