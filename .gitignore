@@ -14,7 +14,15 @@
 # Maven
 log/
 target/
+codestyles/
+_linux/
+diff.xml
+vcs.xml
+filetypes.xml
+debugger.xml
+baseRefactoring.xml
 clase1db
 *.DB
-*.ipr
 *.transaction
+*.css
+*.ipr
