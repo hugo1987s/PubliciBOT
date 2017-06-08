@@ -31,4 +31,9 @@ public class Mensaje {
     public Image getImagenMensaje() {
         return imagenMensaje;
     }
+
+    @Override
+    public String toString(){
+        return "Texto mensaje "+ this.textoMensaje;
+    }
 }
