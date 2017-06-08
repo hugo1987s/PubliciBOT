@@ -2,8 +2,8 @@ package com.PubliciBot.UI;
 
 import com.PubliciBot.UI.Vistas.MainScreen;
 import com.PubliciBot.UI.authentication.AccessControl;
-import com.PubliciBot.UI.authentication.BasicAccessControl;
 import com.PubliciBot.UI.authentication.LoginScreen;
+import com.PubliciBot.UI.authentication.StrictAccessControl;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Viewport;
@@ -27,7 +27,7 @@ import javax.servlet.annotation.WebServlet;
 @Theme("mytheme")
 public class MyUI extends UI {
 //
-    private AccessControl accessControl = new BasicAccessControl(); //DespuesCambiar a strict cuando ande
+    private AccessControl accessControl = new StrictAccessControl(); //DespuesCambiar a strict cuando ande
     private LoginScreen login;
 
     @Override

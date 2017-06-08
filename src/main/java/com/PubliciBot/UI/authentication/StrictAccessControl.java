@@ -13,26 +13,28 @@ import com.PubliciBot.UI.Vistas.ABMTagsView;
 public class StrictAccessControl implements AccessControl {
 
     private UsuarioService usuarioService ;
-    private Usuario recoveredUser ;
+    private Usuario recoveredUser;
+    private Usuario admin ;
 
     public StrictAccessControl(){
         usuarioService = new UsuarioService();
+        admin = crearAdmin();
     }
 
     @Override
     public boolean signIn(String username, String password) {
-        //descomentar las lineas de abajo para crear un usuario la primera vez que se ejecute, luego comentarla
-        /*
-        crearAdmin();
-        crearCliente();
         crearTecnico();
-        */
+        crearCliente();
+        if(username.equals("admin") && password.equals("admin")){
+            this.recoveredUser = admin;
+            return true;
+        }
         recoveredUser = this.usuarioService.buscarUsuario(username,password);
-       if(recoveredUser == null)
+        if(recoveredUser == null)
            return false;
-       String recoveredName = recoveredUser.getMail();
-       String recoveredPassword = recoveredUser.getContrasena();
-       if(recoveredName.equals(username) && recoveredPassword.equals(password)){
+        String recoveredName = recoveredUser.getMail();
+        String recoveredPassword = recoveredUser.getContrasena();
+        if(recoveredName.equals(username) && recoveredPassword.equals(password)){
            CurrentUser.set(username);
            CurrentUser.setPassword(password);
            return true;
@@ -61,17 +63,23 @@ public class StrictAccessControl implements AccessControl {
         Privilegio<ABMTagsView> tecnico = new Privilegio<>(ABMTagsView.class);
         Rol rolTecnico = new Rol("Tecnico");
         rolTecnico.add(tecnico);
-        usuarioService.guardarUsuario( new Usuario("tecnico","tecnico",rolTecnico) );
+        Usuario tecnicoUser = new Usuario("tecnico","tecnico",rolTecnico);
+        Usuario recup = usuarioService.buscarUsuario("tecnico","tecnico");
+        if(recup == null || !recup.equals(tecnicoUser))
+            usuarioService.guardarUsuario(tecnicoUser);
     }
 
     private void crearCliente(){
         Privilegio<ABMCampanasView> cliente = new Privilegio<>(ABMCampanasView.class);
         Rol rolCliente = new Rol("Cliente");
         rolCliente.add(cliente);
-        usuarioService.guardarUsuario( new Usuario("cliente","cliente",rolCliente) );
+        Usuario clientUser =  new Usuario("cliente","cliente",rolCliente);
+        Usuario recup = usuarioService.buscarUsuario("cliente","cliente");
+        if(recup == null || !recup.equals(clientUser))
+            usuarioService.guardarUsuario(clientUser);
     }
 
-    private void crearAdmin(){
+    private Usuario crearAdmin(){
         Privilegio<ABMTagsView> admin = new Privilegio<>(ABMTagsView.class);
         Privilegio<ABMTagsView> tecnico = new Privilegio<>(ABMTagsView.class);
         Privilegio<ABMCampanasView> cliente = new Privilegio<>(ABMCampanasView.class);
@@ -79,7 +87,8 @@ public class StrictAccessControl implements AccessControl {
         rolAdmin.add(admin);
         rolAdmin.add(tecnico);
         rolAdmin.add(cliente);
-        usuarioService.guardarUsuario( new Usuario("admin","admin",rolAdmin) );
+        Usuario retAdmin = new Usuario("adimn","admin",rolAdmin);
+        return retAdmin;
     }
 
     public Usuario getRecoveredUser(){

@@ -51,17 +51,12 @@ public class Usuario {
     public boolean equals(Object user){
         if(this == user) return true;
         if(user == null) return false;
-
-        if(user instanceof Usuario) {
-            Usuario other = (Usuario) user;
-            if (this.mail == null || other.mail == null)
-                return false;
-            if (this.contrasena == null || other.contrasena == null)
-                return false;
-            if (this.rol == null || other.rol == null)
-                return false;
-            return  this.mail.equals(other.mail) &&
-                    this.contrasena.equals(other.contrasena);
+        if(this.mail == null || this.contrasena == null) return false;
+        if(user instanceof  Usuario) {
+            Usuario otherUser = (Usuario) user;
+            if(otherUser.mail == null || otherUser.contrasena == null)
+                return  false;
+            return this.mail.equals(otherUser.mail) && this.contrasena.equals(otherUser.contrasena);
         }
         return false;
     }
