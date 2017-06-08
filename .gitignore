@@ -25,4 +25,4 @@ clase1db
 *.DB
 *.transaction
 *.css
-
+*.ipr
