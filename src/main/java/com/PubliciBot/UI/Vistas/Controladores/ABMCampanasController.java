@@ -4,7 +4,7 @@ import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.CampanaService;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.SelectorTags;
-import com.PubliciBot.UI.authentication.StrictAccesControl;
+import com.PubliciBot.UI.authentication.StrictAccessControl;
 import com.vaadin.ui.*;
 
 import java.util.ArrayList;
@@ -59,8 +59,8 @@ public class ABMCampanasController extends VerticalLayout {
                     mensaje = new Mensaje(mensajeTxt,imgImgenMensaje);
 
 
-                StrictAccesControl strictAccesControl = (StrictAccesControl) ((MyUI)getUI()).getAccessControl();
-                Usuario actual = strictAccesControl.getRecoveredUser();
+                StrictAccessControl strictAccessControl = (StrictAccessControl) ((MyUI)getUI()).getAccessControl();
+                Usuario actual = strictAccessControl.getRecoveredUser();
 
                 Campana nuevaCampana = new Campana(nombreCampana,descripcion,fechaCreacion,duracion,mensaje,actual);
 
@@ -147,8 +147,8 @@ public class ABMCampanasController extends VerticalLayout {
     }
 
     private void agregarListaCampanas(){
-        StrictAccesControl strictAccesControl = (StrictAccesControl) ((MyUI)getUI()).getAccessControl();
-        Usuario actual = strictAccesControl.getRecoveredUser();
+        StrictAccessControl strictAccessControl = (StrictAccessControl) ((MyUI)getUI()).getAccessControl();
+        Usuario actual = strictAccessControl.getRecoveredUser();
         if(actual != null){
             campanaService.recuperarCampanas(actual);
             ArrayList<Campana> campanas = campanaService.getCampanasGuardadas();

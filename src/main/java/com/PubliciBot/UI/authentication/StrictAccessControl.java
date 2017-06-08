@@ -10,12 +10,12 @@ import com.PubliciBot.UI.Vistas.ABMTagsView;
 /**
  * Created by Max on 6/4/2017.
  */
-public class StrictAccesControl implements AccessControl {
+public class StrictAccessControl implements AccessControl {
 
     private UsuarioService usuarioService ;
     private Usuario recoveredUser ;
 
-    public StrictAccesControl(){
+    public StrictAccessControl(){
         usuarioService = new UsuarioService();
     }
 
