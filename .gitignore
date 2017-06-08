@@ -16,4 +16,5 @@ log/
 target/
 clase1db
 *.DB
+*.ipr
 *.transaction
