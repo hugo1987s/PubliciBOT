@@ -10,7 +10,7 @@ import com.PubliciBot.UI.Vistas.ABMTagsView;
 /**
  * Created by Max on 6/4/2017.
  */
-//comment
+
 public class StrictAccessControl implements AccessControl {
 
     private UsuarioService usuarioService ;
