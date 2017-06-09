@@ -63,6 +63,7 @@ public class ABMCampanasController extends VerticalLayout {
                 Usuario actual = strictAccessControl.getRecoveredUser();
 
                 Campana nuevaCampana = new Campana(nombreCampana,descripcion,fechaCreacion,duracion,mensaje,actual);
+                System.out.println(nuevaCampana);
 
                 SelectorTags tagger = new SelectorTags();
                 tagger.setModal(true);
