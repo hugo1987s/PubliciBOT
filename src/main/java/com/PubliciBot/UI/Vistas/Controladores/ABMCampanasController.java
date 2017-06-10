@@ -50,20 +50,20 @@ public class ABMCampanasController extends VerticalLayout {
                 String mensajeTxt = txtMensaje.getValue();
                 Mensaje mensaje = null;
                 if(imgImgenMensaje == null){
-                    mensaje = new Mensaje(mensajeTxt);
+                    mensaje = new Mensaje(mensajeTxt,null);
                 }
                 if(mensajeTxt == null || mensajeTxt.equals("")){
-                    mensaje = new Mensaje(imgImgenMensaje);
+                    mensaje = new Mensaje(null,imgImgenMensaje.toString());
                 }
                 else
-                    mensaje = new Mensaje(mensajeTxt,imgImgenMensaje);
+                    mensaje = new Mensaje(mensajeTxt,imgImgenMensaje.toString());
 
 
                 StrictAccessControl strictAccessControl = (StrictAccessControl) ((MyUI)getUI()).getAccessControl();
                 Usuario actual = strictAccessControl.getRecoveredUser();
 
                 Campana nuevaCampana = new Campana(nombreCampana,descripcion,fechaCreacion,duracion,mensaje,actual);
-                System.out.println(nuevaCampana);
+                
 
                 SelectorTags tagger = new SelectorTags();
                 tagger.setModal(true);
@@ -75,6 +75,7 @@ public class ABMCampanasController extends VerticalLayout {
                             campanaService.agregarTagACampana(nuevaCampana,t);
                         }
                         //TODO revisar por que se guarda todos los objetos del proyecto
+                        System.out.println(nuevaCampana);
                         campanaService.guardarCampana(nuevaCampana);
                         tagger.vaciarSeleccionados();
                     }
@@ -150,9 +151,11 @@ public class ABMCampanasController extends VerticalLayout {
     private void agregarListaCampanas(){
         StrictAccessControl strictAccessControl = (StrictAccessControl) ((MyUI)getUI()).getAccessControl();
         Usuario actual = strictAccessControl.getRecoveredUser();
+        System.out.println(actual);
         if(actual != null){
             campanaService.recuperarCampanas(actual);
             ArrayList<Campana> campanas = campanaService.getCampanasGuardadas();
+            System.out.println(campanas);
             for(Campana camp : campanas)
                 campanasGuardadas.addItem(camp);
             this.addComponent(campanasGuardadas);

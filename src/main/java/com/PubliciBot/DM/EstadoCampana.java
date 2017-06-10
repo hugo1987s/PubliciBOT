@@ -8,4 +8,6 @@ public enum EstadoCampana {
     PLANIFICADA,
     ACTIVA,
     CANCELADA;
+
+
 }

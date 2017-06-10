@@ -1,39 +1,46 @@
 package com.PubliciBot.DM;
 
-import com.vaadin.ui.Image;
-
 /**
  * Created by Hugo on 22/05/2017.
  */
 public class Mensaje {
     private String textoMensaje;
-    private Image imagenMensaje;
+    private String imagenMensajePath;
 
-    public Mensaje(String textoMensaje)
-    {
-        this(textoMensaje, null);
-    }
-
-    public Mensaje( Image imagenMensaje)
-    {
-        this(null, imagenMensaje);
-    }
-
-    public Mensaje(String textoMensaje, Image imagenMensaje) {
+    public Mensaje(String textoMensaje, String imagenMensaje) {
         this.textoMensaje = textoMensaje;
-        this.imagenMensaje = imagenMensaje;
+        this.imagenMensajePath = imagenMensaje;
     }
 
     public String getTextoMensaje() {
         return textoMensaje;
     }
 
-    public Image getImagenMensaje() {
-        return imagenMensaje;
+    public String getImagenMensajePath() {
+        return imagenMensajePath;
     }
 
     @Override
     public String toString(){
         return "Texto mensaje "+ this.textoMensaje;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Mensaje mensaje = (Mensaje) o;
+
+        if (textoMensaje != null ? !textoMensaje.equals(mensaje.textoMensaje) : mensaje.textoMensaje != null)
+            return false;
+        return imagenMensajePath != null ? imagenMensajePath.equals(mensaje.imagenMensajePath) : mensaje.imagenMensajePath == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = textoMensaje != null ? textoMensaje.hashCode() : 0;
+        result = 31 * result + (imagenMensajePath != null ? imagenMensajePath.hashCode() : 0);
+        return result;
     }
 }

@@ -7,8 +7,7 @@ import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
 import org.neodatis.odb.Objects;
 import org.neodatis.odb.core.query.IQuery;
-import org.neodatis.odb.core.query.criteria.Where;
-import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
+import org.neodatis.odb.core.query.nq.SimpleNativeQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +22,17 @@ public class CampanaDAONeodatis extends DAONeodatis<Campana> implements CampanaD
         ODB odb = null;
         try {
             odb = ODBFactory.open(fileNameNeodatisDB);
-            IQuery usuarioDeCampana = new CriteriaQuery(Campana.class, Where.equal("usuario", usuario));
+            IQuery usuarioDeCampana = new SimpleNativeQuery(){
+                public boolean match(Campana campana) {
+                    return
+                            campana.getUsuario().equals(usuario);
+                }
+            };
             //TODO revisar porque no funciona la query
-            Objects<Object> campanasDeUsuario = odb.getObjects(usuarioDeCampana);
-            return new ArrayList<>();
+            Objects<Campana> campanasDeUsuario = odb.getObjects(usuarioDeCampana);
+            ArrayList<Campana> ret = new ArrayList<>();
+            ret.addAll(campanasDeUsuario);
+            return ret;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

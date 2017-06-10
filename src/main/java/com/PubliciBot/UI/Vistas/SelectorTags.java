@@ -86,14 +86,6 @@ public class SelectorTags extends Window {
         return cerrar;
     }
 
-    public ArbolTagsService getArbolTagService(){
-        return this.arbolTagService;
-    }
-
-    public Tree getArbolVaadin(){
-        return this.arbolVaadin;
-    }
-
     public ArrayList<Tag> getSeleccionados() {
         return seleccionados;
     }

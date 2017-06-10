@@ -17,7 +17,7 @@ public class Campana {
     private EstadoCampana estadoCampana;
     private Usuario usuario;
 
-    public Campana(String nombre, String descripcion, Date fechaInicio, int duracion, Mensaje mensaje,Usuario usuario) {
+    public Campana(String nombre, String descripcion, Date fechaInicio, int duracion, Mensaje mensaje, Usuario usuario) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaInicio = fechaInicio;
@@ -112,6 +112,38 @@ public class Campana {
                 "Mensaje "+this.mensaje.toString()+"\n"+
                 "Inicio "+ this.fechaInicio.toString()+"\n"+
                 "Estado "+ this.estadoCampana.toString()+"\n"+
-                "Usuario "+this.usuario.toString()+"\n";
+                "Usuario "+this.usuario.toString()+"\n"+
+                "Tags "+ this.tags+"\n";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Campana campana = (Campana) o;
+
+        if (duracion != campana.duracion) return false;
+        if (nombre != null ? !nombre.equals(campana.nombre) : campana.nombre != null) return false;
+        if (descripcion != null ? !descripcion.equals(campana.descripcion) : campana.descripcion != null) return false;
+        if (fechaInicio != null ? !fechaInicio.equals(campana.fechaInicio) : campana.fechaInicio != null) return false;
+        if (mensaje != null ? !mensaje.equals(campana.mensaje) : campana.mensaje != null) return false;
+        if (tags != null ? !tags.equals(campana.tags) : campana.tags != null) return false;
+        if (acciones != null ? !acciones.equals(campana.acciones) : campana.acciones != null) return false;
+        return usuario != null ? usuario.equals(campana.usuario) : campana.usuario == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nombre != null ? nombre.hashCode() : 0;
+        result = 31 * result + (descripcion != null ? descripcion.hashCode() : 0);
+        result = 31 * result + duracion;
+        result = 31 * result + (fechaInicio != null ? fechaInicio.hashCode() : 0);
+        result = 31 * result + (mensaje != null ? mensaje.hashCode() : 0);
+        result = 31 * result + (tags != null ? tags.hashCode() : 0);
+        result = 31 * result + (acciones != null ? acciones.hashCode() : 0);
+        result = 31 * result + (estadoCampana != null ? estadoCampana.hashCode() : 0);
+        result = 31 * result + (usuario != null ? usuario.hashCode() : 0);
+        return result;
     }
 }

@@ -67,4 +67,12 @@ public class Usuario {
                 "\nMail: "    +this.mail+
                 "\nRol: "     +this.rol.toString();
     }
+
+    @Override
+    public int hashCode() {
+        int result = mail != null ? mail.hashCode() : 0;
+        result = 31 * result + (contrasena != null ? contrasena.hashCode() : 0);
+        result = 31 * result + (rol != null ? rol.hashCode() : 0);
+        return result;
+    }
 }
