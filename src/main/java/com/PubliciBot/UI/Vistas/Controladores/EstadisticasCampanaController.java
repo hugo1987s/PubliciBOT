@@ -1,5 +1,7 @@
 package com.PubliciBot.UI.Vistas.Controladores;
 
+import com.PubliciBot.DM.Campana;
+import com.PubliciBot.DM.Tag;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -18,6 +20,48 @@ public class EstadisticasCampanaController extends VerticalLayout {
     private Label textoCampana;
     private Label duracionCampana;
     private Label fechaInicioCampana;
+
+
+    public EstadisticasCampanaController(Campana campana){
+            initComponents(campana);
+            addComponents();
+    }
+
+
+    private void initComponents(Campana campana){
+        this.tagsCampana = new ArrayList<>();
+        this.agregarLabels(campana);
+        this.tituloCampana      = new Label("Nombre "  + campana.getNombre());
+        this.descripcionCampana = new Label("Info "    + campana.getDescripcion());
+        this.textoCampana       = new Label("Mensaje " + campana.getMensaje().getTextoMensaje());
+        this.duracionCampana    = new Label("Duracion" + campana.getDuracion()+ " "+ campana.getUnidadMedida());
+        this.fechaInicioCampana = new Label("Inicio"   + campana.getFechaInicio());
+    }
+
+    private void agregarLabels(Campana campana){
+        Label lbl = null;
+        for(Tag tag : campana.getTags()){
+            lbl = new Label("#"+tag.getNombre());
+            tagsCampana.add(lbl);
+        }
+    }
+
+    private void addComponents(){
+        addComponent(tituloCampana);
+        addComponent(descripcionCampana);
+        addComponent(textoCampana);
+        addComponent(duracionCampana);
+        addComponent(fechaInicioCampana);
+        for(Label lbl : tagsCampana)
+            addComponent(lbl);
+    }
+
+
+
+
+
+
+
 
 
 

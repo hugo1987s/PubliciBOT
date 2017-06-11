@@ -19,9 +19,6 @@ public final class CurrentUser {
     public static final String CURRENT_USER_SESSION_ATTRIBUTE_KEY = CurrentUser.class
             .getCanonicalName();
 
-
-    private static String password;
-
     private CurrentUser() {
     }
 
@@ -42,10 +39,6 @@ public final class CurrentUser {
         }
     }
 
-    public static String getPassword(){
-        return password;
-    }
-
     /**
      * Sets the name of the current user and stores it in the current session.
      * Using a {@code null} username will remove the username from the session.
@@ -61,11 +54,6 @@ public final class CurrentUser {
             getCurrentRequest().getWrappedSession().setAttribute(
                     CURRENT_USER_SESSION_ATTRIBUTE_KEY, currentUser);
         }
-    }
-
-
-    public static void setPassword(String password1){
-        password = password1;
     }
 
     private static VaadinRequest getCurrentRequest() {

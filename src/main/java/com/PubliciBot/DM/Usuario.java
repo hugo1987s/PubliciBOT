@@ -56,7 +56,7 @@ public class Usuario {
             Usuario otherUser = (Usuario) user;
             if(otherUser.mail == null || otherUser.contrasena == null)
                 return  false;
-            return this.mail.equals(otherUser.mail) && this.contrasena.equals(otherUser.contrasena);
+            return this.mail.equals(otherUser.mail);
         }
         return false;
     }

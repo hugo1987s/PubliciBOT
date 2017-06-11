@@ -8,4 +8,5 @@ import com.PubliciBot.DM.Usuario;
 public interface UsuarioDAO extends DAO<Usuario> {
 
     Usuario recuperarUsuario(String mail, String contraseña);
+    Usuario recuperarUsuario(String mail);
 }

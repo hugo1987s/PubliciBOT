@@ -124,11 +124,6 @@ public class LoginScreen extends CssLayout {
         notification.show(Page.getCurrent());
     }
 
-    public AccessControl getAccessControl(){
-        return  this.accessControl;
-    }
-
-
     public interface LoginListener extends Serializable {
         void loginSuccessful();
     }
