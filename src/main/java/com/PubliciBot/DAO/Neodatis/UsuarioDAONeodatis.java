@@ -22,9 +22,28 @@ public class UsuarioDAONeodatis extends DAONeodatis<Usuario> implements UsuarioD
         try {
             odb = ODBFactory.open(fileNameNeodatisDB);
             IQuery usuarioCorrecto = new CriteriaQuery(Usuario.class, Where.and()
-                                                                        .add(Where.equal("mail", mail))
-                                                                        .add(Where.equal("contrasena", contraseña))
+                    .add(Where.equal("mail", mail))
+                    .add(Where.equal("contrasena", contraseña))
             );
+            Objects<Usuario> usuarioRecuperado = odb.getObjects(usuarioCorrecto);
+            if(usuarioRecuperado.size() > 0)
+                ret = usuarioRecuperado.getFirst();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            odb.close();
+        }
+        return ret;
+    }
+
+    @Override
+    public Usuario recuperarUsuario(String mail) {
+        Usuario ret = null;
+        ODB odb = null;
+        try {
+            odb = ODBFactory.open(fileNameNeodatisDB);
+            IQuery usuarioCorrecto = new CriteriaQuery(Usuario.class, Where.equal("mail", mail));
             Objects<Usuario> usuarioRecuperado = odb.getObjects(usuarioCorrecto);
             if(usuarioRecuperado.size() > 0)
                 ret = usuarioRecuperado.getFirst();

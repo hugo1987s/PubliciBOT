@@ -17,7 +17,7 @@ public class UsuarioService {
     }
 
     public boolean tienePrivilegio(Usuario user,Class<?> privilegio){
-        RolService rls=new RolService();
+        RolService rls = new RolService();
         return rls.tienePrivilegio(privilegio,user.getRol());
     }
 

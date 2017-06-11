@@ -10,6 +10,7 @@ public class Campana {
     private String nombre;
     private String descripcion;
     private int duracion;
+    private UnidadMedida unidadMedida;
     private Date fechaInicio;
     private Mensaje mensaje;
     private ArrayList<Tag> tags;
@@ -17,11 +18,12 @@ public class Campana {
     private EstadoCampana estadoCampana;
     private Usuario usuario;
 
-    public Campana(String nombre, String descripcion, Date fechaInicio, int duracion, Mensaje mensaje, Usuario usuario) {
+    public Campana(String nombre, String descripcion, Date fechaInicio, int duracion,UnidadMedida unidad, Mensaje mensaje, Usuario usuario ) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaInicio = fechaInicio;
         this.duracion = duracion;
+        this.unidadMedida = unidad;
         this.estadoCampana = EstadoCampana.PRELIMINAR;
         this.mensaje = mensaje;
         this.usuario = usuario;
@@ -104,6 +106,10 @@ public class Campana {
         this.usuario = usuario;
     }
 
+    public UnidadMedida getUnidadMedida() { return unidadMedida; }
+
+    public void setUnidadMedida(UnidadMedida unidadMedida) { this.unidadMedida = unidadMedida; }
+
     @Override
     public String toString(){
         return "Nombre Campaña "+this.nombre+"\n"+
@@ -124,6 +130,7 @@ public class Campana {
         Campana campana = (Campana) o;
 
         if (duracion != campana.duracion) return false;
+        if (unidadMedida != null ? !unidadMedida.equals(campana.unidadMedida) : campana.unidadMedida != null) return false;
         if (nombre != null ? !nombre.equals(campana.nombre) : campana.nombre != null) return false;
         if (descripcion != null ? !descripcion.equals(campana.descripcion) : campana.descripcion != null) return false;
         if (fechaInicio != null ? !fechaInicio.equals(campana.fechaInicio) : campana.fechaInicio != null) return false;

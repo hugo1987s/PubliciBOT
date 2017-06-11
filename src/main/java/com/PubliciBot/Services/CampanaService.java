@@ -34,14 +34,15 @@ public class CampanaService {
         campana.addAccion(accion);
     }
 
-    public void asignarDuracion(Campana campana, int dias)
+    public void asignarDuracion(Campana campana, int dias,UnidadMedida unidad)
     {
         campana.setDuracion(dias);
+        campana.setUnidadMedida(unidad);
     }
 
-    public Campana crearCampana(String nombre, String descripcion, Date fechaInicio, int duracion, Mensaje mensaje,Usuario usuario)
+    public Campana crearCampana(String nombre, String descripcion, Date fechaInicio, int duracion, UnidadMedida unidad, Mensaje mensaje,Usuario usuario)
     {
-        return new Campana(nombre, descripcion,fechaInicio,duracion,mensaje,usuario);
+        return new Campana(nombre, descripcion,fechaInicio,duracion,unidad,mensaje,usuario);
     }
 
     public void recuperarCampanas(Usuario usuario){

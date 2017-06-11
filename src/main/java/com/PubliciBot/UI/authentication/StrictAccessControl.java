@@ -28,6 +28,7 @@ public class StrictAccessControl implements AccessControl {
         crearCliente();
         if(username.equals("admin") && password.equals("admin")){
             this.recoveredUser = admin;
+            CurrentUser.set("admin");
             return true;
         }
         recoveredUser = this.usuarioService.buscarUsuario(username,password);
@@ -37,7 +38,6 @@ public class StrictAccessControl implements AccessControl {
         String recoveredPassword = recoveredUser.getContrasena();
         if(recoveredName.equals(username) && recoveredPassword.equals(password)){
            CurrentUser.set(username);
-           CurrentUser.setPassword(password);
            return true;
        }
        return false;
