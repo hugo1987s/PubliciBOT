@@ -16,9 +16,9 @@ public class Campana {
     private ArrayList<Tag> tags;
     private ArrayList<AccionPublicitaria> acciones;
     private EstadoCampana estadoCampana;
-    private Usuario usuario;
 
-    public Campana(String nombre, String descripcion, Date fechaInicio, int duracion,UnidadMedida unidad, Mensaje mensaje, Usuario usuario ) {
+
+    public Campana(String nombre, String descripcion, Date fechaInicio, int duracion,UnidadMedida unidad, Mensaje mensaje ) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaInicio = fechaInicio;
@@ -26,7 +26,6 @@ public class Campana {
         this.unidadMedida = unidad;
         this.estadoCampana = EstadoCampana.PRELIMINAR;
         this.mensaje = mensaje;
-        this.usuario = usuario;
         this.tags = new ArrayList<Tag>();
     }
 
@@ -98,14 +97,6 @@ public class Campana {
         this.estadoCampana = estadoCampana;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     public UnidadMedida getUnidadMedida() { return unidadMedida; }
 
     public void setUnidadMedida(UnidadMedida unidadMedida) { this.unidadMedida = unidadMedida; }
@@ -118,7 +109,6 @@ public class Campana {
                 "Mensaje "+this.mensaje.toString()+"\n"+
                 "Inicio "+ this.fechaInicio.toString()+"\n"+
                 "Estado "+ this.estadoCampana.toString()+"\n"+
-                "Usuario "+this.usuario.toString()+"\n"+
                 "Tags "+ this.tags+"\n";
     }
 
@@ -136,8 +126,8 @@ public class Campana {
         if (fechaInicio != null ? !fechaInicio.equals(campana.fechaInicio) : campana.fechaInicio != null) return false;
         if (mensaje != null ? !mensaje.equals(campana.mensaje) : campana.mensaje != null) return false;
         if (tags != null ? !tags.equals(campana.tags) : campana.tags != null) return false;
-        if (acciones != null ? !acciones.equals(campana.acciones) : campana.acciones != null) return false;
-        return usuario != null ? usuario.equals(campana.usuario) : campana.usuario == null;
+        return  acciones != null ? !acciones.equals(campana.acciones) : campana.acciones != null;
+
     }
 
     @Override
@@ -150,7 +140,6 @@ public class Campana {
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         result = 31 * result + (acciones != null ? acciones.hashCode() : 0);
         result = 31 * result + (estadoCampana != null ? estadoCampana.hashCode() : 0);
-        result = 31 * result + (usuario != null ? usuario.hashCode() : 0);
         return result;
     }
 }
