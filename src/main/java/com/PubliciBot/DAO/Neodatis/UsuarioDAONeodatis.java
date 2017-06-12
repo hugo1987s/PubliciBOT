@@ -15,6 +15,32 @@ import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
 public class UsuarioDAONeodatis extends DAONeodatis<Usuario> implements UsuarioDAO {
 
 
+
+    @Override
+    public void guardar(Usuario user){
+        Usuario recovered = recuperarUsuario(user.getMail());
+        if(recovered == null) {
+            super.guardar(user);
+        }
+        else {
+            Usuario nuevo = new Usuario(user.getMail(), user.getContrasena(), user.getRol());
+            nuevo.getCampanas().addAll(user.getCampanas());
+            ODB odb = null;
+            try {
+                odb = ODBFactory.open(fileNameNeodatisDB);
+                IQuery usuarioCorrecto = new CriteriaQuery(Usuario.class, Where.equal("mail", user.getMail()));
+                Objects<Usuario> usuarioRecuperado = odb.getObjects(usuarioCorrecto);
+                recovered = usuarioRecuperado.getFirst();
+                odb.delete(recovered);
+                odb.store(nuevo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                odb.close();
+            }
+        }
+    }
+
     @Override
     public Usuario recuperarUsuario(String mail, String contraseña) {
         Usuario ret = null;

@@ -23,16 +23,16 @@ public class CampanaDAONeodatis extends DAONeodatis<Campana> implements CampanaD
         try {
             odb = ODBFactory.open(fileNameNeodatisDB);
             IQuery usuarioDeCampana = new SimpleNativeQuery(){
-                public boolean match(Campana campana) {
-                    return
-                            campana.getUsuario().equals(usuario);
+                public boolean match(Usuario user) {
+                    return user.equals(usuario);
                 }
             };
-            //TODO revisar porque no funciona la query
-            Objects<Campana> campanasDeUsuario = odb.getObjects(usuarioDeCampana);
-            ArrayList<Campana> ret = new ArrayList<>();
-            ret.addAll(campanasDeUsuario);
-            return ret;
+            Objects<Object> usuarios = odb.getObjects(usuarioDeCampana);
+            if(usuarios != null) {
+                Usuario user = (Usuario) (usuarios.getFirst());
+                ArrayList<Campana> ret = user.getCampanas();
+                return ret;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

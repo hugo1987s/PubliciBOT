@@ -15,22 +15,18 @@ public class StrictAccessControl implements AccessControl {
 
     private UsuarioService usuarioService ;
     private Usuario recoveredUser;
-    private Usuario admin ;
+
 
     public StrictAccessControl(){
         usuarioService = new UsuarioService();
-        admin = crearAdmin();
+
     }
 
     @Override
     public boolean signIn(String username, String password) {
         crearTecnico();
         crearCliente();
-        if(username.equals("admin") && password.equals("admin")){
-            this.recoveredUser = admin;
-            CurrentUser.set("admin");
-            return true;
-        }
+        crearAdmin();
         recoveredUser = this.usuarioService.buscarUsuario(username,password);
         if(recoveredUser == null)
            return false;
@@ -80,7 +76,7 @@ public class StrictAccessControl implements AccessControl {
             usuarioService.guardarUsuario(clientUser);
     }
 
-    private Usuario crearAdmin(){
+    private void crearAdmin(){
         Privilegio<ABMTagsView> admin = new Privilegio<>(ABMTagsView.class);
         Privilegio<ABMTagsView> tecnico = new Privilegio<>(ABMTagsView.class);
         Privilegio<ABMCampanasView> cliente = new Privilegio<>(ABMCampanasView.class);
@@ -88,11 +84,18 @@ public class StrictAccessControl implements AccessControl {
         rolAdmin.add(admin);
         rolAdmin.add(tecnico);
         rolAdmin.add(cliente);
-        Usuario retAdmin = new Usuario("adimn","admin",rolAdmin);
-        return retAdmin;
+        Usuario retAdmin = new Usuario("admin","admin",rolAdmin);
+        Usuario recup = usuarioService.buscarUsuario("admin","admin");
+        if(recup == null || !recup.equals(retAdmin))
+            usuarioService.guardarUsuario(retAdmin);
+
     }
 
     public Usuario getRecoveredUser(){
         return this.recoveredUser;
+    }
+
+    public void setRecoveredUser (Usuario user){
+        this.recoveredUser = user;
     }
 }

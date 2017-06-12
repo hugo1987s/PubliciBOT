@@ -2,6 +2,7 @@ package com.PubliciBot.Services;
 
 import com.PubliciBot.DAO.Interfaces.UsuarioDAO;
 import com.PubliciBot.DAO.Neodatis.UsuarioDAONeodatis;
+import com.PubliciBot.DM.Campana;
 import com.PubliciBot.DM.Rol;
 import com.PubliciBot.DM.Usuario;
 
@@ -38,6 +39,11 @@ public class UsuarioService {
 
     public Usuario buscarUsuario(String mail,String contraseña) {
         return this.usuarioDao.recuperarUsuario(mail,contraseña);
+    }
+
+    public void agregarCampañaAUsuario(Campana campana, Usuario user){
+        user.getCampanas().add(campana);
+        guardarUsuario(user);
     }
 
     public void guardarUsuario(Usuario user){

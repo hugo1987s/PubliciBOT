@@ -2,15 +2,15 @@ package com.PubliciBot.UI.Vistas.Controladores;
 
 import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.CampanaService;
+import com.PubliciBot.Services.UsuarioService;
 import com.PubliciBot.UI.MyUI;
+import com.PubliciBot.UI.Vistas.DetalleCampanaView;
 import com.PubliciBot.UI.Vistas.SelectorTags;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
-import com.vaadin.data.Property;
 import com.vaadin.ui.*;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 
 /**
  * Created by Hugo on 25/05/2017.
@@ -30,6 +30,7 @@ public class ABMCampanasController extends VerticalLayout {
     Button btnGuardarCampana;
     Button btnVerCampanasGuardadas;
     CampanaService campanaService;
+    UsuarioService usuarioService;
 
     HorizontalLayout hl ;
     ListSelect campanasGuardadas;
@@ -37,7 +38,7 @@ public class ABMCampanasController extends VerticalLayout {
     Button detalleCampanaSeleccionada;
     Campana campañaSeleccionada;
 
-    EstadisticasCampanaController detallesCampañaController;
+
 
 //comment
 
@@ -73,7 +74,8 @@ public class ABMCampanasController extends VerticalLayout {
 
                 //se obtiene el strictAccesControl para obtener al usuario actual de la sesion.
                 Usuario actual       = getUsuarioSesion();
-                Campana nuevaCampana = campanaService.crearCampana(nombreCampana,descripcion,fechaCreacion,duracion,unidadMedida,mensaje,actual);
+                Campana nuevaCampana = campanaService.crearCampana(nombreCampana,descripcion,fechaCreacion,duracion,unidadMedida,mensaje);
+
 
                 SelectorTags tagger  = new SelectorTags();
                 tagger.setModal(true);
@@ -84,6 +86,7 @@ public class ABMCampanasController extends VerticalLayout {
                         for(Tag t : tagsCampana){
                             campanaService.agregarTagACampana(nuevaCampana,t);
                         }
+                        usuarioService.agregarCampañaAUsuario(nuevaCampana,actual);
                         campanaService.guardarCampana(nuevaCampana);
                         tagger.vaciarSeleccionados();
                     }
@@ -112,14 +115,9 @@ public class ABMCampanasController extends VerticalLayout {
         detalleCampanaSeleccionada.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                if(detallesCampañaController == null) {
-                    detallesCampañaController = new EstadisticasCampanaController(campañaSeleccionada);
-                    hl.addComponent(detallesCampañaController);
-                }
-                else{
-                    hl.removeComponent(detallesCampañaController);
-                    detallesCampañaController = null;
-                }
+                DetalleCampanaView detalleCampañaView = new DetalleCampanaView(campañaSeleccionada);
+                detalleCampañaView.setModal(true);
+                UI.getCurrent().addWindow(detalleCampañaView);
             }
         });
 
@@ -143,6 +141,7 @@ public class ABMCampanasController extends VerticalLayout {
     private void initComponents() {
 
         campanaService             = new CampanaService();
+        usuarioService             = new UsuarioService();
         lblTitulo                  = new Label("Administración de Campañas");
 
         txtNombreCampana           = new TextField("Nombre");
@@ -211,26 +210,20 @@ public class ABMCampanasController extends VerticalLayout {
         return strictAccessControl.getRecoveredUser();
     }
 
-    private void getSelectedCampaign(){
 
-        campanasGuardadas.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
-                for (Iterator i = campanasGuardadas.getItemIds().iterator(); i.hasNext();) {
-
-                    Object iid = (Object) i.next();
-                    if(campanasGuardadas.isSelected(iid)) {
-                        for(Campana c : campanasGuardadasList){
-                            if(c.getNombre().equals(iid.toString())) {
-                                campañaSeleccionada = c;
-                                detalleCampanaSeleccionada.setVisible(true);
-                            }
-                        }
-                    }
+    private void getSelectedCampaign() {
+        campanasGuardadas.addValueChangeListener(event -> {// Java 8
+            for (Campana c : campanasGuardadasList) {
+                String nombre = c.getNombre();
+                String evento = event.getProperty().getValue().toString();
+                if(nombre.equals(evento)){
+                    campañaSeleccionada = c;
+                    detalleCampanaSeleccionada.setVisible(true);
                 }
             }
-        });
 
+
+        });
     }
 
 }

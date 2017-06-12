@@ -1,5 +1,7 @@
 package com.PubliciBot.DM;
 
+import java.util.ArrayList;
+
 /**
  * Created by Hugo on 19/05/2017.
  */
@@ -8,9 +10,9 @@ public class Usuario {
     private String mail;
     private String contrasena;
     private Rol rol;
+    private ArrayList<Campana> campanas;
 
-    public Usuario()
-    {
+    public Usuario() {
         new Usuario("", "", new Rol());
 
     }
@@ -19,8 +21,8 @@ public class Usuario {
         this.mail = mail;
         this.contrasena = contrasena;
         this.rol = rol;
+        this.campanas = new ArrayList<>();
     }
-
 
 
     public String getMail() {
@@ -68,11 +70,11 @@ public class Usuario {
                 "\nRol: "     +this.rol.toString();
     }
 
-    @Override
-    public int hashCode() {
-        int result = mail != null ? mail.hashCode() : 0;
-        result = 31 * result + (contrasena != null ? contrasena.hashCode() : 0);
-        result = 31 * result + (rol != null ? rol.hashCode() : 0);
-        return result;
+    public ArrayList<Campana> getCampanas() {
+        return campanas;
+    }
+
+    public void setCampanas(ArrayList<Campana> campanas) {
+        this.campanas = campanas;
     }
 }
