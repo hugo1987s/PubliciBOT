@@ -30,7 +30,7 @@ public class ABMAccionController extends VerticalLayout {
         initComponents();
         dibujarControles();
 
-        cboPeriodicidad.addValueChangeListener(valueChangeEvent -> {
+        cboMedio.addValueChangeListener(event -> {
                    if(cboMedio.getValue().toString().toUpperCase() == TipoPost.EMAIL.toString().toUpperCase())
                    {
                        panelRedes.setVisible(false);
@@ -45,6 +45,8 @@ public class ABMAccionController extends VerticalLayout {
 
                 }
         );
+
+
 
         btnAceptar.addClickListener(new Button.ClickListener() {
             @Override
@@ -71,9 +73,11 @@ public class ABMAccionController extends VerticalLayout {
         txtValorPeriodicidad = new TextField("Periodicicad");
         cboPeriodicidad = new ComboBox("Unidad de medida");
         cboPeriodicidad.addItems(PeriodicidadAccion.values());
+        cboPeriodicidad.setNullSelectionAllowed(false);
 
         cboMedio = new ComboBox("Posteo en");
         cboMedio.addItems(TipoPost.values());
+        cboMedio.setNullSelectionAllowed(false);
 
         txtMail = new TextField("Email destino");
 
@@ -103,7 +107,7 @@ public class ABMAccionController extends VerticalLayout {
         formLayoutMail.addComponent(txtMail);
         panelMail.setContent(formLayoutMail);
 
-        fl.addComponent(formLayoutMail);
+        fl.addComponent(panelMail);
 
 
         FormLayout formLayout = new FormLayout();
@@ -119,6 +123,8 @@ public class ABMAccionController extends VerticalLayout {
 
         this.addComponent(fl);
 
+        panelMail.setVisible(false);
+        panelRedes.setVisible(false);
     }
 
 }
