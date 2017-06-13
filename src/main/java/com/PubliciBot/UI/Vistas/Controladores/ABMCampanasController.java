@@ -4,6 +4,7 @@ import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.CampanaService;
 import com.PubliciBot.Services.UsuarioService;
 import com.PubliciBot.UI.MyUI;
+import com.PubliciBot.UI.Vistas.ABMAccionView;
 import com.PubliciBot.UI.Vistas.DetalleCampanaView;
 import com.PubliciBot.UI.Vistas.SelectorTags;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
@@ -38,7 +39,8 @@ public class ABMCampanasController extends VerticalLayout {
     Button detalleCampanaSeleccionada;
     Campana campañaSeleccionada;
 
-
+    Button btnAgregarAccion;
+    VerticalLayout verticalLayout;
 
 //comment
 
@@ -121,6 +123,15 @@ public class ABMCampanasController extends VerticalLayout {
             }
         });
 
+        btnAgregarAccion.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                ABMAccionView accionView = new ABMAccionView();
+                accionView.setModal(true);
+                UI.getCurrent().addWindow(accionView);
+            }
+        });
+
 
     }
 
@@ -159,11 +170,13 @@ public class ABMCampanasController extends VerticalLayout {
         hl                         = new HorizontalLayout();
         hl.setSpacing(true);
 
+        btnAgregarAccion           = new Button("Agregar Acción");
+
     }
 
     private void dibujarControles() {
 
-        VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout = new VerticalLayout();
         verticalLayout.addComponent(lblTitulo);
 
         FormLayout formLayout = new FormLayout();
@@ -177,6 +190,7 @@ public class ABMCampanasController extends VerticalLayout {
         formLayout.addComponent(imgImgenMensaje);
         formLayout.addComponent(btnGuardarCampana);
         formLayout.addComponent(btnVerCampanasGuardadas);
+        formLayout.addComponent(btnAgregarAccion);
 
         verticalLayout.addComponent(formLayout);
         this.addComponent(verticalLayout);

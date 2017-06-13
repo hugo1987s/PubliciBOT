@@ -1,6 +1,7 @@
 package com.PubliciBot.UI.Vistas.Controladores;
 
 import com.PubliciBot.DM.PeriodicidadAccion;
+import com.PubliciBot.DM.TipoPost;
 import com.vaadin.ui.*;
 
 /**
@@ -11,6 +12,7 @@ public class ABMAccionController extends VerticalLayout {
     TextField txtNombreAccion;
     TextField txtValorPeriodicidad;
     ComboBox cboPeriodicidad;
+    ComboBox cboMedio;
 
     Panel panelMail;
     Panel panelRedes;
@@ -20,6 +22,8 @@ public class ABMAccionController extends VerticalLayout {
     PasswordField txtPasswordOrigen;
     TextField txtCuentaDestino;
 
+    Button btnAceptar;
+
     public ABMAccionController ()
     {
         super();
@@ -27,10 +31,38 @@ public class ABMAccionController extends VerticalLayout {
         dibujarControles();
 
         cboPeriodicidad.addValueChangeListener(valueChangeEvent -> {
-                    //Lanzar evento cuando cambia el valor del combo
+                   if(cboMedio.getValue().toString().toUpperCase() == TipoPost.EMAIL.toString().toUpperCase())
+                   {
+                       panelRedes.setVisible(false);
+                       panelMail.setVisible(true);
+                   }
+                   else
+                   {
+                       panelRedes.setVisible(true);
+                       panelMail.setVisible(false);
+                   }
+
 
                 }
         );
+
+        btnAceptar.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+                if(cboPeriodicidad.getValue() == null || cboPeriodicidad.getValue() == "") {
+                    Notification.show("Debe seleccionar una periodicidad de posteo.");
+                    cboPeriodicidad.focus();
+                    return;
+                }
+
+                if(cboMedio.getValue() == null || cboMedio.getValue() == "") {
+                    Notification.show("Debe seleccionar un medio de posteo.");
+                    cboMedio.focus();
+                    return;
+                }
+            }
+        });
     }
 
     private void initComponents()
@@ -38,15 +70,24 @@ public class ABMAccionController extends VerticalLayout {
         txtNombreAccion = new TextField("Nombre");
         txtValorPeriodicidad = new TextField("Periodicicad");
         cboPeriodicidad = new ComboBox("Unidad de medida");
+        cboPeriodicidad.addItems(PeriodicidadAccion.values());
+
+        cboMedio = new ComboBox("Posteo en");
+        cboMedio.addItems(TipoPost.values());
 
         txtMail = new TextField("Email destino");
 
         panelMail = new Panel();
-        panelMail.setContent(txtMail);
+        panelMail.setWidth("300");
+
+        panelRedes = new Panel();
+        panelRedes.setWidth("300");
 
         txtUsuarioOrigen = new TextField("Usuario");
         txtPasswordOrigen = new PasswordField("Contraseña");
         txtCuentaDestino = new TextField("Cuenta destino");
+
+        btnAceptar = new Button("Aceptar");
 
     }
 
@@ -56,7 +97,13 @@ public class ABMAccionController extends VerticalLayout {
         fl.addComponent(txtNombreAccion);
         fl.addComponent(txtValorPeriodicidad);
         fl.addComponent(cboPeriodicidad);
-        fl.addComponent(panelMail);
+        fl.addComponent(cboMedio);
+
+        FormLayout formLayoutMail = new FormLayout();
+        formLayoutMail.addComponent(txtMail);
+        panelMail.setContent(formLayoutMail);
+
+        fl.addComponent(formLayoutMail);
 
 
         FormLayout formLayout = new FormLayout();
@@ -67,6 +114,8 @@ public class ABMAccionController extends VerticalLayout {
         panelRedes.setContent(formLayout);
 
         fl.addComponent(panelRedes);
+
+        fl.addComponent(btnAceptar);
 
         this.addComponent(fl);
 

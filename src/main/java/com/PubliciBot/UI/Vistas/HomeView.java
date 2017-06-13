@@ -25,7 +25,7 @@ public class HomeView extends VerticalLayout implements View {
 
         aboutContent.addComponent(
                 new Label(VaadinIcons.HOME.getHtml()
-                        + "  Bievenido  "
+                        + "  Bienvenido  "
                         + MyUI.get().getAccessControl().getPrincipalName(), ContentMode.HTML), "info");
 
         setSizeFull();
