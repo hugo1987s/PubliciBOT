@@ -1,6 +1,7 @@
 package com.PubliciBot.UI.Vistas;
 
 import com.PubliciBot.UI.MyUI;
+import com.PubliciBot.UI.Vistas.DemoAddressBook.AddressbookUIView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
@@ -53,6 +54,8 @@ public class MainScreen extends HorizontalLayout {
             menu.addView(new ABMCampanasView(), ABMCampanasView.VIEW_NAME,
                     ABMCampanasView.VIEW_NAME, VaadinIcons.FIRE);
         }
+        menu.addView(new AddressbookUIView(),AddressbookUIView.VIEW_NAME, AddressbookUIView.VIEW_NAME,
+                VaadinIcons.SEARCH);
 
         menu.addView(new AboutView(), AboutView.VIEW_NAME, AboutView.VIEW_NAME,
                 VaadinIcons.INFO_CIRCLE);

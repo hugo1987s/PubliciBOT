@@ -48,6 +48,12 @@
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.vaadin/vaadin-icons -->
 		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.2</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-icons</artifactId>
 			<version>3.0.1</version>
