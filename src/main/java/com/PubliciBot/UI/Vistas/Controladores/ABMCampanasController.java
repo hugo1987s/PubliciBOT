@@ -16,7 +16,7 @@ import java.util.Date;
 /**
  * Created by Hugo on 25/05/2017.
  */
-public class ABMCampanasController extends VerticalLayout {
+public class ABMCampanasController extends HorizontalLayout {
 
     Label lblTitulo;
 
@@ -47,6 +47,7 @@ public class ABMCampanasController extends VerticalLayout {
     public ABMCampanasController() {
         super();
 
+        setSpacing(true);
         initComponents();
         dibujarControles();
         cargarComboDuracion();

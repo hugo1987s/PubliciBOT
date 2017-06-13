@@ -4,6 +4,7 @@ import com.PubliciBot.DM.AccionPublicitaria;
 import com.PubliciBot.DM.Medio;
 import com.PubliciBot.DM.PeriodicidadAccion;
 import com.PubliciBot.DM.TipoPost;
+import com.PubliciBot.Services.AccionPublicitariaService;
 import com.vaadin.ui.*;
 
 /**
@@ -26,6 +27,9 @@ public class ABMAccionController extends VerticalLayout {
 
     Button btnAceptar;
 
+    private AccionPublicitariaService publicitariaService;
+
+
     public ABMAccionController ()
     {
         super();
@@ -47,8 +51,6 @@ public class ABMAccionController extends VerticalLayout {
 
                 }
         );
-
-
 
         btnAceptar.addClickListener(new Button.ClickListener() {
             @Override
@@ -97,6 +99,7 @@ public class ABMAccionController extends VerticalLayout {
 
     private void initComponents()
     {
+        publicitariaService = new AccionPublicitariaService();
         txtNombreAccion = new TextField("Nombre");
         txtValorPeriodicidad = new TextField("Periodicicad");
         cboPeriodicidad = new ComboBox("Unidad de medida");
