@@ -11,5 +11,52 @@ public class AccionPublicitaria {
     private Medio medio;
 
 
+    public AccionPublicitaria()
+    {
+        this.nombreAccion = "";
+        this.periodicidadAccion = null;
+        this.valorPeriodicidad = 0;
+        this.medio = new Medio();
+    }
 
+    public AccionPublicitaria(String nombre, PeriodicidadAccion periodicidad, int valor, Medio medioAccion)
+    {
+        this.nombreAccion = nombre;
+        this.periodicidadAccion = periodicidad;
+        this.valorPeriodicidad = valor;
+        this.medio = medioAccion;
+    }
+
+
+    public String getNombreAccion() {
+        return nombreAccion;
+    }
+
+    public void setNombreAccion(String nombreAccion) {
+        this.nombreAccion = nombreAccion;
+    }
+
+    public PeriodicidadAccion getPeriodicidadAccion() {
+        return periodicidadAccion;
+    }
+
+    public void setPeriodicidadAccion(PeriodicidadAccion periodicidadAccion) {
+        this.periodicidadAccion = periodicidadAccion;
+    }
+
+    public int getValorPeriodicidad() {
+        return valorPeriodicidad;
+    }
+
+    public void setValorPeriodicidad(int valorPeriodicidad) {
+        this.valorPeriodicidad = valorPeriodicidad;
+    }
+
+    public Medio getMedio() {
+        return medio;
+    }
+
+    public void setMedio(Medio medio) {
+        this.medio = medio;
+    }
 }
