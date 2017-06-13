@@ -120,6 +120,7 @@ public class ABMCampanasController extends VerticalLayout {
                 DetalleCampanaView detalleCampañaView = new DetalleCampanaView(campañaSeleccionada);
                 detalleCampañaView.setModal(true);
                 UI.getCurrent().addWindow(detalleCampañaView);
+               // campanaService.agregarAccionPublicitariaACampana(nueva);
             }
         });
 
@@ -129,15 +130,17 @@ public class ABMCampanasController extends VerticalLayout {
                 ABMAccionView accionView = new ABMAccionView();
                 accionView.setModal(true);
                 UI.getCurrent().addWindow(accionView);
+
             }
         });
 
 
     }
 
-    private UnidadMedida obtenerUnidadMedida() {
-        String unidad = cboUnidadTiempo.getValue().toString();
-        UnidadMedida unidadMedida = null;
+     private UnidadMedida obtenerUnidadMedida() {
+
+        return (UnidadMedida) cboUnidadTiempo.getValue();
+        /*UnidadMedida unidadMedida = null;
         if(unidad.equals("MES"))
             unidadMedida = UnidadMedida.MES;
         if(unidad.equals("SEMANA"))
@@ -147,6 +150,7 @@ public class ABMCampanasController extends VerticalLayout {
         if(unidad.equals("SEMESTRE"))
             unidadMedida = UnidadMedida.SEMESTRE;
         return unidadMedida;
+        */
     }
 
     private void initComponents() {
@@ -203,7 +207,7 @@ public class ABMCampanasController extends VerticalLayout {
 
     private void cargarComboDuracion()
     {
-        cboUnidadTiempo.addItems(DuracionCampana.values());
+        cboUnidadTiempo.addItems(UnidadMedida.values());
     }
 
     private void agregarListaCampanas(){
