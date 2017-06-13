@@ -1,5 +1,7 @@
 package com.PubliciBot.UI.Vistas.Controladores;
 
+import com.PubliciBot.DM.AccionPublicitaria;
+import com.PubliciBot.DM.Medio;
 import com.PubliciBot.DM.PeriodicidadAccion;
 import com.PubliciBot.DM.TipoPost;
 import com.vaadin.ui.*;
@@ -66,6 +68,32 @@ public class ABMAccionController extends VerticalLayout {
             }
         });
     }
+
+
+    public AccionPublicitaria crearAccion()
+    {
+        AccionPublicitaria accion = new AccionPublicitaria();
+
+        accion.setNombreAccion(this.txtNombreAccion.getValue());
+        accion.setPeriodicidadAccion((PeriodicidadAccion) cboPeriodicidad.getValue());
+        accion.setValorPeriodicidad(Integer.parseInt(txtValorPeriodicidad.getValue()));
+
+        Medio medio = new Medio();
+        medio.setTipoPost((TipoPost) cboMedio.getValue());
+
+        if(medio.getTipoPost().equals(TipoPost.EMAIL))
+            medio.setEmailDestino(txtMail.getValue());
+        else
+        {
+            medio.setUsuarioPerfilOrigen(txtUsuarioOrigen.getValue());
+            medio.setContrasenaPerfilOrigen(txtPasswordOrigen.getValue());
+            medio.setPerfilDestino(txtCuentaDestino.getValue());
+        }
+
+        return accion;
+
+    }
+
 
     private void initComponents()
     {
