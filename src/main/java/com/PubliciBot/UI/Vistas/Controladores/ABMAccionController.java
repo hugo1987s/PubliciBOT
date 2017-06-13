@@ -4,7 +4,11 @@ import com.PubliciBot.DM.AccionPublicitaria;
 import com.PubliciBot.DM.Medio;
 import com.PubliciBot.DM.PeriodicidadAccion;
 import com.PubliciBot.DM.TipoPost;
+
 import com.PubliciBot.Services.AccionPublicitariaService;
+
+import com.PubliciBot.UI.Vistas.Validators.EnteroValidator;
+
 import com.vaadin.ui.*;
 
 /**
@@ -67,6 +71,8 @@ public class ABMAccionController extends VerticalLayout {
                     cboMedio.focus();
                     return;
                 }
+
+
             }
         });
     }
@@ -102,6 +108,8 @@ public class ABMAccionController extends VerticalLayout {
         publicitariaService = new AccionPublicitariaService();
         txtNombreAccion = new TextField("Nombre");
         txtValorPeriodicidad = new TextField("Periodicicad");
+        txtValorPeriodicidad.addValidator(new EnteroValidator());
+
         cboPeriodicidad = new ComboBox("Unidad de medida");
         cboPeriodicidad.addItems(PeriodicidadAccion.values());
         cboPeriodicidad.setNullSelectionAllowed(false);
