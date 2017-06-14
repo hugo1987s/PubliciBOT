@@ -51,8 +51,6 @@ public class ABMAccionController extends VerticalLayout {
                        panelRedes.setVisible(true);
                        panelMail.setVisible(false);
                    }
-
-
                 }
         );
 
