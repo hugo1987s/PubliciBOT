@@ -11,6 +11,8 @@ import com.PubliciBot.UI.Vistas.SelectorTags;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
 import com.vaadin.ui.*;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -178,10 +180,13 @@ public class ABMCampanasController extends HorizontalLayout {
         publicitariaService        = new AccionPublicitariaService();
 
         txtNombreCampana           = new TextField("Nombre");
+        txtNombreCampana.setValue("Campaña del"+Date.from(Instant.now()).toString());
         txtDescripcion             = new TextArea("Descripción");
         dfFechaInicio              = new DateField("Fecha de inicio");
+       dfFechaInicio.setValue( Date.from(Instant.now()));
         txtDuracion                = new TextField();
         cboUnidadTiempo            = new ComboBox();
+        cboUnidadTiempo.setValue(1);
         cboUnidadTiempo.setWidth(115,Unit.PIXELS);
         txtoduracion               =new Label("Duracion");
         txtMensaje                 = new TextArea("Mensaje adjunto");
