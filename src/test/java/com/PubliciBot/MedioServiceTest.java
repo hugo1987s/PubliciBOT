@@ -15,7 +15,7 @@ public class MedioServiceTest {
     @Test
     public void enviarMailTest()
     {
-        MedioService medioService = new MedioService();
+
         Medio medio = new Medio();
         //String path = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
@@ -25,7 +25,8 @@ public class MedioServiceTest {
         medio.setEmailDestino("agusalexander8@gmail.com");
         medio.setTipoPost(TipoPost.EMAIL);
 
-        medioService.enviarMail(medio, mensaje);
+        MedioService medioService = new MedioService(medio, mensaje);
+        medioService.enviarMail();
 
 
 
