@@ -178,18 +178,20 @@ public class ABMCampanasController extends HorizontalLayout {
         lblTitulo                  = new Label("Administración de Campañas");
         accionView                 = new ABMAccionView(this);
         publicitariaService        = new AccionPublicitariaService();
-
         txtNombreCampana           = new TextField("Nombre");
-        txtNombreCampana.setValue("Campaña del"+Date.from(Instant.now()).toString());
+        txtNombreCampana.setValue("Campaña: "+Integer.toString(Date.from(Instant.now()).getDate())+"/"+Integer.toString(Date.from(Instant.now()).getMonth())
+                +":"+Integer.toString(Date.from(Instant.now()).getSeconds()));
         txtDescripcion             = new TextArea("Descripción");
+        txtDescripcion.setValue("Creada el "+Date.from(Instant.now()).toString());
         dfFechaInicio              = new DateField("Fecha de inicio");
        dfFechaInicio.setValue( Date.from(Instant.now()));
         txtDuracion                = new TextField();
+        txtDuracion.setValue("1");
         cboUnidadTiempo            = new ComboBox();
-        cboUnidadTiempo.setValue(1);
         cboUnidadTiempo.setWidth(115,Unit.PIXELS);
         txtoduracion               =new Label("Duracion");
         txtMensaje                 = new TextArea("Mensaje adjunto");
+        txtMensaje.setValue("Mensaje de Prueba");
         imgImgenMensaje            = new Image("Imagen adjunta");
         seleccionarTags            = new Button("Seleccionar Tags");
         btnGuardarCampana          = new Button("Guardar Campaña");
