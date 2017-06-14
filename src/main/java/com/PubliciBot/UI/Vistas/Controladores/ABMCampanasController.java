@@ -116,13 +116,13 @@ public class ABMCampanasController extends HorizontalLayout {
 
 
         detalleCampanaSeleccionada.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                DetalleCampanaView detalleCampañaView = new DetalleCampanaView(campañaSeleccionada);
-                detalleCampañaView.setModal(true);
-                UI.getCurrent().addWindow(detalleCampañaView);
-               // campanaService.agregarAccionPublicitariaACampana(nueva);
-            }
+                @Override
+                public void buttonClick(Button.ClickEvent clickEvent) {
+                    DetalleCampanaView detalleCampañaView = new DetalleCampanaView(campañaSeleccionada);
+                    detalleCampañaView.setModal(true);
+                    UI.getCurrent().addWindow(detalleCampañaView);
+                    // campanaService.agregarAccionPublicitariaACampana(nueva);
+                }
         });
 
         btnAgregarAccion.addClickListener(new Button.ClickListener() {
@@ -217,9 +217,11 @@ public class ABMCampanasController extends HorizontalLayout {
             campanaService.recuperarCampanas(actual);
             ArrayList<Campana> campanas = campanaService.getCampanasGuardadas();
             for(Campana camp : campanas) {
-                campanasGuardadas.addItem(camp.getNombre());
-                campanasGuardadasList.add(camp);
-            }
+                    System.out.println(camp);
+                    campanasGuardadas.addItem(camp.getNombre());
+                    campanasGuardadasList.add(camp);
+
+                }
             this.addComponent(hl);
         }
     }
@@ -234,13 +236,19 @@ public class ABMCampanasController extends HorizontalLayout {
         campanasGuardadas.addValueChangeListener(event -> {// Java 8
             for (Campana c : campanasGuardadasList) {
                 String nombre = c.getNombre();
-                String evento = event.getProperty().getValue().toString();
-                if(nombre.equals(evento)){
-                    campañaSeleccionada = c;
-                    detalleCampanaSeleccionada.setVisible(true);
-                }
-            }
+                if (event.getProperty().getValue()!=null) {
 
+                    String evento = event.getProperty().getValue().toString();
+                    if (nombre.equals(evento)) {
+                        campañaSeleccionada = c;
+                        detalleCampanaSeleccionada.setVisible(true);
+                    }
+                }
+                else {campanasGuardadasList.remove(c);
+
+                }
+
+            }
 
         });
     }
