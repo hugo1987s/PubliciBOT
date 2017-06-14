@@ -12,7 +12,7 @@ import com.vaadin.ui.VerticalLayout;
  */
     @Theme("mytheme")
     public class ABMTagsView extends VerticalLayout implements View{
-        public static final String VIEW_NAME = "Creacion de Tags";
+        public static final String VIEW_NAME = "Tags";
         Tree treeVaadin;
 
 

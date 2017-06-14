@@ -13,7 +13,7 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("mytheme")
 public class ABMCampanasView extends VerticalLayout implements View {
 
-    public static final String VIEW_NAME = "Creación de Campañas";
+    public static final String VIEW_NAME = "Campañas";
 
     public ABMCampanasView()
     {

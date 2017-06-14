@@ -1,5 +1,19 @@
 # PubliciBot
 Sistema para generar camapañas publicitarias en redes sociales.
+FIXME:
+
+1)Arreglar bug camapaña vacia y que no crashee al guardar camapañas vacias.
+
+2)no se permite DESseleccioanr Tags hacer un boton Deseleccionar?
+
+3)No hace falta el boton Cerrar deberia cerrar sola la pantalla de tags al hacer click en selecionar.
+
+4)Sacar el boton Cargar deberia cargarse solo cuando abre la pantalla de campañas y actualizarse cuadno guarda
+
+5) Agregar un boton eliminar campaña
+
+
+ 
 
 BACKLOG:
 https://especificacionsoftwareungs17.myjetbrains.com/youtrack/agiles/88-4/89-5?backlog

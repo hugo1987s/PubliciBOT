@@ -28,10 +28,11 @@ public class ABMCampanasController extends HorizontalLayout {
     ComboBox cboUnidadTiempo;
     TextArea txtMensaje;
     Image imgImgenMensaje;
+    Label txtoduracion;
 
     Button btnGuardarCampana;
     Button btnVerCampanasGuardadas;
-    Button btnCrearCampana;
+    Button seleccionarTags;
     CampanaService campanaService;
     UsuarioService usuarioService;
     AccionPublicitariaService publicitariaService;
@@ -58,7 +59,7 @@ public class ABMCampanasController extends HorizontalLayout {
         cargarComboDuracion();
 
         //SE ABRE VENTANA PARA ASIGNAR TAGS A CAMPAÑA
-        btnCrearCampana.addClickListener(new Button.ClickListener() {
+        seleccionarTags.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
 
@@ -179,11 +180,13 @@ public class ABMCampanasController extends HorizontalLayout {
         txtNombreCampana           = new TextField("Nombre");
         txtDescripcion             = new TextArea("Descripción");
         dfFechaInicio              = new DateField("Fecha de inicio");
-        txtDuracion                = new TextField("Duracion");
-        cboUnidadTiempo            = new ComboBox("Unidad");
+        txtDuracion                = new TextField();
+        cboUnidadTiempo            = new ComboBox();
+        cboUnidadTiempo.setWidth(115,Unit.PIXELS);
+        txtoduracion               =new Label("Duracion");
         txtMensaje                 = new TextArea("Mensaje adjunto");
         imgImgenMensaje            = new Image("Imagen adjunta");
-        btnCrearCampana            = new Button("Crear");
+        seleccionarTags            = new Button("Seleccionar Tags");
         btnGuardarCampana          = new Button("Guardar Campaña");
         btnVerCampanasGuardadas    = new Button("Cargar");
         detalleCampanaSeleccionada = new Button("Detalles Campana");
@@ -199,21 +202,25 @@ public class ABMCampanasController extends HorizontalLayout {
     private void dibujarControles() {
 
         verticalLayout = new VerticalLayout();
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+
         verticalLayout.addComponent(lblTitulo);
 
         FormLayout formLayout = new FormLayout();
-
         formLayout.addComponent(txtNombreCampana);
         formLayout.addComponent(txtDescripcion);
         formLayout.addComponent(dfFechaInicio);
-        formLayout.addComponent(txtDuracion);
-        formLayout.addComponent(cboUnidadTiempo);
+        horizontalLayout.addComponent(txtoduracion);
+        horizontalLayout.addComponent(txtDuracion);
+        horizontalLayout.addComponent(cboUnidadTiempo);
+        horizontalLayout.setSpacing(true);
+       formLayout.addComponent(horizontalLayout);
         formLayout.addComponent(txtMensaje);
         formLayout.addComponent(imgImgenMensaje);
-        formLayout.addComponent(btnCrearCampana);
-        formLayout.addComponent(btnVerCampanasGuardadas);
+        formLayout.addComponent(seleccionarTags);
         formLayout.addComponent(btnAgregarAccion);
         formLayout.addComponent(btnGuardarCampana);
+        formLayout.addComponent(btnVerCampanasGuardadas);
 
         verticalLayout.addComponent(formLayout);
         this.addComponent(verticalLayout);
@@ -227,6 +234,7 @@ public class ABMCampanasController extends HorizontalLayout {
     private void cargarComboDuracion()
     {
         cboUnidadTiempo.addItems(UnidadMedida.values());
+        cboUnidadTiempo.setValue(UnidadMedida.SEMANA);
     }
 
     private void agregarListaCampanas(){

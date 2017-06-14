@@ -10,7 +10,7 @@ import org.junit.Test;
  * Created by Hugo on 13/06/2017.
  */
 public class MedioServiceTest {
-
+/*
     @Test
     public void enviarMailTest()
     {
@@ -28,5 +28,5 @@ public class MedioServiceTest {
 
 
 
-    }
+    }*/
 }
