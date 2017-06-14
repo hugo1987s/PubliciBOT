@@ -4,6 +4,7 @@ import com.PubliciBot.DM.Medio;
 import com.PubliciBot.DM.Mensaje;
 import com.PubliciBot.DM.TipoPost;
 import com.PubliciBot.Services.MedioService;
+import com.vaadin.server.VaadinService;
 import org.junit.Test;
 
 /**
@@ -16,9 +17,12 @@ public class MedioServiceTest {
     {
         MedioService medioService = new MedioService();
         Medio medio = new Medio();
-        Mensaje mensaje = new Mensaje("Mail enviado desde enviarMailTest!!", "C:/Users/Hugo/IdeaProjects/PubliciBot/src/main/webapp/VAADIN/images/postman.jpg");
+        //String path = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
-        medio.setEmailDestino("maxilen334@gmail.com");
+
+        Mensaje mensaje = new Mensaje("Mail enviado desde enviarMailTest!!",  "src/main/resources/test.jpg");
+
+        medio.setEmailDestino("agusalexander8@gmail.com");
         medio.setTipoPost(TipoPost.EMAIL);
 
         medioService.enviarMail(medio, mensaje);
