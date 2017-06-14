@@ -4,7 +4,6 @@ import com.PubliciBot.DM.Medio;
 import com.PubliciBot.DM.Mensaje;
 import com.PubliciBot.DM.TipoPost;
 import com.PubliciBot.Services.MedioService;
-import com.vaadin.server.VaadinService;
 import org.junit.Test;
 
 /**
@@ -22,7 +21,7 @@ public class MedioServiceTest {
 
         Mensaje mensaje = new Mensaje("Mail enviado desde enviarMailTest!!",  "src/main/resources/test.jpg");
 
-        medio.setEmailDestino("agusalexander8@gmail.com");
+        medio.setEmailDestino("maxilen334@gmail.com");
         medio.setTipoPost(TipoPost.EMAIL);
 
         MedioService medioService = new MedioService(medio, mensaje);

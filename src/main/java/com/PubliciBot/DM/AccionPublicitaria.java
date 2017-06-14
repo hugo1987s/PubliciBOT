@@ -59,4 +59,6 @@ public class AccionPublicitaria {
     public void setMedio(Medio medio) {
         this.medio = medio;
     }
+
+
 }

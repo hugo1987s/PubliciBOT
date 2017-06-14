@@ -23,5 +23,13 @@ public class AccionPublicitariaService {
         return this.accionPublicitaria;
     }
 
+    public void convertirPeriocidad(int valor, PeriodicidadAccion unidad){
+        this.accionPublicitaria.setValorPeriodicidad(valor);
+        this.accionPublicitaria.setPeriodicidadAccion(unidad);
+    }
+
+    public  void setAccionPublicitaria(AccionPublicitaria accionPublicitaria){
+        this.accionPublicitaria = accionPublicitaria;
+    }
 
 }

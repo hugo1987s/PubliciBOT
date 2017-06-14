@@ -34,7 +34,7 @@ public class ABMAccionController extends VerticalLayout {
     private AccionPublicitariaService publicitariaService;
 
 
-    public ABMAccionController ()
+    public ABMAccionController (ABMCampanasController controller)
     {
         super();
         initComponents();
@@ -69,14 +69,16 @@ public class ABMAccionController extends VerticalLayout {
                     cboMedio.focus();
                     return;
                 }
-
+                controller.getPublicitariaService().setAccionPublicitaria(crearAccion());
+                AccionPublicitaria ac = controller.getPublicitariaService().getAccionPublicitaria();
+                controller.getNuevaCampana().addAccion(ac);
 
             }
         });
     }
 
 
-    public AccionPublicitaria crearAccion()
+    private AccionPublicitaria crearAccion()
     {
         AccionPublicitaria accion = new AccionPublicitaria();
 
