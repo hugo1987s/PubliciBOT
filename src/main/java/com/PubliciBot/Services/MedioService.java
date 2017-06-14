@@ -19,7 +19,16 @@ import java.util.Properties;
  */
 public class MedioService {
 
-    public void enviarMail(Medio medio, Mensaje mensaje)
+    Medio medioLocal;
+    Mensaje mensajeLocal;
+
+    public MedioService(Medio medio, Mensaje mensaje)
+    {
+        medioLocal = medio;
+        mensajeLocal = mensaje;
+    }
+
+    public boolean enviarMail()
     {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -43,7 +52,7 @@ public class MedioService {
             message.setSubject("Megafono Mailer te envia una mensaje!");
 
             message.addRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(medio.getEmailDestino()));
+                    InternetAddress.parse(medioLocal.getEmailDestino()));
 
             message.addRecipients(Message.RecipientType.TO,
                     InternetAddress.parse("megafonomailer@gmail.com"));
@@ -55,7 +64,7 @@ public class MedioService {
 
             // first part (the html)
             BodyPart messageBodyPart = new MimeBodyPart();
-            String htmlText = "<H1>" + mensaje.getTextoMensaje() + "<img src=\"cid:image\">";
+            String htmlText = "<H1>" + mensajeLocal.getTextoMensaje() + "<img src=\"cid:image\">";
             try {
                 messageBodyPart.setContent(htmlText, "text/html");
             } catch (MessagingException e) {
@@ -80,7 +89,7 @@ public class MedioService {
 
             //C://Users//Hugo//IdeaProjects//PubliciBot//src//main//webapp//VAADIN\images
 
-            DataSource fds = new FileDataSource(mensaje.getImagenMensajePath());
+            DataSource fds = new FileDataSource(mensajeLocal.getImagenMensajePath());
 
             messageBodyPart.setDataHandler(new DataHandler(fds));
             messageBodyPart.setHeader("Content-ID", "<image>");
@@ -102,10 +111,38 @@ public class MedioService {
             Transport.send(message);
 
             System.out.println("Done");
+            return true;
 
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            return false;
+            //throw new RuntimeException(e);
+
         }
+    }
+
+    public boolean enviarTelegram()
+    {
+        return false;
+    }
+
+    public boolean enviarWhatsApp()
+    {
+        return false;
+    }
+
+    public boolean postearFacebook()
+    {
+        return false;
+    }
+
+    public boolean postearLinkedIn()
+    {
+        return false;
+    }
+
+    public boolean enviarTwitter()
+    {
+        return false;
     }
 
 }
