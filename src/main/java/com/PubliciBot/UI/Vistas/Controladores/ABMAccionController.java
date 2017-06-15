@@ -69,9 +69,10 @@ public class ABMAccionController extends VerticalLayout {
                     cboMedio.focus();
                     return;
                 }
-                controller.getPublicitariaService().setAccionPublicitaria(crearAccion());
-                AccionPublicitaria ac = controller.getPublicitariaService().getAccionPublicitaria();
-                controller.getNuevaCampana().addAccion(ac);
+
+                //controller.getPublicitariaService().setAccionPublicitaria(crearAccion());
+                //AccionPublicitaria ac = controller.getPublicitariaService().getAccionPublicitaria();
+                controller.getNuevaCampana().addAccion(crearAccion());
 
             }
         });
@@ -97,7 +98,7 @@ public class ABMAccionController extends VerticalLayout {
             medio.setContrasenaPerfilOrigen(txtPasswordOrigen.getValue());
             medio.setPerfilDestino(txtCuentaDestino.getValue());
         }
-
+        accion.setMedio(medio);
         return accion;
 
     }

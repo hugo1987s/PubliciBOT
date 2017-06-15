@@ -73,29 +73,19 @@ public class MedioService {
             // add it
             multipart.addBodyPart(messageBodyPart);
 
-            // second part (the image)
-            messageBodyPart = new MimeBodyPart();
+            if(mensajeLocal.getImagenMensajePath() !=null && mensajeLocal.getImagenMensajePath().trim() != "")
+            {
+                // second part (the image)
+                messageBodyPart = new MimeBodyPart();
 
-            //String basedir = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
-            //String basedir = "";
-            /*
-            if (VaadinService.getCurrent() != null) {
-                basedir = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
-            } else {
-                basedir = "WebContent";
+                DataSource fds = new FileDataSource(mensajeLocal.getImagenMensajePath());
+
+                messageBodyPart.setDataHandler(new DataHandler(fds));
+                messageBodyPart.setHeader("Content-ID", "<image>");
+
+                // add image to the multipart
+                multipart.addBodyPart(messageBodyPart);
             }
-*/
-            //basedir = "C:/Users/Hugo/IdeaProjects/PubliciBot/src/main/webapp";
-
-            //C://Users//Hugo//IdeaProjects//PubliciBot//src//main//webapp//VAADIN\images
-
-            DataSource fds = new FileDataSource(mensajeLocal.getImagenMensajePath());
-
-            messageBodyPart.setDataHandler(new DataHandler(fds));
-            messageBodyPart.setHeader("Content-ID", "<image>");
-
-            // add image to the multipart
-            multipart.addBodyPart(messageBodyPart);
 
             // put everything together
             message.setContent(multipart);
@@ -110,7 +100,7 @@ public class MedioService {
 
             Transport.send(message);
 
-            System.out.println("Done");
+            System.out.println("Enviado");
             return true;
 
         } catch (MessagingException e) {

@@ -3,6 +3,7 @@ package com.PubliciBot.UI.Vistas.Controladores;
 import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.AccionPublicitariaService;
 import com.PubliciBot.Services.CampanaService;
+import com.PubliciBot.Services.MedioService;
 import com.PubliciBot.Services.UsuarioService;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.ABMAccionView;
@@ -40,7 +41,7 @@ public class ABMCampanasController extends HorizontalLayout {
     AccionPublicitariaService publicitariaService;
     ABMAccionView accionView;
 
-    HorizontalLayout hl ;
+    HorizontalLayout hl;
     ListSelect campanasGuardadas;
     ArrayList<Campana> campanasGuardadasList;
     Button detalleCampanaSeleccionada;
@@ -49,6 +50,8 @@ public class ABMCampanasController extends HorizontalLayout {
 
     Button btnAgregarAccion;
     VerticalLayout verticalLayout;
+
+    Button btnEjecutarAcciones;
 
 //comment
 
@@ -76,14 +79,20 @@ public class ABMCampanasController extends HorizontalLayout {
                 String mensajeTxt = txtMensaje.getValue();
                 Mensaje mensaje = null;
 
+                //TODO le puse NULL al path de la imagen porque estaba haciendo un toString() de un objeto imagen
                 if (imgImgenMensaje == null) {
                     mensaje = new Mensaje(mensajeTxt, null);
                 }
                 if (mensajeTxt == null || mensajeTxt.equals("")) {
+                    mensaje = new Mensaje(null, null);
+                } else
+                    mensaje = new Mensaje(mensajeTxt, null);
+                /*
+                if (mensajeTxt == null || mensajeTxt.equals("")) {
                     mensaje = new Mensaje(null, imgImgenMensaje.toString());
                 } else
                     mensaje = new Mensaje(mensajeTxt, imgImgenMensaje.toString());
-
+                */
                 boolean vacios = nombreCampana.equals("") || descripcion.equals("") || fechaCreacion.equals("") || duracion == 0 || unidadMedida == null || mensajeTxt.equals("") || mensaje == null;
                 boolean txtVacio = txtDuracion.getValue().equals("") || txtDuracion == null || nombreCampana == null || descripcion == null || fechaCreacion == null;
                 if (vacios || txtVacio) {
@@ -151,11 +160,30 @@ public class ABMCampanasController extends HorizontalLayout {
                 Usuario actual = getUsuarioSesion();
                 usuarioService.agregarCampañaAUsuario(nuevaCampana, actual);
                 usuarioService.guardarUsuario(actual);
+                //MedioService medioService = new MedioService(nuevaCampana.getAcciones())
+            }
+        });
+
+
+        btnEjecutarAcciones.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+                if(nuevaCampana!=null)
+                {
+                  for(AccionPublicitaria accion : nuevaCampana.getAcciones()  )
+                  {
+                      if(accion.getMedio().getTipoPost().equals(TipoPost.EMAIL))
+                      {
+                          new MedioService(accion.getMedio(), nuevaCampana.getMensaje()).enviarMail();
+                      }
+                  }
+                }
             }
         });
     }
 
-     private UnidadMedida obtenerUnidadMedida() {
+    private UnidadMedida obtenerUnidadMedida() {
 
         return (UnidadMedida) cboUnidadTiempo.getValue();
         /*UnidadMedida unidadMedida = null;
@@ -173,37 +201,37 @@ public class ABMCampanasController extends HorizontalLayout {
 
     private void initComponents() {
 
-        campanaService             = new CampanaService();
-        usuarioService             = new UsuarioService();
-        lblTitulo                  = new Label("Administración de Campañas");
-        accionView                 = new ABMAccionView(this);
-        publicitariaService        = new AccionPublicitariaService();
-        txtNombreCampana           = new TextField("Nombre");
-        txtNombreCampana.setValue("Campaña: "+Integer.toString(Date.from(Instant.now()).getDate())+"/"+Integer.toString(Date.from(Instant.now()).getMonth())
-                +":"+Integer.toString(Date.from(Instant.now()).getSeconds()));
-        txtDescripcion             = new TextArea("Descripción");
-        txtDescripcion.setValue("Creada el "+Date.from(Instant.now()).toString());
-        dfFechaInicio              = new DateField("Fecha de inicio");
-       dfFechaInicio.setValue( Date.from(Instant.now()));
-        txtDuracion                = new TextField();
+        campanaService = new CampanaService();
+        usuarioService = new UsuarioService();
+        lblTitulo = new Label("Administración de Campañas");
+        accionView = new ABMAccionView(this);
+        publicitariaService = new AccionPublicitariaService();
+        txtNombreCampana = new TextField("Nombre");
+        txtNombreCampana.setValue("Campaña: " + Integer.toString(Date.from(Instant.now()).getDate()) + "/" + Integer.toString(Date.from(Instant.now()).getMonth())
+                + ":" + Integer.toString(Date.from(Instant.now()).getSeconds()));
+        txtDescripcion = new TextArea("Descripción");
+        txtDescripcion.setValue("Creada el " + Date.from(Instant.now()).toString());
+        dfFechaInicio = new DateField("Fecha de inicio");
+        dfFechaInicio.setValue(Date.from(Instant.now()));
+        txtDuracion = new TextField();
         txtDuracion.setValue("1");
-        cboUnidadTiempo            = new ComboBox();
-        cboUnidadTiempo.setWidth(115,Unit.PIXELS);
-        txtoduracion               =new Label("Duracion");
-        txtMensaje                 = new TextArea("Mensaje adjunto");
+        cboUnidadTiempo = new ComboBox();
+        cboUnidadTiempo.setWidth(115, Unit.PIXELS);
+        txtoduracion = new Label("Duracion");
+        txtMensaje = new TextArea("Mensaje adjunto");
         txtMensaje.setValue("Mensaje de Prueba");
-        imgImgenMensaje            = new Image("Imagen adjunta");
-        seleccionarTags            = new Button("Seleccionar Tags");
-        btnGuardarCampana          = new Button("Guardar Campaña");
-        btnVerCampanasGuardadas    = new Button("Cargar");
+        imgImgenMensaje = new Image("Imagen adjunta");
+        seleccionarTags = new Button("Seleccionar Tags");
+        btnGuardarCampana = new Button("Guardar Campaña");
+        btnVerCampanasGuardadas = new Button("Cargar");
         detalleCampanaSeleccionada = new Button("Detalles Campana");
-        campanasGuardadas          = new ListSelect("Campañas guardadas");
-        campanasGuardadasList      = new ArrayList<Campana>();
-        hl                         = new HorizontalLayout();
+        campanasGuardadas = new ListSelect("Campañas guardadas");
+        campanasGuardadasList = new ArrayList<Campana>();
+        hl = new HorizontalLayout();
         hl.setSpacing(true);
 
-        btnAgregarAccion           = new Button("Agregar Acción");
-
+        btnAgregarAccion = new Button("Agregar Acción");
+        btnEjecutarAcciones = new Button("Ejecutar Acciones");
     }
 
     private void dibujarControles() {
@@ -221,13 +249,14 @@ public class ABMCampanasController extends HorizontalLayout {
         horizontalLayout.addComponent(txtDuracion);
         horizontalLayout.addComponent(cboUnidadTiempo);
         horizontalLayout.setSpacing(true);
-       formLayout.addComponent(horizontalLayout);
+        formLayout.addComponent(horizontalLayout);
         formLayout.addComponent(txtMensaje);
         formLayout.addComponent(imgImgenMensaje);
         formLayout.addComponent(seleccionarTags);
         formLayout.addComponent(btnAgregarAccion);
         formLayout.addComponent(btnGuardarCampana);
         formLayout.addComponent(btnVerCampanasGuardadas);
+        formLayout.addComponent(btnEjecutarAcciones);
 
         verticalLayout.addComponent(formLayout);
         this.addComponent(verticalLayout);
@@ -238,29 +267,28 @@ public class ABMCampanasController extends HorizontalLayout {
 
     }
 
-    private void cargarComboDuracion()
-    {
+    private void cargarComboDuracion() {
         cboUnidadTiempo.addItems(UnidadMedida.values());
         cboUnidadTiempo.setValue(UnidadMedida.SEMANA);
     }
 
-    private void agregarListaCampanas(){
+    private void agregarListaCampanas() {
         Usuario actual = getUsuarioSesion();
-        if(actual != null){
+        if (actual != null) {
             campanaService.recuperarCampanas(actual);
             ArrayList<Campana> campanas = campanaService.getCampanasGuardadas();
-            for(Campana camp : campanas) {
-                    System.out.println(camp);
-                    campanasGuardadas.addItem(camp.getNombre());
-                    campanasGuardadasList.add(camp);
+            for (Campana camp : campanas) {
+                System.out.println(camp);
+                campanasGuardadas.addItem(camp.getNombre());
+                campanasGuardadasList.add(camp);
 
-                }
+            }
             this.addComponent(hl);
         }
     }
 
     private Usuario getUsuarioSesion() {
-        StrictAccessControl strictAccessControl = (StrictAccessControl) ((MyUI)getUI()).getAccessControl();
+        StrictAccessControl strictAccessControl = (StrictAccessControl) ((MyUI) getUI()).getAccessControl();
         return strictAccessControl.getRecoveredUser();
     }
 
@@ -269,15 +297,15 @@ public class ABMCampanasController extends HorizontalLayout {
         campanasGuardadas.addValueChangeListener(event -> {// Java 8
             for (Campana c : campanasGuardadasList) {
                 String nombre = c.getNombre();
-                if (event.getProperty().getValue()!=null) {
+                if (event.getProperty().getValue() != null) {
 
                     String evento = event.getProperty().getValue().toString();
                     if (nombre.equals(evento)) {
                         campañaSeleccionada = c;
                         detalleCampanaSeleccionada.setVisible(true);
                     }
-                }
-                else {campanasGuardadasList.remove(c);
+                } else {
+                    campanasGuardadasList.remove(c);
 
                 }
 
@@ -286,11 +314,11 @@ public class ABMCampanasController extends HorizontalLayout {
         });
     }
 
-    public AccionPublicitariaService getPublicitariaService(){
+    public AccionPublicitariaService getPublicitariaService() {
         return this.publicitariaService;
     }
 
-    public Campana getNuevaCampana(){
+    public Campana getNuevaCampana() {
         return this.nuevaCampana;
     }
 
