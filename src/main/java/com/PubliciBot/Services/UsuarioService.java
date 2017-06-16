@@ -43,7 +43,6 @@ public class UsuarioService {
 
     public void agregarCampañaAUsuario(Campana campana, Usuario user){
         user.getCampanas().add(campana);
-        guardarUsuario(user);
     }
 
     public void guardarUsuario(Usuario user){

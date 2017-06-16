@@ -60,6 +60,7 @@ public class Tasker extends Thread{
         long nowinSeconds=NOW.getEpochSecond();
         ArrayList<Post> possibleTasks=(ArrayList<Post>)daoNeodatis.obtenerTodos(Post.class);
         System.out.print(possibleTasks);
+
         for (Post p:possibleTasks
              ) {
             if(p.getFechaInicio().before(Date.from(NOW))){ //Si el Post Todavia Esta vigente (supero la fecha de inicio)
