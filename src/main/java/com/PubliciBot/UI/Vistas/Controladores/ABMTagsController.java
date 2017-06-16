@@ -76,12 +76,15 @@ public class ABMTagsController extends VerticalLayout {
         this.setComponentAlignment(Title, Alignment.BOTTOM_CENTER);
         this.addComponent(HL);
         this.addComponent(treeVaadin);
-
+        this.setMargin(true);
+        this.setSpacing(true);
         HorizontalLayout HL2 = new HorizontalLayout();
         HL2.addComponent(btneliminarTag);
         HL2.setComponentAlignment(btneliminarTag, Alignment.BOTTOM_RIGHT);
         HL2.setSpacing(true);
         this.addComponent(HL2);
+
+
     }
 
 

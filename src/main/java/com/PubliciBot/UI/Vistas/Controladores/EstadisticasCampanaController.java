@@ -26,6 +26,7 @@ public class EstadisticasCampanaController extends VerticalLayout {
 
     public EstadisticasCampanaController(Campana campana){
             initComponents(campana);
+            this.setMargin(true);
             addComponents();
     }
 
