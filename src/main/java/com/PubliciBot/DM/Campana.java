@@ -1,5 +1,6 @@
 package com.PubliciBot.DM;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -15,19 +16,34 @@ public class Campana {
     private Mensaje mensaje;
     private ArrayList<Tag> tags;
     private ArrayList<AccionPublicitaria> acciones;
+    private ArrayList<Post> posts;
     private EstadoCampana estadoCampana;
 
 
-    public Campana(String nombre, String descripcion, Date fechaInicio, int duracion,UnidadMedida unidad, Mensaje mensaje ) {
+    public Campana(String nombre, String descripcion, Date fechaInicio, int duracion, Mensaje mensaje ) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fechaInicio = fechaInicio;
         this.duracion = duracion;
-        this.unidadMedida = unidad;
         this.estadoCampana = EstadoCampana.PRELIMINAR;
         this.mensaje = mensaje;
         this.tags = new ArrayList<Tag>();
         this.acciones = new ArrayList<>();
+
+        posts=new ArrayList<Post>();
+
+
+    }
+
+    public Date calcularCaducidad(){
+      Instant instant= Instant.ofEpochSecond(fechaInicio.toInstant().getEpochSecond()+duracion);
+     return Date.from(instant);
+    }
+
+
+    public void agregarPost(AccionPublicitaria accion){
+        Post post=new Post(this.fechaInicio,calcularCaducidad(),accion,mensaje);
+        this.posts.add(post);
     }
 
     public String getNombre() {
@@ -88,6 +104,7 @@ public class Campana {
 
     public void addAccion(AccionPublicitaria accion) {
         this.acciones.add(accion);
+        agregarPost(accion);
     }
 
     public EstadoCampana getEstadoCampana() {

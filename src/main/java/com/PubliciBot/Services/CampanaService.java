@@ -40,10 +40,6 @@ public class CampanaService {
         campana.setUnidadMedida(unidad);
     }
 
-    public Campana crearCampana(String nombre, String descripcion, Date fechaInicio, int duracion, UnidadMedida unidad, Mensaje mensaje)
-    {
-        return new Campana(nombre, descripcion,fechaInicio,duracion,unidad,mensaje);
-    }
 
 
     public void recuperarCampanas(Usuario usuario){

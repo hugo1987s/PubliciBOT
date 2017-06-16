@@ -1,5 +1,6 @@
 package com.PubliciBot.UI;
 
+import com.PubliciBot.Services.Tasker;
 import com.PubliciBot.UI.Vistas.MainScreen;
 import com.PubliciBot.UI.authentication.AccessControl;
 import com.PubliciBot.UI.authentication.LoginScreen;
@@ -32,6 +33,10 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+
+        Tasker tasker=Tasker.getTasker();
+        tasker.start();
+
         Responsive.makeResponsive(this);
         setLocale(vaadinRequest.getLocale());
         getPage().setTitle("PubliciBot");
@@ -44,6 +49,7 @@ public class MyUI extends UI {
             });
             setContent(login);
         } else {
+
             showMainView();
         }
     }

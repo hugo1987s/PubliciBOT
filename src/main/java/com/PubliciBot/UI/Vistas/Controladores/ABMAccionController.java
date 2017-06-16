@@ -99,14 +99,18 @@ public class ABMAccionController extends VerticalLayout {
         AccionPublicitaria accion = new AccionPublicitaria();
 
         accion.setNombreAccion(this.txtNombreAccion.getValue());
-        accion.setPeriodicidadAccion((PeriodicidadAccion) cboPeriodicidad.getValue());
-        accion.setValorPeriodicidad(Integer.parseInt(txtValorPeriodicidad.getValue()));
+
+        PeriodicidadAccion periodicidadAccion = (PeriodicidadAccion) cboPeriodicidad.getValue();
+        int cantidad = Integer.parseInt(txtValorPeriodicidad.getValue());
+
+        accion.setPeriodicidadSegundos( cantidad * periodicidadAccion.periodicidadASegundos());
+
 
         Medio medio = new Medio();
         medio.setTipoMedio((TipoMedio) cboMedio.getValue());
 
         if(medio.getTipoMedio().equals(TipoMedio.EMAIL))
-            medio.setEmailDestino(txtMail.getValue());
+           accion.setDestino(txtMail.getValue());
         else
         {
             medio.setUsuarioPerfilOrigen(txtUsuarioOrigen.getValue());

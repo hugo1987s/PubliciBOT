@@ -6,25 +6,41 @@ package com.PubliciBot.DM;
 public class AccionPublicitaria {
 
     private String nombreAccion;
-    private PeriodicidadAccion periodicidadAccion;
-    private int valorPeriodicidad;
+    private int periodicidadSegundos;
     private Medio medio;
+    private String destino;
 
 
     public AccionPublicitaria()
     {
         this.nombreAccion = "";
-        this.periodicidadAccion = null;
-        this.valorPeriodicidad = 0;
+        this.periodicidadSegundos = 60;
         this.medio = new Medio();
     }
 
-    public AccionPublicitaria(String nombre, PeriodicidadAccion periodicidad, int valor, Medio medioAccion)
+    public int getPeriodicidadSegundos() {
+        return periodicidadSegundos;
+    }
+
+    public void setPeriodicidadSegundos(int periodicidadSegundos) {
+        this.periodicidadSegundos = periodicidadSegundos;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
+    }
+
+    public AccionPublicitaria(String nombre, int periodicidadSegundos, Medio medioAccion, String destino)
     {
         this.nombreAccion = nombre;
-        this.periodicidadAccion = periodicidad;
-        this.valorPeriodicidad = valor;
+        this.destino=destino;
+        this.periodicidadSegundos =periodicidadSegundos;
         this.medio = medioAccion;
+
     }
 
 
@@ -36,20 +52,13 @@ public class AccionPublicitaria {
         this.nombreAccion = nombreAccion;
     }
 
-    public PeriodicidadAccion getPeriodicidadAccion() {
-        return periodicidadAccion;
-    }
-
-    public void setPeriodicidadAccion(PeriodicidadAccion periodicidadAccion) {
-        this.periodicidadAccion = periodicidadAccion;
-    }
 
     public int getValorPeriodicidad() {
-        return valorPeriodicidad;
+        return periodicidadSegundos;
     }
 
     public void setValorPeriodicidad(int valorPeriodicidad) {
-        this.valorPeriodicidad = valorPeriodicidad;
+        this.periodicidadSegundos = valorPeriodicidad;
     }
 
     public Medio getMedio() {

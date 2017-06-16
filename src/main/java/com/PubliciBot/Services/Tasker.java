@@ -1,8 +1,14 @@
 package com.PubliciBot.Services;
 
 import com.PubliciBot.DAO.Interfaces.Task;
+import com.PubliciBot.DAO.Neodatis.DAONeodatis;
+import com.PubliciBot.DM.Campana;
+import com.PubliciBot.DM.Post;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Objects;
 import java.util.Stack;
 
 public class Tasker extends Thread{
@@ -27,12 +33,12 @@ public class Tasker extends Thread{
 
     @Override
     public void run() {
-        super.run();
+
         boolean run=true;
 
         while (run) {
-
-            buscaCampanas();
+            System.out.print("Tasker Buscando Tareas...");
+            buscaTareas();
             for(Sender sender : senders){
                 sender.run();
             }
@@ -48,22 +54,50 @@ public class Tasker extends Thread{
     }
 
 
-    public void buscaCampanas(){
-        //ACA DEBERIA LEVANTAR LAS CAMPAÑAS Y REVISAR CUALES SON LAS QUE ESTAN EN RANGO
-        //LUEGO UNA VEZ QUE ENCUENTRA LAS QUE ESTAN VIGENTES REVISA SUS ACCIONES
-        // LUEGO POR CADA ACCION REVISA CUANDO FUE SU ULTIMA FECHA DE EJECUCION
-        //SI LA FECHA ACTUAL --- FECCHA DE EJECUCION DE LA ACCION > PERIODICIDAD DE LA ACCION
+    public  void buscaTareas(){
+        DAONeodatis daoNeodatis= new DAONeodatis();
+        Instant NOW=Instant.now();
+        long nowinSeconds=NOW.getEpochSecond();
+        ArrayList<Post> possibleTasks=(ArrayList<Post>)daoNeodatis.obtenerTodos(Post.class);
+        System.out.print(possibleTasks);
+        for (Post p:possibleTasks
+             ) {
+            if(p.getFechaInicio().before(Date.from(NOW))){ //Si el Post Todavia Esta vigente (supero la fecha de inicio)
 
-        //convierte la accion en un TASK
+               if(p.getFechaCaducidad().after((Date.from(NOW)))){  //Si no supero la fecha de caducidad
 
-        //lo agrega a la pila
+
+                   if(p.getFechaUltimaEjecucion()!=null) {
+                       long ultimaejSeconds = p.getFechaUltimaEjecucion().toInstant().getEpochSecond();   //Convertir ultima ejecucion a segundos
+
+                       if(Math.abs(nowinSeconds-ultimaejSeconds)>p.getAccion().getPeriodicidadSegundos()){  //SI LE TOCA EJECUTARSE (PASO EL COOLDOWN )
+                           tasks.add(p);
+                       }
+                   }
+
+                   else{
+
+                       tasks.add(p);
+                   }
+
+
+
+                }
+
+
+            }
+
+        }
 
 
 
     }
 
     public Task giveMeaTask(){
-        return tasks.pop();
+        if(tasks.size()!=0) {
+            return tasks.pop();
+        }
+        return null;
     }
 
     public void stopTasker(){

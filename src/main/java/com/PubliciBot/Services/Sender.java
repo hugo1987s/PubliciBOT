@@ -17,10 +17,13 @@ public class Sender extends Thread{
         super.run();
         run=true;
 
-        while (run&&tasker.isAlive()){
+        while (run){
             Task task=tasker.giveMeaTask();
             if(task!=null)
                 task.execute();
+            else{
+                run=false;
+            }
 
         }
     }

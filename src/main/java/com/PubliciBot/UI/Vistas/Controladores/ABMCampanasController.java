@@ -3,7 +3,6 @@ package com.PubliciBot.UI.Vistas.Controladores;
 import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.AccionPublicitariaService;
 import com.PubliciBot.Services.CampanaService;
-import com.PubliciBot.Services.MedioService;
 import com.PubliciBot.Services.UsuarioService;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.ABMAccionView;
@@ -96,8 +95,8 @@ public class ABMCampanasController extends HorizontalLayout {
                 if (vacios || txtVacio) {
                     Notification.show("Capo, llena los campos antes plz");
                 } else {
-                    nuevaCampana = campanaService.crearCampana(nombreCampana, descripcion, fechaCreacion, duracion, unidadMedida, mensaje);
 
+                    nuevaCampana = new Campana(nombreCampana, descripcion, fechaCreacion, duracion*unidadMedida.unidadASegundos(), mensaje);
                     SelectorTags tagger = new SelectorTags();
                     tagger.setModal(true);
                     tagger.getSeleccionar().addClickListener(new Button.ClickListener() {
@@ -184,9 +183,11 @@ public class ABMCampanasController extends HorizontalLayout {
                 {
                     for(AccionPublicitaria accion : nuevaCampana.getAcciones()  )
                     {
-                        if(accion.getMedio().getTipoPost().equals(TipoPost.EMAIL))
+                        if(accion.getMedio().getTipoMedio().equals(TipoMedio.EMAIL))
                         {
-                            new MedioService(accion.getMedio(), nuevaCampana.getMensaje()).enviarMail();
+                            AccionPublicitariaService aps=new AccionPublicitariaService();
+                            aps.publicar(accion, nuevaCampana.getMensaje());
+
                         }
                     }
                 }
