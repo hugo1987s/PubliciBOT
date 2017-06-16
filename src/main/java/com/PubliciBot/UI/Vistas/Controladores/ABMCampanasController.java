@@ -13,7 +13,6 @@ import com.PubliciBot.UI.authentication.StrictAccessControl;
 import com.vaadin.ui.*;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -67,7 +66,6 @@ public class ABMCampanasController extends HorizontalLayout {
         seleccionarTags.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-
                 //datos de campaña
                 String nombreCampana = txtNombreCampana.getValue();
                 String descripcion = txtDescripcion.getValue();
@@ -106,10 +104,16 @@ public class ABMCampanasController extends HorizontalLayout {
                         @Override
                         public void buttonClick(Button.ClickEvent clickEvent) {
                             ArrayList<Tag> tagsCampana = tagger.getSeleccionados();
+                            if(tagsCampana.size() == 0){
+                                Notification.show("No pueden quedar campañas sin tags");
+                                return;
+                            }
                             for (Tag t : tagsCampana) {
                                 campanaService.agregarTagACampana(nuevaCampana, t);
                             }
                             tagger.vaciarSeleccionados();
+                            tagger.close();
+                            Notification.show("Campanas agregadas: "+ nuevaCampana.getTags());
                         }
                     });
                     tagger.getCerrar().addClickListener(new Button.ClickListener() {
@@ -117,6 +121,9 @@ public class ABMCampanasController extends HorizontalLayout {
                         public void buttonClick(Button.ClickEvent clickEvent) {
                             tagger.close();
                             tagger.vaciarSeleccionados();
+                            if(nuevaCampanaNoTieneTags()){
+                                Notification.show("La campaña no se creara si no selecciona tags");
+                            }
                         }
                     });
                     UI.getCurrent().addWindow(tagger);
@@ -157,6 +164,10 @@ public class ABMCampanasController extends HorizontalLayout {
         btnGuardarCampana.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
+                if(nuevaCampanaNoTieneTags()) {
+                    Notification.show("Agregale tags a la campaña sino no se guarda");
+                    return;
+                }
                 Usuario actual = getUsuarioSesion();
                 usuarioService.agregarCampañaAUsuario(nuevaCampana, actual);
                 usuarioService.guardarUsuario(actual);
@@ -181,6 +192,10 @@ public class ABMCampanasController extends HorizontalLayout {
                 }
             }
         });
+    }
+
+    private boolean nuevaCampanaNoTieneTags() {
+        return nuevaCampana.getTags().size() == 0;
     }
 
     private UnidadMedida obtenerUnidadMedida() {

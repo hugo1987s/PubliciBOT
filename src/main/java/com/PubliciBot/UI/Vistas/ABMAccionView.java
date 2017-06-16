@@ -17,7 +17,6 @@ public class ABMAccionView  extends Window {
         this.setContent(abmAccionController);
         this.setWidth("450");
 
-
     }
 
 

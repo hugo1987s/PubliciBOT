@@ -7,9 +7,13 @@ import com.PubliciBot.DM.TipoPost;
 
 import com.PubliciBot.Services.AccionPublicitariaService;
 
+import com.PubliciBot.UI.MyUI;
+import com.PubliciBot.UI.Vistas.ABMAccionView;
 import com.PubliciBot.UI.Vistas.Validators.EnteroValidator;
 
 import com.vaadin.ui.*;
+
+import java.util.Collection;
 
 /**
  * Created by Hugo on 10/06/2017.
@@ -72,10 +76,21 @@ public class ABMAccionController extends VerticalLayout {
 
                 //controller.getPublicitariaService().setAccionPublicitaria(crearAccion());
                 //AccionPublicitaria ac = controller.getPublicitariaService().getAccionPublicitaria();
-                controller.getNuevaCampana().addAccion(crearAccion());
+                else{
+                    controller.getNuevaCampana().addAccion(crearAccion());
+                    Collection<Window> views = ((MyUI) getUI()).getWindows();
+                    for(Window w : views)
+                        if(w instanceof  ABMAccionView) {
+                            close(w);
+                        }
+                }
 
             }
         });
+    }
+
+    private void close(Window view){
+        view.close();
     }
 
 
