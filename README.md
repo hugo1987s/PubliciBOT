@@ -1,8 +1,6 @@
 # PubliciBot
 Sistema para generar camapañas publicitarias en redes sociales.
 FIXME:
-
-ARREGLAR EL DURACION HORRIBLE QUE QUEDO TODO TORCIDO POR MI CULPA ASDASDASDASD
 1)Arreglar bug camapaña vacia y que no crashee al guardar camapañas vacias.
 
 2)no se permite DESseleccioanr Tags hacer un boton Deseleccionar?

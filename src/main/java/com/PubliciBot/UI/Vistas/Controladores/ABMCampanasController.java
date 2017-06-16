@@ -215,9 +215,10 @@ public class ABMCampanasController extends HorizontalLayout {
         dfFechaInicio.setValue(Date.from(Instant.now()));
         txtDuracion = new TextField();
         txtDuracion.setValue("1");
+        txtoduracion =new Label("Duración");
         cboUnidadTiempo = new ComboBox();
         cboUnidadTiempo.setWidth(115, Unit.PIXELS);
-        txtoduracion = new Label("Duracion");
+
         txtMensaje = new TextArea("Mensaje adjunto");
         txtMensaje.setValue("Mensaje de Prueba");
         imgImgenMensaje = new Image("Imagen adjunta");
@@ -239,26 +240,35 @@ public class ABMCampanasController extends HorizontalLayout {
         verticalLayout = new VerticalLayout();
         HorizontalLayout horizontalLayout = new HorizontalLayout();
 
-        verticalLayout.addComponent(lblTitulo);
 
-        FormLayout formLayout = new FormLayout();
-        formLayout.addComponent(txtNombreCampana);
-        formLayout.addComponent(txtDescripcion);
-        formLayout.addComponent(dfFechaInicio);
-        horizontalLayout.addComponent(txtoduracion);
+
+        VerticalLayout layoutcampana = new VerticalLayout();
+        layoutcampana.setMargin(true);
+        layoutcampana.setSpacing(true);
+        layoutcampana.addComponent(lblTitulo);
+        layoutcampana.addComponent(txtNombreCampana);
+        layoutcampana.addComponent(txtDescripcion);
+        layoutcampana.addComponent(dfFechaInicio);
+        layoutcampana.addComponent(txtoduracion);
         horizontalLayout.addComponent(txtDuracion);
         horizontalLayout.addComponent(cboUnidadTiempo);
         horizontalLayout.setSpacing(true);
-        formLayout.addComponent(horizontalLayout);
-        formLayout.addComponent(txtMensaje);
-        formLayout.addComponent(imgImgenMensaje);
-        formLayout.addComponent(seleccionarTags);
-        formLayout.addComponent(btnAgregarAccion);
-        formLayout.addComponent(btnGuardarCampana);
-        formLayout.addComponent(btnVerCampanasGuardadas);
-        formLayout.addComponent(btnEjecutarAcciones);
+        layoutcampana.addComponent(horizontalLayout);
+        layoutcampana.addComponent(txtMensaje);
+        layoutcampana.addComponent(imgImgenMensaje);
 
-        verticalLayout.addComponent(formLayout);
+
+        HorizontalLayout horizontalLayoutbotones = new HorizontalLayout();
+
+        horizontalLayoutbotones.addComponent(seleccionarTags);
+        horizontalLayoutbotones.addComponent(btnAgregarAccion);
+        horizontalLayoutbotones.addComponent(btnGuardarCampana);
+        horizontalLayoutbotones.addComponent(btnVerCampanasGuardadas);
+        horizontalLayoutbotones.addComponent(btnEjecutarAcciones);
+        horizontalLayoutbotones.setSpacing(true);
+        layoutcampana.addComponent(horizontalLayoutbotones);
+
+        verticalLayout.addComponent(layoutcampana);
         this.addComponent(verticalLayout);
 
         hl.addComponent(campanasGuardadas);
