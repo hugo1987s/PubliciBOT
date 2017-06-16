@@ -35,8 +35,6 @@ public class ABMCampanasController extends HorizontalLayout {
     Button btnGuardarCampana;
     Button btnVerCampanasGuardadas;
     Button seleccionarTags;
-    Button crearCampana;
-
     CampanaService campanaService;
     UsuarioService usuarioService;
     AccionPublicitariaService publicitariaService;
@@ -64,8 +62,8 @@ public class ABMCampanasController extends HorizontalLayout {
         dibujarControles();
         cargarComboDuracion();
 
-
-        crearCampana.addClickListener(new Button.ClickListener() {
+        //SE ABRE VENTANA PARA ASIGNAR TAGS A CAMPAÑA
+        seleccionarTags.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 //datos de campaña
@@ -85,8 +83,7 @@ public class ABMCampanasController extends HorizontalLayout {
                 }
                 if (mensajeTxt == null || mensajeTxt.equals("")) {
                     mensaje = new Mensaje(null, null);
-                }
-                else
+                } else
                     mensaje = new Mensaje(mensajeTxt, null);
                 /*
                 if (mensajeTxt == null || mensajeTxt.equals("")) {
@@ -98,32 +95,25 @@ public class ABMCampanasController extends HorizontalLayout {
                 boolean txtVacio = txtDuracion.getValue().equals("") || txtDuracion == null || nombreCampana == null || descripcion == null || fechaCreacion == null;
                 if (vacios || txtVacio) {
                     Notification.show("Capo, llena los campos antes plz");
-                    return;
-                }
-                else {
+                } else {
                     nuevaCampana = campanaService.crearCampana(nombreCampana, descripcion, fechaCreacion, duracion, unidadMedida, mensaje);
-                    Notification.show("Campaña creada con exito (sin tags ni acciones)");
-                }
-            }
-        });
 
-
-        //SE ABRE VENTANA PARA ASIGNAR TAGS A CAMPAÑA
-        seleccionarTags.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
                     SelectorTags tagger = new SelectorTags();
                     tagger.setModal(true);
                     tagger.getSeleccionar().addClickListener(new Button.ClickListener() {
                         @Override
                         public void buttonClick(Button.ClickEvent clickEvent) {
                             ArrayList<Tag> tagsCampana = tagger.getSeleccionados();
+                            if(tagsCampana.size() == 0){
+                                Notification.show("No pueden quedar campañas sin tags");
+                                return;
+                            }
                             for (Tag t : tagsCampana) {
                                 campanaService.agregarTagACampana(nuevaCampana, t);
                             }
                             tagger.vaciarSeleccionados();
                             tagger.close();
-                            Notification.show("Tags agregados: "+ nuevaCampana.getTags());
+                            Notification.show("Campanas agregadas: "+ nuevaCampana.getTags());
                         }
                     });
                     tagger.getCerrar().addClickListener(new Button.ClickListener() {
@@ -131,10 +121,14 @@ public class ABMCampanasController extends HorizontalLayout {
                         public void buttonClick(Button.ClickEvent clickEvent) {
                             tagger.close();
                             tagger.vaciarSeleccionados();
+                            if(nuevaCampanaNoTieneTags()){
+                                Notification.show("La campaña no se creara si no selecciona tags");
+                            }
                         }
                     });
                     UI.getCurrent().addWindow(tagger);
                 }
+            }
         });
 
         btnVerCampanasGuardadas.addClickListener(new Button.ClickListener() {
@@ -170,6 +164,10 @@ public class ABMCampanasController extends HorizontalLayout {
         btnGuardarCampana.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
+                if(nuevaCampanaNoTieneTags()) {
+                    Notification.show("Agregale tags a la campaña sino no se guarda");
+                    return;
+                }
                 Usuario actual = getUsuarioSesion();
                 usuarioService.agregarCampañaAUsuario(nuevaCampana, actual);
                 usuarioService.guardarUsuario(actual);
@@ -184,18 +182,21 @@ public class ABMCampanasController extends HorizontalLayout {
 
                 if(nuevaCampana!=null)
                 {
-                  for(AccionPublicitaria accion : nuevaCampana.getAcciones()  )
-                  {
-                      if(accion.getMedio().getTipoPost().equals(TipoPost.EMAIL))
-                      {
-                          new MedioService(accion.getMedio(), nuevaCampana.getMensaje()).enviarMail();
-                      }
-                  }
+                    for(AccionPublicitaria accion : nuevaCampana.getAcciones()  )
+                    {
+                        if(accion.getMedio().getTipoPost().equals(TipoPost.EMAIL))
+                        {
+                            new MedioService(accion.getMedio(), nuevaCampana.getMensaje()).enviarMail();
+                        }
+                    }
                 }
             }
         });
     }
 
+    private boolean nuevaCampanaNoTieneTags() {
+        return nuevaCampana.getTags().size() == 0;
+    }
 
     private UnidadMedida obtenerUnidadMedida() {
 
@@ -235,7 +236,6 @@ public class ABMCampanasController extends HorizontalLayout {
 
         txtMensaje = new TextArea("Mensaje adjunto");
         txtMensaje.setValue("Mensaje de Prueba");
-        crearCampana = new Button("Crear Campana");
         imgImgenMensaje = new Image("Imagen adjunta");
         seleccionarTags = new Button("Seleccionar Tags");
         btnGuardarCampana = new Button("Guardar Campaña");
@@ -275,7 +275,6 @@ public class ABMCampanasController extends HorizontalLayout {
 
         HorizontalLayout horizontalLayoutbotones = new HorizontalLayout();
 
-        horizontalLayoutbotones.addComponent(crearCampana);
         horizontalLayoutbotones.addComponent(seleccionarTags);
         horizontalLayoutbotones.addComponent(btnAgregarAccion);
         horizontalLayoutbotones.addComponent(btnGuardarCampana);
