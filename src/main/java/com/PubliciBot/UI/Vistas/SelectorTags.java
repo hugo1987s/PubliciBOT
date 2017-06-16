@@ -51,12 +51,6 @@ public class SelectorTags extends Window {
 
         arbolTagService = new ArbolTagsService();
         arbolTagService.recuperarArbol();
-        if(arbolTagService.getArbolTags().getTags().size() == 0){
-            Notification.show("no hay tags que agregar");
-            this.close();
-            return;
-        }
-
         arbolVaadin = arbolTagService.convertirArbolaTree(arbolVaadin);
 
         setModal(true);
