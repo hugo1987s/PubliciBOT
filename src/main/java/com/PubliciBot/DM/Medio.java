@@ -5,7 +5,7 @@ package com.PubliciBot.DM;
  */
 public class Medio {
 
-    private TipoPost tipoPost;
+    private TipoMedio tipoMedio;
     private String emailDestino;
     private String usuarioPerfilOrigen;
     private String contrasenaPerfilOrigen;
@@ -13,19 +13,19 @@ public class Medio {
 
     public Medio()
     {
-        tipoPost = TipoPost.EMAIL;
+        tipoMedio = TipoMedio.EMAIL;
         emailDestino = "";
         usuarioPerfilOrigen = "";
         contrasenaPerfilOrigen = "";
         perfilDestino = "";
     }
 
-    public TipoPost getTipoPost() {
-        return tipoPost;
+    public TipoMedio getTipoMedio() {
+        return tipoMedio;
     }
 
-    public void setTipoPost(TipoPost tipoPost) {
-        this.tipoPost = tipoPost;
+    public void setTipoMedio(TipoMedio tipoMedio) {
+        this.tipoMedio = tipoMedio;
     }
 
     public String getEmailDestino() {

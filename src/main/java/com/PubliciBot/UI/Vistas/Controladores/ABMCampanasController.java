@@ -119,7 +119,9 @@ public class ABMCampanasController extends HorizontalLayout {
                         public void buttonClick(Button.ClickEvent clickEvent) {
                             ArrayList<Tag> tagsCampana = tagger.getSeleccionados();
                             for (Tag t : tagsCampana) {
-                                campanaService.agregarTagACampana(nuevaCampana, t);
+                                if(t!=null)
+
+                                    campanaService.agregarTagACampana(nuevaCampana, t);
                             }
                             tagger.vaciarSeleccionados();
                             tagger.close();
@@ -186,9 +188,10 @@ public class ABMCampanasController extends HorizontalLayout {
                 {
                   for(AccionPublicitaria accion : nuevaCampana.getAcciones()  )
                   {
-                      if(accion.getMedio().getTipoPost().equals(TipoPost.EMAIL))
+                      if(accion.getMedio().getTipoMedio().equals(TipoMedio.EMAIL))
                       {
-                          new MedioService(accion.getMedio(), nuevaCampana.getMensaje()).enviarMail();
+                          MedioService ms=new MedioService();
+                         ms.publicar( accion.getMedio(), nuevaCampana.getMensaje());
                       }
                   }
                 }

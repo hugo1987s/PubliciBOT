@@ -18,7 +18,7 @@ public class Sender extends Thread{
         run=true;
 
         while (run&&tasker.isAlive()){
-            Task task=Tasker.getTasker().giveMeaTask();
+            Task task=tasker.giveMeaTask();
             if(task!=null)
                 task.execute();
 

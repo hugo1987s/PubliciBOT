@@ -3,7 +3,7 @@ package com.PubliciBot.UI.Vistas.Controladores;
 import com.PubliciBot.DM.AccionPublicitaria;
 import com.PubliciBot.DM.Medio;
 import com.PubliciBot.DM.PeriodicidadAccion;
-import com.PubliciBot.DM.TipoPost;
+import com.PubliciBot.DM.TipoMedio;
 
 import com.PubliciBot.Services.AccionPublicitariaService;
 
@@ -45,7 +45,7 @@ public class ABMAccionController extends VerticalLayout {
         dibujarControles();
 
         cboMedio.addValueChangeListener(event -> {
-                   if(cboMedio.getValue().toString().toUpperCase() == TipoPost.EMAIL.toString().toUpperCase())
+                   if(cboMedio.getValue().toString().toUpperCase() == TipoMedio.EMAIL.toString().toUpperCase())
                    {
                        panelRedes.setVisible(false);
                        panelMail.setVisible(true);
@@ -103,9 +103,9 @@ public class ABMAccionController extends VerticalLayout {
         accion.setValorPeriodicidad(Integer.parseInt(txtValorPeriodicidad.getValue()));
 
         Medio medio = new Medio();
-        medio.setTipoPost((TipoPost) cboMedio.getValue());
+        medio.setTipoMedio((TipoMedio) cboMedio.getValue());
 
-        if(medio.getTipoPost().equals(TipoPost.EMAIL))
+        if(medio.getTipoMedio().equals(TipoMedio.EMAIL))
             medio.setEmailDestino(txtMail.getValue());
         else
         {
@@ -131,7 +131,7 @@ public class ABMAccionController extends VerticalLayout {
         cboPeriodicidad.setNullSelectionAllowed(false);
 
         cboMedio = new ComboBox("Posteo en");
-        cboMedio.addItems(TipoPost.values());
+        cboMedio.addItems(TipoMedio.values());
         cboMedio.setNullSelectionAllowed(false);
 
         txtMail = new TextField("Email destino");

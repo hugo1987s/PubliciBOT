@@ -1,6 +1,8 @@
 package com.PubliciBot.Services;
 
 import com.PubliciBot.DAO.Interfaces.Task;
+
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class Tasker extends Thread{
@@ -9,10 +11,17 @@ public class Tasker extends Thread{
     private static Tasker tasker;
     private static Stack<Task> tasks;
     private static boolean run=false;
+    private static ArrayList<Sender> senders;
+
 
     private Tasker (){
         tasks=new Stack<>();
-
+        senders =new ArrayList<>();
+        int cantsenders=1;
+        for(int i=0; i<1;i++) {
+            Sender sender = new Sender(this);
+            senders.add(sender);
+        }
     }
 
 
@@ -24,6 +33,9 @@ public class Tasker extends Thread{
         while (run) {
 
             buscaCampanas();
+            for(Sender sender : senders){
+                sender.run();
+            }
 
 
             try {
@@ -50,11 +62,11 @@ public class Tasker extends Thread{
 
     }
 
-    public  Task giveMeaTask(){
+    public Task giveMeaTask(){
         return tasks.pop();
     }
 
-    public  void stopTasker(){
+    public void stopTasker(){
         run=false;
     }
 

@@ -2,7 +2,9 @@ package com.PubliciBot.Services;
 
 import com.PubliciBot.DM.Medio;
 import com.PubliciBot.DM.Mensaje;
+import com.PubliciBot.DM.TipoMedio;
 import com.vaadin.server.VaadinService;
+import javafx.concurrent.Task;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -17,18 +19,33 @@ import java.util.Properties;
 /**
  * Created by Hugo on 13/06/2017.
  */
-public class MedioService {
+public class MedioService  {
 
-    Medio medioLocal;
-    Mensaje mensajeLocal;
 
-    public MedioService(Medio medio, Mensaje mensaje)
-    {
-        medioLocal = medio;
-        mensajeLocal = mensaje;
+
+
+
+    public void publicar(Medio medioLocal, Mensaje mensajeLocal) {
+       TipoMedio tipo=medioLocal.getTipoMedio();
+
+
+        switch (tipo) {
+            case EMAIL: enviarMail(medioLocal,mensajeLocal) ;
+                break;
+
+            case TWITTER:
+                break;
+
+
+        }
+
     }
 
-    public boolean enviarMail()
+
+
+
+
+    private boolean enviarMail(Medio medioLocal, Mensaje mensajeLocal)
     {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -110,29 +127,30 @@ public class MedioService {
         }
     }
 
-    public boolean enviarTelegram()
+    private boolean enviarTelegram(Medio medioLocal, Mensaje mensajeLocal)
     {
         return false;
     }
 
-    public boolean enviarWhatsApp()
+   private boolean enviarWhatsApp(Medio medioLocal, Mensaje mensajeLocal)
     {
         return false;
     }
 
-    public boolean postearFacebook()
+    private boolean postearFacebook(Medio medioLocal, Mensaje mensajeLocal)
     {
         return false;
     }
 
-    public boolean postearLinkedIn()
+    private boolean postearLinkedIn(Medio medioLocal, Mensaje mensajeLocal)
     {
         return false;
     }
 
-    public boolean enviarTwitter()
+   private boolean enviarTwitter(Medio medioLocal, Mensaje mensajeLocal)
     {
         return false;
     }
+
 
 }

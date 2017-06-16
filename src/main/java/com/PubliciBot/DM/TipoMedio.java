@@ -3,7 +3,7 @@ package com.PubliciBot.DM;
 /**
  * Created by Hugo on 11/06/2017.
  */
-public enum TipoPost {
+public enum TipoMedio {
     EMAIL,
     FACEBOOK,
     TWITTER,
