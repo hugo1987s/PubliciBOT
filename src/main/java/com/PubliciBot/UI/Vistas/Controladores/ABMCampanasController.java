@@ -3,7 +3,6 @@ package com.PubliciBot.UI.Vistas.Controladores;
 import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.AccionPublicitariaService;
 import com.PubliciBot.Services.CampanaService;
-import com.PubliciBot.Services.UsuarioService;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.ABMAccionView;
 import com.PubliciBot.UI.Vistas.DetalleCampanaView;
@@ -37,7 +36,7 @@ public class ABMCampanasController extends HorizontalLayout {
     Button seleccionarTags;
     Button crearCampana;
     CampanaService campanaService;
-    UsuarioService usuarioService;
+
     AccionPublicitariaService publicitariaService;
     ABMAccionView accionView;
 
@@ -175,15 +174,7 @@ public class ABMCampanasController extends HorizontalLayout {
             }
         });
 
-        btnGuardarCampana.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                Usuario actual = getUsuarioSesion();
-                usuarioService.agregarCampañaAUsuario(nuevaCampana, actual);
-                usuarioService.guardarUsuario(actual);
-                //MedioService medioService = new MedioService(nuevaCampana.getAcciones())
-            }
-        });
+
 
 
         btnEjecutarAcciones.addClickListener(new Button.ClickListener() {
@@ -248,7 +239,7 @@ public class ABMCampanasController extends HorizontalLayout {
     private void initComponents() {
 
         campanaService = new CampanaService();
-        usuarioService = new UsuarioService();
+
         lblTitulo = new Label("Administración de Campañas");
         accionView = new ABMAccionView(this);
         publicitariaService = new AccionPublicitariaService();
@@ -426,4 +417,7 @@ public class ABMCampanasController extends HorizontalLayout {
     }
 
 
+    public Button getBtnGuardarCampana() {
+        return btnGuardarCampana;
+    }
 }

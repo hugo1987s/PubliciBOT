@@ -3,7 +3,9 @@ package com.PubliciBot.UI.Vistas.DemoAddressBook;
 import com.PubliciBot.DM.Campana;
 import com.PubliciBot.DM.Usuario;
 import com.PubliciBot.Services.CampanaService;
+import com.PubliciBot.Services.UsuarioService;
 import com.PubliciBot.UI.MyUI;
+import com.PubliciBot.UI.Vistas.Controladores.ABMCampanasController;
 import com.PubliciBot.UI.Vistas.DemoAddressBook.Backend.Contact;
 import com.PubliciBot.UI.Vistas.DemoAddressBook.Backend.ContactService;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
@@ -31,12 +33,14 @@ public class AddressbookUIView extends VerticalLayout implements View {
         configureComponents();
         buildLayout();
 
-        GrillaCampana.addClickListener(new Button.ClickListener() {
+       /* grillaCampana.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 refreshCampanas("filtroTest");
             }
         });
+        */
+       refreshCampanas("filtroTest");
     }
 
 
@@ -61,7 +65,10 @@ public class AddressbookUIView extends VerticalLayout implements View {
 
     Grid campanasList = new Grid();
     CampanaService campanaService = new CampanaService();
-Button GrillaCampana = new Button("Ver campañas");
+    UsuarioService usuarioService =  usuarioService = new UsuarioService();
+    ABMCampanasController abmCampanasController = new ABMCampanasController();
+    Button grillaCampana = new Button("Ver campañas");
+    Button nuevaCampana = new Button("Nueva Campaña");
 
     /* The "Main method".
      *
@@ -69,7 +76,6 @@ Button GrillaCampana = new Button("Ver campañas");
      * the visible user interface. Executed on every browser reload because
      * a new instance is created for each web page loaded.
      */
-
 
 
     private void configureComponents() {
@@ -94,6 +100,23 @@ Button GrillaCampana = new Button("Ver campañas");
                 -> contactForm.edit((Contact) contactList.getSelectedRow()));
         refreshContacts();
 
+        // ABM CAMPAÑAS CONTROLLER
+        abmCampanasController.setVisible(false);
+        addComponent(abmCampanasController);
+
+        nuevaCampana.addClickListener(e-> abmCampanasController.setVisible(true));
+        abmCampanasController.getBtnGuardarCampana().addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                Usuario actual = getUsuarioSesion();
+                usuarioService.agregarCampañaAUsuario(abmCampanasController.getNuevaCampana(), actual);
+                usuarioService.guardarUsuario(actual);
+                abmCampanasController.setVisible(false);
+                refreshCampanas("filtroTest");
+                //MedioService medioService = new MedioService(nuevaCampana.getAcciones())
+            }
+        });
+
         campanasList.setContainerDataSource(new BeanItemContainer<>(Campana.class));
 
     }
@@ -110,21 +133,36 @@ Button GrillaCampana = new Button("Ver campañas");
      * with Vaadin Designer, CSS and HTML.
      */
     private void buildLayout() {
-        HorizontalLayout actions = new HorizontalLayout(filter, newContact, GrillaCampana);
+        /*viejo
+        HorizontalLayout actions = new HorizontalLayout(filter, newContact, grillaCampana);
         actions.setWidth("100%");
         filter.setWidth("100%");
         actions.setExpandRatio(filter, 1);
 
-        VerticalLayout left = new VerticalLayout(actions, contactList, campanasList);
+        VerticalLayout left = new VerticalLayout(actions,contactList);
         left.setSizeFull();
         contactList.setSizeFull();
-        campanasList.setSizeFull();
-
         left.setExpandRatio(contactList, 1);
+        left.setExpandRatio(campanasList, 1);
 
         HorizontalLayout mainLayout = new HorizontalLayout(left, contactForm);
         mainLayout.setSizeFull();
         mainLayout.setExpandRatio(left, 1);
+        FIN VIEJO*/
+
+
+        HorizontalLayout actions = new HorizontalLayout(nuevaCampana);
+
+        VerticalLayout left = new VerticalLayout(actions,campanasList);
+
+        left.setSizeFull();
+        campanasList.setSizeFull();
+        left.setExpandRatio(campanasList, 1);
+
+        HorizontalLayout mainLayout = new HorizontalLayout(left, abmCampanasController);
+        mainLayout.setSizeFull();
+        mainLayout.setExpandRatio(left, 1);
+
         this.addComponent(mainLayout);
         // Split and allow resizing
     }
@@ -155,7 +193,7 @@ Button GrillaCampana = new Button("Ver campañas");
     }
 
     private Usuario getUsuarioSesion() {
-        StrictAccessControl strictAccessControl = (StrictAccessControl) ((MyUI) getUI()).getAccessControl();
+        StrictAccessControl strictAccessControl = (StrictAccessControl) (MyUI.get()).getAccessControl();
         if(strictAccessControl != null)
             return strictAccessControl.getRecoveredUser();
 

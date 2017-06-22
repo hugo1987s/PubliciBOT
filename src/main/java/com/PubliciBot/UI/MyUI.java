@@ -28,7 +28,7 @@ import javax.servlet.annotation.WebServlet;
 @Theme("mytheme")
 public class MyUI extends UI {
 //
-    private AccessControl accessControl = new StrictAccessControl(); //DespuesCambiar a strict cuando ande
+    private AccessControl accessControl = new StrictAccessControl();
     private LoginScreen login;
 
     @Override
