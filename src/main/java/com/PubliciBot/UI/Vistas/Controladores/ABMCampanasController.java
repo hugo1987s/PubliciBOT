@@ -9,6 +9,7 @@ import com.PubliciBot.UI.Vistas.ABMAccionView;
 import com.PubliciBot.UI.Vistas.DetalleCampanaView;
 import com.PubliciBot.UI.Vistas.SelectorTags;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 
 import java.time.Instant;
@@ -52,6 +53,10 @@ public class ABMCampanasController extends HorizontalLayout {
 
     Button btnEjecutarAcciones;
 
+    Grid campanasList;
+    Button btnGrilla = new Button("Ver Grilla");
+    Upload uploadFile;
+
 //comment
 
     public ABMCampanasController() {
@@ -61,6 +66,7 @@ public class ABMCampanasController extends HorizontalLayout {
         initComponents();
         dibujarControles();
         cargarComboDuracion();
+
 
         crearCampana.addClickListener(new Button.ClickListener() {
             @Override
@@ -198,10 +204,29 @@ public class ABMCampanasController extends HorizontalLayout {
                 }
             }
         });
+
+        btnGrilla.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                cargarGrilla();
+            }
+        });
+
+
     }
 
     private boolean nuevaCampanaNoTieneTags() {
         return nuevaCampana.getTags().size() == 0;
+    }
+
+
+    private void cargarGrilla()
+    {
+        Usuario actual = getUsuarioSesion();
+        if (actual != null) {
+            campanasList.setContainerDataSource(new BeanItemContainer<>(
+                    Campana.class, campanaService.findAll(actual)));
+        }
     }
 
     private UnidadMedida obtenerUnidadMedida() {
@@ -246,7 +271,7 @@ public class ABMCampanasController extends HorizontalLayout {
         crearCampana = new Button("Crear campaña");
         seleccionarTags = new Button("Seleccionar Tags");
         btnGuardarCampana = new Button("Guardar Campaña");
-        btnVerCampanasGuardadas = new Button("Cargar");
+        btnVerCampanasGuardadas = new Button("Ver Campañas Guardadas");
         detalleCampanaSeleccionada = new Button("Detalles Campana");
         campanasGuardadas = new ListSelect("Campañas guardadas");
         campanasGuardadasList = new ArrayList<Campana>();
@@ -255,8 +280,57 @@ public class ABMCampanasController extends HorizontalLayout {
 
         btnAgregarAccion = new Button("Agregar Acción");
         btnEjecutarAcciones = new Button("Ejecutar Acciones");
+
+        campanasList = new Grid();
+        campanasList.setContainerDataSource(new BeanItemContainer<>(Campana.class));
+
+        UploadReceiver receiver = new UploadReceiver();
+
+// Create the upload with a caption and set receiver later
+        uploadFile = new Upload("Upload Image Here", receiver);
+
+        uploadFile.setImmediate(true);
+        uploadFile.setButtonCaption("Subir imagen");
+
+        uploadFile.addSucceededListener(receiver);
+
     }
 
+
+    private void dibujarControles() {
+
+        verticalLayout = new VerticalLayout();
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+
+        VerticalLayout layoutcampana = new VerticalLayout();
+        layoutcampana.setMargin(true);
+        layoutcampana.setSpacing(true);
+        layoutcampana.addComponents(lblTitulo, txtNombreCampana, txtDescripcion, dfFechaInicio, txtoduracion);
+
+        horizontalLayout.addComponents(txtDuracion, cboUnidadTiempo);
+        horizontalLayout.setSpacing(true);
+        layoutcampana.addComponents(horizontalLayout, txtMensaje, imgImgenMensaje, uploadFile);
+
+        HorizontalLayout horizontalLayoutbotones = new HorizontalLayout();
+        horizontalLayoutbotones.addComponents(crearCampana, seleccionarTags, btnAgregarAccion, btnGuardarCampana, btnVerCampanasGuardadas, btnGrilla);
+
+        //horizontalLayoutbotones.addComponent(btnEjecutarAcciones);
+        horizontalLayoutbotones.setSpacing(true);
+        layoutcampana.addComponent(horizontalLayoutbotones);
+
+        verticalLayout.addComponent(layoutcampana);
+        this.addComponent(verticalLayout);
+
+        hl.addComponents(campanasGuardadas, detalleCampanaSeleccionada, btnEjecutarAcciones);
+
+        detalleCampanaSeleccionada.setVisible(false);
+        btnEjecutarAcciones.setVisible(false);
+
+        VerticalLayout verticalLayoutGrid = new VerticalLayout(campanasList);
+        verticalLayoutGrid.setSizeFull();
+        campanasList.setSizeFull();
+    }
+/*
     private void dibujarControles() {
 
         verticalLayout = new VerticalLayout();
@@ -298,7 +372,7 @@ public class ABMCampanasController extends HorizontalLayout {
         btnEjecutarAcciones.setVisible(false);
 
     }
-
+*/
     private void cargarComboDuracion() {
         cboUnidadTiempo.addItems(UnidadMedida.values());
         cboUnidadTiempo.setValue(UnidadMedida.SEMANA);

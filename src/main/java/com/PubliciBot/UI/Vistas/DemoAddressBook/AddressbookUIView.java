@@ -1,7 +1,12 @@
 package com.PubliciBot.UI.Vistas.DemoAddressBook;
 
+import com.PubliciBot.DM.Campana;
+import com.PubliciBot.DM.Usuario;
+import com.PubliciBot.Services.CampanaService;
+import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.DemoAddressBook.Backend.Contact;
 import com.PubliciBot.UI.Vistas.DemoAddressBook.Backend.ContactService;
+import com.PubliciBot.UI.authentication.StrictAccessControl;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.util.BeanItemContainer;
@@ -25,6 +30,13 @@ public class AddressbookUIView extends VerticalLayout implements View {
         super();
         configureComponents();
         buildLayout();
+
+        GrillaCampana.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                refreshCampanas("filtroTest");
+            }
+        });
     }
 
 
@@ -47,6 +59,9 @@ public class AddressbookUIView extends VerticalLayout implements View {
     // example as EJB or Spring Data based service.
     ContactService service = ContactService.createDemoService();
 
+    Grid campanasList = new Grid();
+    CampanaService campanaService = new CampanaService();
+Button GrillaCampana = new Button("Ver campañas");
 
     /* The "Main method".
      *
@@ -78,6 +93,9 @@ public class AddressbookUIView extends VerticalLayout implements View {
         contactList.addSelectionListener(e
                 -> contactForm.edit((Contact) contactList.getSelectedRow()));
         refreshContacts();
+
+        campanasList.setContainerDataSource(new BeanItemContainer<>(Campana.class));
+
     }
 
     /* Robust layouts.
@@ -92,14 +110,16 @@ public class AddressbookUIView extends VerticalLayout implements View {
      * with Vaadin Designer, CSS and HTML.
      */
     private void buildLayout() {
-        HorizontalLayout actions = new HorizontalLayout(filter, newContact);
+        HorizontalLayout actions = new HorizontalLayout(filter, newContact, GrillaCampana);
         actions.setWidth("100%");
         filter.setWidth("100%");
         actions.setExpandRatio(filter, 1);
 
-        VerticalLayout left = new VerticalLayout(actions, contactList);
+        VerticalLayout left = new VerticalLayout(actions, contactList, campanasList);
         left.setSizeFull();
         contactList.setSizeFull();
+        campanasList.setSizeFull();
+
         left.setExpandRatio(contactList, 1);
 
         HorizontalLayout mainLayout = new HorizontalLayout(left, contactForm);
@@ -125,6 +145,21 @@ public class AddressbookUIView extends VerticalLayout implements View {
         contactList.setContainerDataSource(new BeanItemContainer<>(
                 Contact.class, service.findAll(stringFilter)));
         contactForm.setVisible(false);
+    }
+
+    private void refreshCampanas(String stringFilter) {
+        campanaService.recuperarCampanas(getUsuarioSesion());
+        campanasList.setContainerDataSource(new BeanItemContainer<>(
+                Campana.class, campanaService.getCampanasGuardadas()));
+        //contactForm.setVisible(false);
+    }
+
+    private Usuario getUsuarioSesion() {
+        StrictAccessControl strictAccessControl = (StrictAccessControl) ((MyUI) getUI()).getAccessControl();
+        if(strictAccessControl != null)
+            return strictAccessControl.getRecoveredUser();
+
+        return new Usuario();
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.PubliciBot.DM.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Hugo on 22/05/2017.
@@ -44,6 +45,13 @@ public class CampanaService {
 
     public void recuperarCampanas(Usuario usuario){
         this.campanasGuardadas = (ArrayList<Campana>) campanaDao.recuperarCampanas(usuario);
+    }
+
+
+    public synchronized List<Campana> findAll(Usuario usuario)
+    {
+       return  campanaDao.recuperarCampanas(usuario);
+
     }
 
     public ArrayList<Campana> getCampanasGuardadas(){
