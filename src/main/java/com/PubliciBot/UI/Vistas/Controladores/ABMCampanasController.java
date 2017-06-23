@@ -12,7 +12,6 @@ import com.PubliciBot.UI.Vistas.SelectorTags;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 
 import java.time.Instant;
@@ -26,10 +25,10 @@ public class ABMCampanasController extends HorizontalLayout {
 
     Label lblTitulo;
 
-    TextField txtNombreCampana;
-    TextArea txtDescripcion;
-    DateField dfFechaInicio;
-    TextField txtDuracion;
+    TextField nombre;
+    TextArea descripcion;
+    DateField fechaInicio;
+    TextField duracion;
     ComboBox cboUnidadTiempo;
     TextArea txtMensaje;
     Image imgImgenMensaje;
@@ -204,15 +203,15 @@ public class ABMCampanasController extends HorizontalLayout {
         lblTitulo = new Label("Administración de Campañas");
         accionView = new ABMAccionView(this);
         publicitariaService = new AccionPublicitariaService();
-        txtNombreCampana = new TextField("Nombre");
-        txtNombreCampana.setValue("Campaña: " + Integer.toString(Date.from(Instant.now()).getDate()) + "/" + Integer.toString(Date.from(Instant.now()).getMonth())
+        nombre = new TextField("Nombre");
+        nombre.setValue("Campaña: " + Integer.toString(Date.from(Instant.now()).getDate()) + "/" + Integer.toString(Date.from(Instant.now()).getMonth())
                 + ":" + Integer.toString(Date.from(Instant.now()).getSeconds()));
-        txtDescripcion = new TextArea("Descripción");
-        txtDescripcion.setValue("Creada el " + Date.from(Instant.now()).toString());
-        dfFechaInicio = new DateField("Fecha de inicio");
-        dfFechaInicio.setValue(Date.from(Instant.now()));
-        txtDuracion = new TextField();
-        txtDuracion.setValue("1");
+        descripcion = new TextArea("Descripción");
+        descripcion.setValue("Creada el " + Date.from(Instant.now()).toString());
+        fechaInicio = new DateField("Fecha de inicio");
+        fechaInicio.setValue(Date.from(Instant.now()));
+        duracion = new TextField();
+        duracion.setValue("1");
         txtoduracion =new Label("Duración");
         cboUnidadTiempo = new ComboBox();
         cboUnidadTiempo.setWidth(115, Unit.PIXELS);
@@ -253,9 +252,9 @@ public class ABMCampanasController extends HorizontalLayout {
         VerticalLayout layoutcampana = new VerticalLayout();
         layoutcampana.setMargin(true);
         layoutcampana.setSpacing(true);
-        layoutcampana.addComponents(lblTitulo, txtNombreCampana, txtDescripcion, dfFechaInicio, txtoduracion);
+        layoutcampana.addComponents(lblTitulo, nombre, descripcion, fechaInicio, txtoduracion);
 
-        horizontalLayout.addComponents(txtDuracion, cboUnidadTiempo);
+        horizontalLayout.addComponents(duracion, cboUnidadTiempo);
         horizontalLayout.setSpacing(true);
         layoutcampana.addComponents(horizontalLayout, txtMensaje, imgImgenMensaje, uploadFile);
 
@@ -288,11 +287,11 @@ public class ABMCampanasController extends HorizontalLayout {
         layoutcampana.setMargin(true);
         layoutcampana.setSpacing(true);
         layoutcampana.addComponent(lblTitulo);
-        layoutcampana.addComponent(txtNombreCampana);
-        layoutcampana.addComponent(txtDescripcion);
-        layoutcampana.addComponent(dfFechaInicio);
+        layoutcampana.addComponent(nombre);
+        layoutcampana.addComponent(descripcion);
+        layoutcampana.addComponent(fechaInicio);
         layoutcampana.addComponent(txtoduracion);
-        horizontalLayout.addComponent(txtDuracion);
+        horizontalLayout.addComponent(duracion);
         horizontalLayout.addComponent(cboUnidadTiempo);
         horizontalLayout.setSpacing(true);
         layoutcampana.addComponent(horizontalLayout);
@@ -377,7 +376,7 @@ public class ABMCampanasController extends HorizontalLayout {
         this.nuevaCampana = campana;
         if(campana != null ){
             formFieldBindings = BeanFieldGroup.bindFieldsBuffered(campana, this);
-            txtNombreCampana.focus();
+            nombre.focus();
         }
     }
 
