@@ -111,7 +111,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
                 abmCampanasController.crearCampana(new Campana());
             }
         });
-        campanasList.setColumnOrder("nombre","descripcion");
+        //campanasList.setColumnOrder("nombre","descripcion");
         campanasList.setContainerDataSource(new BeanItemContainer<>(Campana.class));
 
     }
