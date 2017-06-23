@@ -3,7 +3,6 @@ package com.PubliciBot.UI.Vistas.DemoAddressBook;
 import com.PubliciBot.DM.Campana;
 import com.PubliciBot.DM.Usuario;
 import com.PubliciBot.Services.CampanaService;
-import com.PubliciBot.Services.UsuarioService;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.Controladores.ABMCampanasController;
 import com.PubliciBot.UI.Vistas.DemoAddressBook.Backend.Contact;
@@ -65,8 +64,8 @@ public class AddressbookUIView extends VerticalLayout implements View {
 
     Grid campanasList = new Grid();
     CampanaService campanaService = new CampanaService();
-    UsuarioService usuarioService =  usuarioService = new UsuarioService();
-    ABMCampanasController abmCampanasController = new ABMCampanasController();
+
+    ABMCampanasController abmCampanasController = new ABMCampanasController(this);
     Button grillaCampana = new Button("Ver campañas");
     Button nuevaCampana = new Button("Nueva Campaña");
 
@@ -104,16 +103,11 @@ public class AddressbookUIView extends VerticalLayout implements View {
         abmCampanasController.setVisible(false);
         addComponent(abmCampanasController);
 
-        nuevaCampana.addClickListener(e-> abmCampanasController.setVisible(true));
-        abmCampanasController.getBtnGuardarCampana().addClickListener(new Button.ClickListener() {
+        nuevaCampana.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                Usuario actual = getUsuarioSesion();
-                usuarioService.agregarCampañaAUsuario(abmCampanasController.getNuevaCampana(), actual);
-                usuarioService.guardarUsuario(actual);
-                abmCampanasController.setVisible(false);
-                refreshCampanas("filtroTest");
-                //MedioService medioService = new MedioService(nuevaCampana.getAcciones())
+                abmCampanasController.setVisible(true);
+                abmCampanasController.crearCampana(new Campana());
             }
         });
 
@@ -133,8 +127,8 @@ public class AddressbookUIView extends VerticalLayout implements View {
      * with Vaadin Designer, CSS and HTML.
      */
     private void buildLayout() {
-        /*viejo
-        HorizontalLayout actions = new HorizontalLayout(filter, newContact, grillaCampana);
+        /*/viejo
+        HorizontalLayout actions = new HorizontalLayout(filter, newContact);
         actions.setWidth("100%");
         filter.setWidth("100%");
         actions.setExpandRatio(filter, 1);
@@ -143,14 +137,14 @@ public class AddressbookUIView extends VerticalLayout implements View {
         left.setSizeFull();
         contactList.setSizeFull();
         left.setExpandRatio(contactList, 1);
-        left.setExpandRatio(campanasList, 1);
+
 
         HorizontalLayout mainLayout = new HorizontalLayout(left, contactForm);
         mainLayout.setSizeFull();
         mainLayout.setExpandRatio(left, 1);
-        FIN VIEJO*/
+       // FIN VIEJO*/
 
-
+ //
         HorizontalLayout actions = new HorizontalLayout(nuevaCampana);
 
         VerticalLayout left = new VerticalLayout(actions,campanasList);
@@ -162,7 +156,7 @@ public class AddressbookUIView extends VerticalLayout implements View {
         HorizontalLayout mainLayout = new HorizontalLayout(left, abmCampanasController);
         mainLayout.setSizeFull();
         mainLayout.setExpandRatio(left, 1);
-
+//*/
         this.addComponent(mainLayout);
         // Split and allow resizing
     }
@@ -185,7 +179,7 @@ public class AddressbookUIView extends VerticalLayout implements View {
         contactForm.setVisible(false);
     }
 
-    private void refreshCampanas(String stringFilter) {
+    public void refreshCampanas(String stringFilter) {
         campanaService.recuperarCampanas(getUsuarioSesion());
         campanasList.setContainerDataSource(new BeanItemContainer<>(
                 Campana.class, campanaService.getCampanasGuardadas()));

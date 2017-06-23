@@ -3,11 +3,15 @@ package com.PubliciBot.UI.Vistas.Controladores;
 import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.AccionPublicitariaService;
 import com.PubliciBot.Services.CampanaService;
+import com.PubliciBot.Services.UsuarioService;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.ABMAccionView;
+import com.PubliciBot.UI.Vistas.DemoAddressBook.AddressbookUIView;
 import com.PubliciBot.UI.Vistas.DetalleCampanaView;
 import com.PubliciBot.UI.Vistas.SelectorTags;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
+import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 
@@ -56,11 +60,17 @@ public class ABMCampanasController extends HorizontalLayout {
     Button btnGrilla = new Button("Ver Grilla");
     Upload uploadFile;
 
+    UsuarioService usuarioService = new UsuarioService();
+
+    AddressbookUIView addressbookUIView;
+    BeanFieldGroup<Campana> formFieldBindings;
+
 //comment
 
-    public ABMCampanasController() {
+    public ABMCampanasController(AddressbookUIView adbUI) {
         super();
 
+        this.addressbookUIView = adbUI;
         setSpacing(true);
         initComponents();
         dibujarControles();
@@ -70,6 +80,7 @@ public class ABMCampanasController extends HorizontalLayout {
         crearCampana.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
+                /*
                 //datos de campaña
                 String nombreCampana = txtNombreCampana.getValue();
                 String descripcion = txtDescripcion.getValue();
@@ -94,16 +105,18 @@ public class ABMCampanasController extends HorizontalLayout {
                     mensaje = new Mensaje(null, imgImgenMensaje.toString());
                 } else
                     mensaje = new Mensaje(mensajeTxt, imgImgenMensaje.toString());
-                */
+
                 boolean vacios = nombreCampana.equals("") || descripcion.equals("") || fechaCreacion.equals("") || duracion == 0 || unidadMedida == null || mensajeTxt.equals("") || mensaje == null;
                 boolean txtVacio = txtDuracion.getValue().equals("") || txtDuracion == null || nombreCampana == null || descripcion == null || fechaCreacion == null;
                 if (vacios || txtVacio) {
                     Notification.show("Capo, llena los campos antes plz");
                     return;
                 }
-                else {
-                    nuevaCampana = new Campana(nombreCampana, descripcion, fechaCreacion, duracion*unidadMedida.unidadASegundos(), mensaje);
-                }
+                */
+               // else {
+
+                   // nuevaCampana = new Campana(nombreCampana, descripcion, fechaCreacion, duracion*unidadMedida.unidadASegundos(), mensaje);
+               // }
             }
         });
 
@@ -175,6 +188,15 @@ public class ABMCampanasController extends HorizontalLayout {
         });
 
 
+        btnGuardarCampana.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+               guardar();
+               setVisible(false);
+
+                //MedioService medioService = new MedioService(nuevaCampana.getAcciones())
+            }
+        });
 
 
         btnEjecutarAcciones.addClickListener(new Button.ClickListener() {
@@ -416,6 +438,33 @@ public class ABMCampanasController extends HorizontalLayout {
         return this.nuevaCampana;
     }
 
+    public void crearCampana(Campana campana){
+        this.nuevaCampana = campana;
+        if(campana != null ){
+            formFieldBindings = BeanFieldGroup.bindFieldsBuffered(campana, this);
+            txtNombreCampana.focus();
+        }
+    }
+
+    public void guardar() {
+        try {
+            // Commit the fields from UI to DAO
+            formFieldBindings.commit();
+
+            String msg = String.format("Saved '%s %s'.",
+                    nuevaCampana.getNombre(),
+                    nuevaCampana.getDescripcion());
+            Notification.show(msg, Notification.Type.TRAY_NOTIFICATION);
+
+            Usuario actual = getUsuarioSesion();
+            usuarioService.agregarCampañaAUsuario(nuevaCampana, actual);
+            usuarioService.guardarUsuario(actual);
+            addressbookUIView.refreshCampanas("filtroTest");
+
+        } catch (FieldGroup.CommitException e) {
+            // Validation exceptions could be shown here
+        }
+    }
 
     public Button getBtnGuardarCampana() {
         return btnGuardarCampana;

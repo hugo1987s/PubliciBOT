@@ -1,10 +1,8 @@
 package com.PubliciBot.UI.Vistas;
 
-import com.PubliciBot.UI.Vistas.Controladores.ABMCampanasController;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -17,8 +15,8 @@ public class ABMCampanasView extends VerticalLayout implements View {
 
     public ABMCampanasView()
     {
-        ABMCampanasController abmCampanasController = new ABMCampanasController();
-        this.addComponent(abmCampanasController);
+        //ABMCampanasController abmCampanasController = new ABMCampanasController();
+        //this.addComponent(abmCampanasController);
     }
 
 

@@ -76,6 +76,7 @@ public class ContactForm extends FormLayout {
             // Commit the fields from UI to DAO
             formFieldBindings.commit();
 
+
             // Save DAO to backend with direct synchronous service API
             adbUI.service.save(contact);
 

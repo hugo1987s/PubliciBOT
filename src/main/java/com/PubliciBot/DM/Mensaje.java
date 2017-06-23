@@ -12,6 +12,10 @@ public class Mensaje {
         this.imagenMensajePath = imagenMensaje;
     }
 
+    public Mensaje (){
+        this.textoMensaje = "";
+        this.imagenMensajePath = "";
+    }
     public String getTextoMensaje() {
         return textoMensaje;
     }
