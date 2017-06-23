@@ -6,7 +6,7 @@ import com.PubliciBot.Services.CampanaService;
 import com.PubliciBot.Services.UsuarioService;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.ABMAccionView;
-import com.PubliciBot.UI.Vistas.DemoAddressBook.AddressbookUIView;
+import com.PubliciBot.UI.Vistas.DemoAddressBook.ABMCampanasView;
 import com.PubliciBot.UI.Vistas.DetalleCampanaView;
 import com.PubliciBot.UI.Vistas.SelectorTags;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
@@ -36,9 +36,8 @@ public class ABMCampanasController extends HorizontalLayout {
     Label txtoduracion;
 
     Button btnGuardarCampana;
-    Button btnVerCampanasGuardadas;
+
     Button seleccionarTags;
-    Button crearCampana;
     CampanaService campanaService;
 
     AccionPublicitariaService publicitariaService;
@@ -56,18 +55,17 @@ public class ABMCampanasController extends HorizontalLayout {
 
     Button btnEjecutarAcciones;
 
-    Grid campanasList;
-    Button btnGrilla = new Button("Ver Grilla");
+
     Upload uploadFile;
 
     UsuarioService usuarioService = new UsuarioService();
 
-    AddressbookUIView addressbookUIView;
+    ABMCampanasView addressbookUIView;
     BeanFieldGroup<Campana> formFieldBindings;
 
 //comment
 
-    public ABMCampanasController(AddressbookUIView adbUI) {
+    public ABMCampanasController(ABMCampanasView adbUI) {
         super();
 
         this.addressbookUIView = adbUI;
@@ -77,48 +75,7 @@ public class ABMCampanasController extends HorizontalLayout {
         cargarComboDuracion();
 
 
-        crearCampana.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                /*
-                //datos de campaña
-                String nombreCampana = txtNombreCampana.getValue();
-                String descripcion = txtDescripcion.getValue();
-                Date fechaCreacion = dfFechaInicio.getValue();
-                int duracion = 0;
-                if (!txtDuracion.getValue().equals(""))
-                    duracion = Integer.parseInt(txtDuracion.getValue());
-                UnidadMedida unidadMedida = obtenerUnidadMedida();
-                String mensajeTxt = txtMensaje.getValue();
-                Mensaje mensaje = null;
 
-                //TODO le puse NULL al path de la imagen porque estaba haciendo un toString() de un objeto imagen
-                if (imgImgenMensaje == null) {
-                    mensaje = new Mensaje(mensajeTxt, null);
-                }
-                if (mensajeTxt == null || mensajeTxt.equals("")) {
-                    mensaje = new Mensaje(null, null);
-                } else
-                    mensaje = new Mensaje(mensajeTxt, null);
-                /*
-                if (mensajeTxt == null || mensajeTxt.equals("")) {
-                    mensaje = new Mensaje(null, imgImgenMensaje.toString());
-                } else
-                    mensaje = new Mensaje(mensajeTxt, imgImgenMensaje.toString());
-
-                boolean vacios = nombreCampana.equals("") || descripcion.equals("") || fechaCreacion.equals("") || duracion == 0 || unidadMedida == null || mensajeTxt.equals("") || mensaje == null;
-                boolean txtVacio = txtDuracion.getValue().equals("") || txtDuracion == null || nombreCampana == null || descripcion == null || fechaCreacion == null;
-                if (vacios || txtVacio) {
-                    Notification.show("Capo, llena los campos antes plz");
-                    return;
-                }
-                */
-               // else {
-
-                   // nuevaCampana = new Campana(nombreCampana, descripcion, fechaCreacion, duracion*unidadMedida.unidadASegundos(), mensaje);
-               // }
-            }
-        });
 
         //SE ABRE VENTANA PARA ASIGNAR TAGS A CAMPAÑA
         seleccionarTags.addClickListener(new Button.ClickListener() {
@@ -157,13 +114,7 @@ public class ABMCampanasController extends HorizontalLayout {
 
         });
 
-        btnVerCampanasGuardadas.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                agregarListaCampanas();
-                getSelectedCampaign();
-            }
-        });
+
 
         detalleCampanaSeleccionada.addClickListener(new Button.ClickListener() {
             @Override
@@ -218,12 +169,7 @@ public class ABMCampanasController extends HorizontalLayout {
             }
         });
 
-        btnGrilla.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                cargarGrilla();
-            }
-        });
+
 
 
     }
@@ -233,14 +179,7 @@ public class ABMCampanasController extends HorizontalLayout {
     }
 
 
-    private void cargarGrilla()
-    {
-        Usuario actual = getUsuarioSesion();
-        if (actual != null) {
-            campanasList.setContainerDataSource(new BeanItemContainer<>(
-                    Campana.class, campanaService.findAll(actual)));
-        }
-    }
+
 
     private UnidadMedida obtenerUnidadMedida() {
 
@@ -281,10 +220,10 @@ public class ABMCampanasController extends HorizontalLayout {
         txtMensaje = new TextArea("Mensaje adjunto");
         txtMensaje.setValue("Mensaje de Prueba");
         imgImgenMensaje = new Image("Imagen adjunta");
-        crearCampana = new Button("Crear campaña");
+
         seleccionarTags = new Button("Seleccionar Tags");
         btnGuardarCampana = new Button("Guardar Campaña");
-        btnVerCampanasGuardadas = new Button("Ver Campañas Guardadas");
+
         detalleCampanaSeleccionada = new Button("Detalles Campana");
         campanasGuardadas = new ListSelect("Campañas guardadas");
         campanasGuardadasList = new ArrayList<Campana>();
@@ -293,10 +232,6 @@ public class ABMCampanasController extends HorizontalLayout {
 
         btnAgregarAccion = new Button("Agregar Acción");
         btnEjecutarAcciones = new Button("Ejecutar Acciones");
-
-        campanasList = new Grid();
-        campanasList.setContainerDataSource(new BeanItemContainer<>(Campana.class));
-
         UploadReceiver receiver = new UploadReceiver();
 
 // Create the upload with a caption and set receiver later
@@ -325,7 +260,7 @@ public class ABMCampanasController extends HorizontalLayout {
         layoutcampana.addComponents(horizontalLayout, txtMensaje, imgImgenMensaje, uploadFile);
 
         HorizontalLayout horizontalLayoutbotones = new HorizontalLayout();
-        horizontalLayoutbotones.addComponents(crearCampana, seleccionarTags, btnAgregarAccion, btnGuardarCampana, btnVerCampanasGuardadas, btnGrilla);
+        horizontalLayoutbotones.addComponents(seleccionarTags, btnAgregarAccion, btnGuardarCampana);
 
         //horizontalLayoutbotones.addComponent(btnEjecutarAcciones);
         horizontalLayoutbotones.setSpacing(true);
@@ -339,9 +274,9 @@ public class ABMCampanasController extends HorizontalLayout {
         detalleCampanaSeleccionada.setVisible(false);
         btnEjecutarAcciones.setVisible(false);
 
-        VerticalLayout verticalLayoutGrid = new VerticalLayout(campanasList);
+        VerticalLayout verticalLayoutGrid = new VerticalLayout();
         verticalLayoutGrid.setSizeFull();
-        campanasList.setSizeFull();
+
     }
 /*
     private void dibujarControles() {

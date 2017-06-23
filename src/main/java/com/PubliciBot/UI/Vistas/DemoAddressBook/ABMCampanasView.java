@@ -23,11 +23,12 @@ import com.vaadin.ui.*;
  */
 @Title("Addressbook")
 @Theme("valo")
-public class AddressbookUIView extends VerticalLayout implements View {
+public class ABMCampanasView extends VerticalLayout implements View {
 
-    public static final String VIEW_NAME = "AddressBook";
+    public static final String VIEW_NAME = "Campañas";
 
-    public AddressbookUIView (){
+
+    public ABMCampanasView (){
         super();
         configureComponents();
         buildLayout();
@@ -39,16 +40,16 @@ public class AddressbookUIView extends VerticalLayout implements View {
             }
         });
         */
-       refreshCampanas("filtroTest");
+        refreshCampanas("filtroTest");
     }
 
 
 
-	/* Hundreds of widgets.
-	 * Vaadin's user interface components are just Java objects that encapsulate
-	 * and handle cross-browser support and client-server communication. The
-	 * default Vaadin components are in the com.vaadin.ui package and there
-	 * are over 500 more in vaadin.com/directory.
+    /* Hundreds of widgets.
+     * Vaadin's user interface components are just Java objects that encapsulate
+     * and handle cross-browser support and client-server communication. The
+     * default Vaadin components are in the com.vaadin.ui package and there
+     * are over 500 more in vaadin.com/directory.
      */
     TextField filter = new TextField();
     Grid contactList = new Grid();
@@ -144,7 +145,7 @@ public class AddressbookUIView extends VerticalLayout implements View {
         mainLayout.setExpandRatio(left, 1);
        // FIN VIEJO*/
 
- //
+        //
         HorizontalLayout actions = new HorizontalLayout(nuevaCampana);
 
         VerticalLayout left = new VerticalLayout(actions,campanasList);

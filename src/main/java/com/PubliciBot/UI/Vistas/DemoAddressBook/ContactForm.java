@@ -30,10 +30,10 @@ public class ContactForm extends FormLayout {
 
     // Easily bind forms to beans and manage validation and buffering
     BeanFieldGroup<Contact> formFieldBindings;
-    AddressbookUIView adbUI;
+    ABMCampanasView adbUI;
 
 
-    public ContactForm(AddressbookUIView adbUI) {
+    public ContactForm(ABMCampanasView adbUI) {
         this.adbUI=adbUI;
         configureComponents();
         buildLayout();

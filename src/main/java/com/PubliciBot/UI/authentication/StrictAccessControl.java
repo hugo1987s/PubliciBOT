@@ -4,7 +4,7 @@ import com.PubliciBot.DM.Privilegio;
 import com.PubliciBot.DM.Rol;
 import com.PubliciBot.DM.Usuario;
 import com.PubliciBot.Services.UsuarioService;
-import com.PubliciBot.UI.Vistas.ABMCampanasView;
+import com.PubliciBot.UI.Vistas.EdicionCampanasView;
 import com.PubliciBot.UI.Vistas.ABMTagsView;
 
 /**
@@ -67,7 +67,7 @@ public class StrictAccessControl implements AccessControl {
     }
 
     private void crearCliente(){
-        Privilegio<ABMCampanasView> cliente = new Privilegio<>(ABMCampanasView.class);
+        Privilegio<EdicionCampanasView> cliente = new Privilegio<>(EdicionCampanasView.class);
         Rol rolCliente = new Rol("Cliente");
         rolCliente.add(cliente);
         Usuario clientUser =  new Usuario("cliente","cliente",rolCliente);
@@ -79,7 +79,7 @@ public class StrictAccessControl implements AccessControl {
     private void crearAdmin(){
         Privilegio<ABMTagsView> admin = new Privilegio<>(ABMTagsView.class);
         Privilegio<ABMTagsView> tecnico = new Privilegio<>(ABMTagsView.class);
-        Privilegio<ABMCampanasView> cliente = new Privilegio<>(ABMCampanasView.class);
+        Privilegio<EdicionCampanasView> cliente = new Privilegio<>(EdicionCampanasView.class);
         Rol rolAdmin = new Rol("admin");
         rolAdmin.add(admin);
         rolAdmin.add(tecnico);
