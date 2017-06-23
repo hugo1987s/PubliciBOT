@@ -58,7 +58,9 @@ public class Campana implements Serializable{
     }
 
     public Campana(){
-        this.fechaInicio = new Date(0);
+        this.nombre = "";
+        this.descripcion = "";
+        this.fechaInicio = new Date();
         this.duracion = 0;
         this.unidadMedida = UnidadMedida.SEMANA;
         this.estadoCampana = EstadoCampana.PRELIMINAR;

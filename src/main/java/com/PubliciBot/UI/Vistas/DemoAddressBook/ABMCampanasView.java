@@ -5,12 +5,14 @@ import com.PubliciBot.DM.Usuario;
 import com.PubliciBot.Services.CampanaService;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.Controladores.ABMCampanasController;
+import com.PubliciBot.UI.Vistas.Controladores.EstadisticasCampanaController;
 import com.PubliciBot.UI.Vistas.DemoAddressBook.Backend.Contact;
 import com.PubliciBot.UI.Vistas.DemoAddressBook.Backend.ContactService;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.event.SelectionEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
@@ -67,6 +69,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
     CampanaService campanaService = new CampanaService();
 
     ABMCampanasController abmCampanasController = new ABMCampanasController(this);
+    EstadisticasCampanaController estadisticasCampanaController ;
     Button grillaCampana = new Button("Ver campañas");
     Button nuevaCampana = new Button("Nueva Campaña");
 
@@ -112,6 +115,14 @@ public class ABMCampanasView extends VerticalLayout implements View {
             }
         });
         //campanasList.setColumnOrder("nombre","descripcion");
+       campanasList.addSelectionListener(new SelectionEvent.SelectionListener() {
+           @Override
+           public void select(SelectionEvent selectionEvent) {
+               estadisticasCampanaController = new EstadisticasCampanaController((Campana)campanasList.getSelectedRow());
+               addComponent(estadisticasCampanaController);
+           }
+       });
+
         campanasList.setContainerDataSource(new BeanItemContainer<>(Campana.class));
 
     }
