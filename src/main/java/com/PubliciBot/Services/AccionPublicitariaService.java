@@ -26,20 +26,19 @@ public class AccionPublicitariaService {
 
 
 
-    public void publicar(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal) {
+    public boolean publicar(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal) {
         TipoMedio tipo=accionPublicitaria.getMedio().getTipoMedio();
 
-
         switch (tipo) {
-            case EMAIL: enviarMail(accionPublicitaria,mensajeLocal) ;
-                break;
+            case EMAIL: return enviarMail(accionPublicitaria,mensajeLocal) ;
 
-            case TWITTER:
-                break;
+
+            case TWITTER: return false;
+
 
 
         }
-
+        return false;
     }
 
 
@@ -122,8 +121,10 @@ public class AccionPublicitariaService {
             return true;
 
         } catch (MessagingException e) {
+
+
             return false;
-            //throw new RuntimeException(e);
+
 
         }
     }

@@ -19,9 +19,12 @@ public class Sender extends Thread{
 
         while (run){
             Task task=tasker.giveMeaTask();
-            if(task!=null)
+            if(task!=null) {
+                System.out.println("Sender: Task Recibida y Ejecutada");
                 task.execute();
+            }
             else{
+
                 run=false;
             }
 
