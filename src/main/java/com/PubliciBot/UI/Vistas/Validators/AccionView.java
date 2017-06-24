@@ -48,10 +48,10 @@ public class AccionView extends VerticalLayout{
         nuevaAccion.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                accionList.deselect(accionList.getSelectedRow());
                 estadoABMAccion = estadoABMAccion.NUEVAACCION;
                 abmAccionController.setVisible(true);
                 abmAccionController.crearAccion(new AccionPublicitaria());
+                accionList.deselect(accionList.getSelectedRow());
             }
         });
         //campanasList.setColumnOrder("nombre","descripcion");
@@ -85,10 +85,10 @@ public class AccionView extends VerticalLayout{
         btnEditarAccion.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                accionList.deselect(accionList.getSelectedRow());
                 estadoABMAccion = EstadoABMAccion.EDICIONACCION;
                 abmAccionController.setVisible(true);
                 abmAccionController.crearAccion((AccionPublicitaria)accionList.getSelectedRow());
+                accionList.deselect(accionList.getSelectedRow());
             }
         });
         accionList.setContainerDataSource(new BeanItemContainer<>(AccionPublicitaria.class));

@@ -165,10 +165,10 @@ public class ABMCampanasView extends VerticalLayout implements View {
        btnEditarCampaña.addClickListener(new Button.ClickListener() {
            @Override
            public void buttonClick(Button.ClickEvent clickEvent) {
-               campanasList.deselect(campanasList.getSelectedRow());
                estadoABMCampana = estadoABMCampana.EDICIONCAMPANA;
                abmCampanasController.setVisible(true);
                abmCampanasController.crearCampana((Campana)campanasList.getSelectedRow());
+               campanasList.deselect(campanasList.getSelectedRow());
            }
        });
         campanasList.setContainerDataSource(new BeanItemContainer<>(Campana.class));
@@ -254,7 +254,6 @@ public class ABMCampanasView extends VerticalLayout implements View {
         return new Usuario();
     }
 
-
     public EstadoABMCampana getEstadoABMCampana(){
         return  this.estadoABMCampana;
     }
@@ -264,13 +263,10 @@ public class ABMCampanasView extends VerticalLayout implements View {
 
     }
 
-
     /*  Deployed as a Servlet or Portlet.
      *
      *  You can specify additional servlet parameters like the URI and UI
      *  class name and turn on production mode when you have finished developing the application.
      */
-
-
 
 }
