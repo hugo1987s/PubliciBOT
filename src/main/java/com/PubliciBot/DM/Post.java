@@ -27,7 +27,7 @@ public class Post implements Task{
 
            Calendar c = Calendar.getInstance();
            c.add(Calendar.SECOND, this.accion.getPeriodicidadSegundos());
-
+           System.out.println("Post: Enviado!");
            System.out.println("Post: Se ejecutara de nuevo el: " + c.getTime() + " Osea dentro de " + this.accion.getPeriodicidadSegundos() + " Segundos");
        }
        else{
