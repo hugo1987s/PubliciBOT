@@ -35,7 +35,8 @@ public class MyUI extends UI {
     protected void init(VaadinRequest vaadinRequest) {
 
         Tasker tasker=Tasker.getTasker();
-        tasker.start();
+        if(!tasker.isAlive())
+            tasker.start();
 
         Responsive.makeResponsive(this);
         setLocale(vaadinRequest.getLocale());
