@@ -14,6 +14,7 @@ public class ABMAccionView  extends Window {
         this.setContent(accionView);
         this.setWidth("1270");
         this.setHeight("720");
+		//commmnbet
     }
 
 
