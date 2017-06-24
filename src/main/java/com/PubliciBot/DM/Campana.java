@@ -1,10 +1,13 @@
 package com.PubliciBot.DM;
 
+import com.PubliciBot.Services.Tasker;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -61,7 +64,7 @@ public class Campana implements Serializable{
         this.nombre = "";
         this.descripcion = "";
         this.fechaInicio = new Date();
-        this.duracion = 0;
+        this.duracion = 1;
         this.unidadMedida = UnidadMedida.SEMANA;
         this.estadoCampana = EstadoCampana.PRELIMINAR;
         this.mensaje = new Mensaje();
@@ -72,14 +75,24 @@ public class Campana implements Serializable{
     }
 
     public Date calcularCaducidad(){
-      Instant instant= Instant.ofEpochSecond(fechaInicio.toInstant().getEpochSecond()+duracion);
-     return Date.from(instant);
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(fechaInicio);
+        System.out.println("Campana: "+this.nombre+" Duracion: "+duracion+" "+unidadMedida+" lo que equivale a :"+ duracion*unidadMedida.unidadASegundos());
+
+        c.add(Calendar.SECOND, duracion*unidadMedida.unidadASegundos());
+
+
+
+     return  c.getTime();
     }
 
 
     public void agregarPost(AccionPublicitaria accion){
+        System.out.println(" Caducidad: "+ calcularCaducidad());
         Post post=new Post(this.fechaInicio,calcularCaducidad(),accion,mensaje);
         this.posts.add(post);
+        Tasker.addTask(post);
     }
 
     public String getNombre() {
