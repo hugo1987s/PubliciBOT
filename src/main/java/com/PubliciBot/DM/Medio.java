@@ -51,4 +51,9 @@ public class Medio {
     public void setPerfilDestino(String perfilDestino) {
         this.perfilDestino = perfilDestino;
     }
+
+    @Override
+    public String toString(){
+        return this.tipoMedio.toString();
+    }
 }

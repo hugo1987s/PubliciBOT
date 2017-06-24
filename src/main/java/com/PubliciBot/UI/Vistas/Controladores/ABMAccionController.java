@@ -1,60 +1,60 @@
 package com.PubliciBot.UI.Vistas.Controladores;
 
-import com.PubliciBot.DM.AccionPublicitaria;
-import com.PubliciBot.DM.Medio;
-import com.PubliciBot.DM.PeriodicidadAccion;
-import com.PubliciBot.DM.TipoMedio;
-
+import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.AccionPublicitariaService;
-
-import com.PubliciBot.UI.MyUI;
-import com.PubliciBot.UI.Vistas.ABMAccionView;
+import com.PubliciBot.UI.Vistas.Validators.AccionView;
 import com.PubliciBot.UI.Vistas.Validators.EnteroValidator;
-
+import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.ui.*;
-
-import java.util.Collection;
 
 /**
  * Created by Hugo on 10/06/2017.
  */
-public class ABMAccionController extends VerticalLayout {
+public class ABMAccionController extends HorizontalLayout {
 
-    TextField txtNombreAccion;
-    TextField txtValorPeriodicidad;
+    TextField nombreAccion;
+    TextField destino;
+    TextField periodicidadSegundos;
+
     ComboBox cboPeriodicidad;
     ComboBox cboMedio;
 
     Panel panelMail;
     Panel panelRedes;
 
-    TextField txtMail;
     TextField txtUsuarioOrigen;
     PasswordField txtPasswordOrigen;
     TextField txtCuentaDestino;
 
     Button btnAceptar;
+    AccionPublicitaria nuevaAccion;
+
+    BeanFieldGroup<AccionPublicitaria> formFieldBindings;
 
     private AccionPublicitariaService publicitariaService;
 
+    ABMCampanasController abmCampanasController;
+    AccionView accionView;
 
-    public ABMAccionController (ABMCampanasController controller)
-    {
+    Button cancelar;
+
+
+    public ABMAccionController(AccionView accionView, ABMCampanasController controller) {
         super();
         initComponents();
         dibujarControles();
+        abmCampanasController = controller;
+        this.accionView = accionView;
 
         cboMedio.addValueChangeListener(event -> {
-                   if(cboMedio.getValue().toString().toUpperCase() == TipoMedio.EMAIL.toString().toUpperCase())
-                   {
-                       panelRedes.setVisible(false);
-                       panelMail.setVisible(true);
-                   }
-                   else
-                   {
-                       panelRedes.setVisible(true);
-                       panelMail.setVisible(false);
-                   }
+            if (cboMedio.getValue().toString().toUpperCase() == TipoMedio.EMAIL.toString().toUpperCase()) {
+                panelRedes.setVisible(false);
+                panelMail.setVisible(true);
+            } else {
+                panelRedes.setVisible(true);
+                panelMail.setVisible(false);
+            }
                 }
         );
 
@@ -62,73 +62,78 @@ public class ABMAccionController extends VerticalLayout {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
 
-                if(cboPeriodicidad.getValue() == null || cboPeriodicidad.getValue() == "") {
+/*
+                if (cboPeriodicidad.getValue() == null || cboPeriodicidad.getValue() == "") {
                     Notification.show("Debe seleccionar una periodicidad de posteo.");
                     cboPeriodicidad.focus();
                     return;
                 }
 
-                if(cboMedio.getValue() == null || cboMedio.getValue() == "") {
+                if (medio.getValue() == null || medio.getValue() == "") {
                     Notification.show("Debe seleccionar un medio de posteo.");
-                    cboMedio.focus();
+                    medio.focus();
                     return;
-                }
+                }*/
 
                 //controller.getPublicitariaService().setAccionPublicitaria(crearAccion());
                 //AccionPublicitaria ac = controller.getPublicitariaService().getAccionPublicitaria();
-                else{
-                    controller.getNuevaCampana().addAccion(crearAccion());
+
+
+                    if (accionView.getEstadoABMAccion() == AccionView.EstadoABMAccion.NUEVAACCION) {
+                        guardarAccion();
+                    }
+                    else if (accionView.getEstadoABMAccion() == AccionView.EstadoABMAccion.EDICIONACCION)
+                        guardarEdicionAccion();
+                    setVisible(false);
+                    /*
+                    abmCampanasController.getNuevaCampana().addAccion(crearAccion());
                     Collection<Window> views = ((MyUI) getUI()).getWindows();
                     for(Window w : views)
                         if(w instanceof  ABMAccionView) {
                             close(w);
                         }
-                }
+                        */
+            }
+        });
 
+        cancelar.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                setVisible(false);
             }
         });
     }
 
-    private void close(Window view){
+    private void close(Window view) {
         view.close();
     }
 
 
-    private AccionPublicitaria crearAccion()
-    {
-        AccionPublicitaria accion = new AccionPublicitaria();
-
-        accion.setNombreAccion(this.txtNombreAccion.getValue());
+    private void agregarMedio() {
 
         PeriodicidadAccion periodicidadAccion = (PeriodicidadAccion) cboPeriodicidad.getValue();
-        int cantidad = Integer.parseInt(txtValorPeriodicidad.getValue());
 
-        accion.setPeriodicidadSegundos( cantidad * periodicidadAccion.periodicidadASegundos());
-
+        nuevaAccion.setPeriodicidadSegundos(nuevaAccion.getPeriodicidadSegundos() * periodicidadAccion.periodicidadASegundos());
 
         Medio medio = new Medio();
-        medio.setTipoMedio((TipoMedio) cboMedio.getValue());
+        medio.setTipoMedio((TipoMedio) this.cboMedio.getValue());
 
-        if(medio.getTipoMedio().equals(TipoMedio.EMAIL))
-           accion.setDestino(txtMail.getValue());
-        else
-        {
+        //if (medio.getTipoMedio().equals(TipoMedio.EMAIL))
+         //   nuevaAccion.setDestino(destino.getValue());
+
             medio.setUsuarioPerfilOrigen(txtUsuarioOrigen.getValue());
             medio.setContrasenaPerfilOrigen(txtPasswordOrigen.getValue());
             medio.setPerfilDestino(txtCuentaDestino.getValue());
-        }
-        accion.setMedio(medio);
-        return accion;
 
+        nuevaAccion.setMedio(medio);
     }
 
 
-    private void initComponents()
-    {
+    private void initComponents() {
         publicitariaService = new AccionPublicitariaService();
-        txtNombreAccion = new TextField("Nombre");
-        txtValorPeriodicidad = new TextField("Periodicicad");
-        txtValorPeriodicidad.addValidator(new EnteroValidator());
+        nombreAccion = new TextField("Nombre");
+        periodicidadSegundos = new TextField("Periodicicad");
+        periodicidadSegundos.addValidator(new EnteroValidator());
 
         cboPeriodicidad = new ComboBox("Unidad de medida");
         cboPeriodicidad.addItems(PeriodicidadAccion.values());
@@ -138,7 +143,7 @@ public class ABMAccionController extends VerticalLayout {
         cboMedio.addItems(TipoMedio.values());
         cboMedio.setNullSelectionAllowed(false);
 
-        txtMail = new TextField("Email destino");
+        destino = new TextField("Email destino");
 
         panelMail = new Panel();
         panelMail.setWidth("300");
@@ -151,19 +156,19 @@ public class ABMAccionController extends VerticalLayout {
         txtCuentaDestino = new TextField("Cuenta destino");
 
         btnAceptar = new Button("Aceptar");
+        cancelar = new Button ("cancelar");
 
     }
 
-    private void dibujarControles()
-    {
+    private void dibujarControles() {
         FormLayout fl = new FormLayout();
-        fl.addComponent(txtNombreAccion);
-        fl.addComponent(txtValorPeriodicidad);
+        fl.addComponent(nombreAccion);
+        fl.addComponent(periodicidadSegundos);
         fl.addComponent(cboPeriodicidad);
         fl.addComponent(cboMedio);
 
         FormLayout formLayoutMail = new FormLayout();
-        formLayoutMail.addComponent(txtMail);
+        formLayoutMail.addComponent(destino);
         panelMail.setContent(formLayoutMail);
 
         fl.addComponent(panelMail);
@@ -179,11 +184,50 @@ public class ABMAccionController extends VerticalLayout {
         fl.addComponent(panelRedes);
 
         fl.addComponent(btnAceptar);
+        fl.addComponent(cancelar);
 
         this.addComponent(fl);
 
         panelMail.setVisible(false);
         panelRedes.setVisible(false);
+    }
+
+
+    public void crearAccion(AccionPublicitaria accion) {
+        this.nuevaAccion = accion;
+        if (accion != null) {
+            formFieldBindings = BeanFieldGroup.bindFieldsBuffered(accion, this);
+        }
+    }
+
+    public void guardarEdicionAccion(){
+        try {
+            // Commit the fields from UI to DAO
+            formFieldBindings.commit();
+            Campana actual = abmCampanasController.getNuevaCampana();
+            accionView.refreshAcciones(actual);
+
+        } catch (FieldGroup.CommitException e) {
+            // Validation exceptions could be shown here
+        }
+    }
+
+    public void guardarAccion() {
+        try {
+            // Commit the fields from UI to DAO
+            formFieldBindings.commit();
+            agregarMedio();
+
+           Campana actual = abmCampanasController.getNuevaCampana();
+
+            if(!actual.getAcciones().contains(nuevaAccion)) {
+                actual.addAccion(nuevaAccion);
+            }
+            accionView.refreshAcciones(actual);
+
+        } catch (FieldGroup.CommitException e) {
+            e.printStackTrace();
+        }
     }
 
 }

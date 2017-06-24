@@ -24,6 +24,7 @@ public class EstadisticasCampanaController extends VerticalLayout {
     private Label fechaInicioCampana;
     private Label accionCampana;
 
+
     public EstadisticasCampanaController(Campana campana){
             initComponents(campana);
             this.setMargin(true);
@@ -67,10 +68,6 @@ public class EstadisticasCampanaController extends VerticalLayout {
             addComponent(label);
 
     }
-
-
-
-
 
 
 

@@ -1,7 +1,6 @@
 package com.PubliciBot.UI.Vistas;
 
-import com.PubliciBot.UI.Vistas.Controladores.ABMAccionController;
-import com.PubliciBot.UI.Vistas.Controladores.ABMCampanasController;
+import com.PubliciBot.UI.Vistas.Validators.AccionView;
 import com.vaadin.ui.Window;
 
 /**
@@ -11,12 +10,10 @@ public class ABMAccionView  extends Window {
 
     public static final String VIEW_NAME = "Creación de Acciones";
 
-    public ABMAccionView(ABMCampanasController controller)
-    {
-        ABMAccionController abmAccionController = new ABMAccionController(controller);
-        this.setContent(abmAccionController);
-        this.setWidth("450");
-
+    public ABMAccionView(AccionView accionView) {
+        this.setContent(accionView);
+        this.setWidth("1270");
+        this.setHeight("720");
     }
 
 

@@ -7,8 +7,8 @@ import com.PubliciBot.Services.UsuarioService;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.ABMAccionView;
 import com.PubliciBot.UI.Vistas.DemoAddressBook.ABMCampanasView;
-import com.PubliciBot.UI.Vistas.DetalleCampanaView;
 import com.PubliciBot.UI.Vistas.SelectorTags;
+import com.PubliciBot.UI.Vistas.Validators.AccionView;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
@@ -31,7 +31,7 @@ public class ABMCampanasController extends HorizontalLayout {
     TextField duracion;
     ComboBox unidadMedida;
     TextArea txtMensaje;
-    //Image imgImgenMensaje;
+    Image imgImgenMensaje;
     Label txtoduracion;
 
     Button btnGuardarCampana;
@@ -51,13 +51,18 @@ public class ABMCampanasController extends HorizontalLayout {
 
     Button btnEjecutarAcciones;
 
-
     Upload uploadFile;
 
     UsuarioService usuarioService = new UsuarioService();
 
     ABMCampanasView addressbookUIView;
+
+    AccionView accionView2;
+
     BeanFieldGroup<Campana> formFieldBindings;
+
+
+    Button cancelar;
 
 //comment
 
@@ -128,10 +133,20 @@ public class ABMCampanasController extends HorizontalLayout {
         btnGuardarCampana.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-               guardar();
-               setVisible(false);
+                if(adbUI.getEstadoABMCampana() == ABMCampanasView.EstadoABMCampana.NUEVACAMPANA)
+                    guardar();
+               if(adbUI.getEstadoABMCampana() == ABMCampanasView.EstadoABMCampana.EDICIONCAMPANA)
+                   guardarEdicion();
+                setVisible(false);
 
                 //MedioService medioService = new MedioService(nuevaCampana.getAcciones())
+            }
+        });
+
+        cancelar.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                setVisible(false);
             }
         });
 
@@ -170,7 +185,8 @@ public class ABMCampanasController extends HorizontalLayout {
         campanaService = new CampanaService();
 
         lblTitulo = new Label("Administración de Campañas");
-        accionView = new ABMAccionView(this);
+        accionView2 = new AccionView(this);
+        accionView = new ABMAccionView(accionView2);
         publicitariaService = new AccionPublicitariaService();
         nombre = new TextField("Nombre");
         nombre.setValue("Campaña: " + Integer.toString(Date.from(Instant.now()).getDate()) + "/" + Integer.toString(Date.from(Instant.now()).getMonth())
@@ -193,6 +209,7 @@ public class ABMCampanasController extends HorizontalLayout {
         btnGuardarCampana = new Button("Guardar Campaña");
 
         detalleCampanaSeleccionada = new Button("Detalles Campana");
+        cancelar = new Button("cancelar");
 
         hl = new HorizontalLayout();
         hl.setSpacing(true);
@@ -227,11 +244,15 @@ public class ABMCampanasController extends HorizontalLayout {
         layoutcampana.addComponents(horizontalLayout, txtMensaje, uploadFile);
 
         HorizontalLayout horizontalLayoutbotones = new HorizontalLayout();
-        horizontalLayoutbotones.addComponents(seleccionarTags, btnAgregarAccion, btnGuardarCampana);
+        horizontalLayoutbotones.addComponents(seleccionarTags);
 
         //horizontalLayoutbotones.addComponent(btnEjecutarAcciones);
         horizontalLayoutbotones.setSpacing(true);
         layoutcampana.addComponent(horizontalLayoutbotones);
+        layoutcampana.addComponent(btnAgregarAccion);
+        layoutcampana.addComponent(btnGuardarCampana);
+        layoutcampana.addComponent(cancelar);
+
 
         verticalLayout.addComponent(layoutcampana);
         this.addComponent(verticalLayout);
@@ -251,14 +272,10 @@ public class ABMCampanasController extends HorizontalLayout {
         unidadMedida.setValue(UnidadMedida.SEMANA);
     }
 
-
-
     private Usuario getUsuarioSesion() {
         StrictAccessControl strictAccessControl = (StrictAccessControl) ((MyUI) getUI()).getAccessControl();
         return strictAccessControl.getRecoveredUser();
     }
-
-
 
 
     public AccionPublicitariaService getPublicitariaService() {
@@ -275,26 +292,48 @@ public class ABMCampanasController extends HorizontalLayout {
             formFieldBindings = BeanFieldGroup.bindFieldsBuffered(campana, this);
             nombre.focus();
         }
+    }
 
+    public void guardarEdicion(){
+        try {
+            // Commit the fields from UI to DAO
+            formFieldBindings.commit();
 
-}
+            Usuario actual = getUsuarioSesion();
+            usuarioService.guardarUsuario(actual);
+            addressbookUIView.refreshCampanas("filtroTest");
+        } catch (FieldGroup.CommitException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void guardar() {
         try {
             // Commit the fields from UI to DAO
             formFieldBindings.commit();
 
-            String msg = String.format("Saved '%s %s'.",
-                    nuevaCampana.getNombre(),
-                    nuevaCampana.getDescripcion());
-            Notification.show(msg, Notification.Type.TRAY_NOTIFICATION);
+            //MENSAJE CAMPAÑA
+            String mensajeTxt = txtMensaje.getValue();
+            Mensaje mensaje = null;
+            //TODO le puse NULL al path de la imagen porque estaba haciendo un toString() de un objeto imagen
+            if (imgImgenMensaje == null) {
+                mensaje = new Mensaje(mensajeTxt, null);
+            }
+            else if (mensajeTxt == null || mensajeTxt.equals("")) {
+                mensaje = new Mensaje(null, null);
+            }
+            else if (mensajeTxt == null || mensajeTxt.equals("")) {
+                mensaje = new Mensaje(null, imgImgenMensaje.toString());
+            } else
+                mensaje = new Mensaje(mensajeTxt, imgImgenMensaje.toString());
+            nuevaCampana.setMensaje(mensaje);
 
             Usuario actual = getUsuarioSesion();
-            usuarioService.agregarCampañaAUsuario(nuevaCampana, actual);
-            usuarioService.guardarUsuario(actual);
+            if(!actual.getCampanas().contains(nuevaCampana)) {
+                usuarioService.agregarCampañaAUsuario(nuevaCampana, actual);
+                usuarioService.guardarUsuario(actual);
+            }
             addressbookUIView.refreshCampanas("filtroTest");
-            System.out.println(nuevaCampana.getNombre());
-
 
         } catch (FieldGroup.CommitException e) {
             // Validation exceptions could be shown here

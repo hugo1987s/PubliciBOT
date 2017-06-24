@@ -29,6 +29,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
 
     public static final String VIEW_NAME = "Campañas";
 
+    public enum EstadoABMCampana{ NUEVACAMPANA, EDICIONCAMPANA}
 
     public ABMCampanasView (){
         super();
@@ -45,6 +46,16 @@ public class ABMCampanasView extends VerticalLayout implements View {
         refreshCampanas("filtroTest");
     }
 
+    Grid campanasList = new Grid();
+    CampanaService campanaService = new CampanaService();
+
+    ABMCampanasController abmCampanasController = new ABMCampanasController(this);
+    EstadisticasCampanaController estadisticasCampanaController ;
+    Button grillaCampana = new Button("Ver campañas");
+    Button nuevaCampana = new Button("Nueva Campaña");
+    Button btnEditarCampaña = new Button("Editar");
+    Campana seleccionada;
+    EstadoABMCampana estadoABMCampana;
 
 
     /* Hundreds of widgets.
@@ -53,6 +64,8 @@ public class ABMCampanasView extends VerticalLayout implements View {
      * default Vaadin components are in the com.vaadin.ui package and there
      * are over 500 more in vaadin.com/directory.
      */
+
+   //ADRRES BOOK
     TextField filter = new TextField();
     Grid contactList = new Grid();
     Button newContact = new Button("New contact");
@@ -65,13 +78,6 @@ public class ABMCampanasView extends VerticalLayout implements View {
     // example as EJB or Spring Data based service.
     ContactService service = ContactService.createDemoService();
 
-    Grid campanasList = new Grid();
-    CampanaService campanaService = new CampanaService();
-
-    ABMCampanasController abmCampanasController = new ABMCampanasController(this);
-    EstadisticasCampanaController estadisticasCampanaController ;
-    Button grillaCampana = new Button("Ver campañas");
-    Button nuevaCampana = new Button("Nueva Campaña");
 
     /* The "Main method".
      *
@@ -80,7 +86,6 @@ public class ABMCampanasView extends VerticalLayout implements View {
      * a new instance is created for each web page loaded.
      */
 
-
     private void configureComponents() {
          /* Synchronous event handling.
          *
@@ -88,6 +93,8 @@ public class ABMCampanasView extends VerticalLayout implements View {
          * to synchronously handle those events. Vaadin automatically sends
          * only the needed changes to the web page without loading a new page.
          */
+
+       //ADRESS BOOK
         newContact.addClickListener(e -> contactForm.edit(new Contact()));
 
         filter.setInputPrompt("Filter contacts...");
@@ -103,13 +110,15 @@ public class ABMCampanasView extends VerticalLayout implements View {
                 -> contactForm.edit((Contact) contactList.getSelectedRow()));
         refreshContacts();
 
+
         // ABM CAMPAÑAS CONTROLLER
         abmCampanasController.setVisible(false);
-        addComponent(abmCampanasController);
 
         nuevaCampana.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
+                campanasList.deselect(campanasList.getSelectedRow());
+                estadoABMCampana =estadoABMCampana.NUEVACAMPANA;
                 abmCampanasController.setVisible(true);
                 abmCampanasController.crearCampana(new Campana());
             }
@@ -118,11 +127,50 @@ public class ABMCampanasView extends VerticalLayout implements View {
        campanasList.addSelectionListener(new SelectionEvent.SelectionListener() {
            @Override
            public void select(SelectionEvent selectionEvent) {
-               estadisticasCampanaController = new EstadisticasCampanaController((Campana)campanasList.getSelectedRow());
-               addComponent(estadisticasCampanaController);
+               if(seleccionada == null) {
+                   seleccionada = (Campana) campanasList.getSelectedRow();
+                   estadisticasCampanaController = new EstadisticasCampanaController(seleccionada);
+                   addComponent(estadisticasCampanaController);
+                   addComponent(btnEditarCampaña);
+               }
+               else {
+                   Campana seleccionadaGrid = (Campana) campanasList.getSelectedRow();
+                   if(seleccionadaGrid != null) {
+                       if(estadisticasCampanaController != null) {
+                           removeComponent(estadisticasCampanaController);
+                           removeComponent(btnEditarCampaña);
+                           seleccionada = seleccionadaGrid;
+                           estadisticasCampanaController = new EstadisticasCampanaController(seleccionada);
+                           addComponent(estadisticasCampanaController);
+                           addComponent(btnEditarCampaña);
+                       }
+                       else{
+                           seleccionada = seleccionadaGrid;
+                           estadisticasCampanaController = new EstadisticasCampanaController(seleccionada);
+                           addComponent(estadisticasCampanaController);
+                           addComponent(btnEditarCampaña);
+                       }
+                   }
+                   else{
+                       removeComponent(estadisticasCampanaController);
+                       removeComponent(btnEditarCampaña);
+                       estadisticasCampanaController = null;
+                   }
+
+
+               }
            }
        });
 
+       btnEditarCampaña.addClickListener(new Button.ClickListener() {
+           @Override
+           public void buttonClick(Button.ClickEvent clickEvent) {
+               campanasList.deselect(campanasList.getSelectedRow());
+               estadoABMCampana = estadoABMCampana.EDICIONCAMPANA;
+               abmCampanasController.setVisible(true);
+               abmCampanasController.crearCampana((Campana)campanasList.getSelectedRow());
+           }
+       });
         campanasList.setContainerDataSource(new BeanItemContainer<>(Campana.class));
 
     }
@@ -204,6 +252,11 @@ public class ABMCampanasView extends VerticalLayout implements View {
             return strictAccessControl.getRecoveredUser();
 
         return new Usuario();
+    }
+
+
+    public EstadoABMCampana getEstadoABMCampana(){
+        return  this.estadoABMCampana;
     }
 
     @Override

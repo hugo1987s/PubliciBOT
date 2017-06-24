@@ -174,14 +174,15 @@ public class Campana implements Serializable{
         Campana campana = (Campana) o;
 
         if (duracion != campana.duracion) return false;
-        if (unidadMedida != null ? !unidadMedida.equals(campana.unidadMedida) : campana.unidadMedida != null) return false;
         if (nombre != null ? !nombre.equals(campana.nombre) : campana.nombre != null) return false;
         if (descripcion != null ? !descripcion.equals(campana.descripcion) : campana.descripcion != null) return false;
+        if (unidadMedida != campana.unidadMedida) return false;
         if (fechaInicio != null ? !fechaInicio.equals(campana.fechaInicio) : campana.fechaInicio != null) return false;
         if (mensaje != null ? !mensaje.equals(campana.mensaje) : campana.mensaje != null) return false;
         if (tags != null ? !tags.equals(campana.tags) : campana.tags != null) return false;
-        return  acciones != null ? !acciones.equals(campana.acciones) : campana.acciones != null;
-
+        if (acciones != null ? !acciones.equals(campana.acciones) : campana.acciones != null) return false;
+        if (posts != null ? !posts.equals(campana.posts) : campana.posts != null) return false;
+        return estadoCampana == campana.estadoCampana;
     }
 
     @Override

@@ -69,4 +69,29 @@ public class Post implements Task{
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Post post = (Post) o;
+
+        if (fechaUltimaEjecucion != null ? !fechaUltimaEjecucion.equals(post.fechaUltimaEjecucion) : post.fechaUltimaEjecucion != null)
+            return false;
+        if (fechaCaducidad != null ? !fechaCaducidad.equals(post.fechaCaducidad) : post.fechaCaducidad != null)
+            return false;
+        if (fechaInicio != null ? !fechaInicio.equals(post.fechaInicio) : post.fechaInicio != null) return false;
+        if (accion != null ? !accion.equals(post.accion) : post.accion != null) return false;
+        return mensaje != null ? mensaje.equals(post.mensaje) : post.mensaje == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = fechaUltimaEjecucion != null ? fechaUltimaEjecucion.hashCode() : 0;
+        result = 31 * result + (fechaCaducidad != null ? fechaCaducidad.hashCode() : 0);
+        result = 31 * result + (fechaInicio != null ? fechaInicio.hashCode() : 0);
+        result = 31 * result + (accion != null ? accion.hashCode() : 0);
+        result = 31 * result + (mensaje != null ? mensaje.hashCode() : 0);
+        return result;
+    }
 }
