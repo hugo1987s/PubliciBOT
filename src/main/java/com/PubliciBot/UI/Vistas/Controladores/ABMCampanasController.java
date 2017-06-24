@@ -189,14 +189,10 @@ public class ABMCampanasController extends HorizontalLayout {
         accionView = new ABMAccionView(accionView2);
         publicitariaService = new AccionPublicitariaService();
         nombre = new TextField("Nombre");
-        nombre.setValue("Campaña: " + Integer.toString(Date.from(Instant.now()).getDate()) + "/" + Integer.toString(Date.from(Instant.now()).getMonth())
-                + ":" + Integer.toString(Date.from(Instant.now()).getSeconds()));
         descripcion = new TextArea("Descripción");
-        descripcion.setValue("Creada el " + Date.from(Instant.now()).toString());
         fechaInicio = new DateField("Fecha de inicio");
         fechaInicio.setValue(Date.from(Instant.now()));
         duracion = new TextField();
-        duracion.setValue("1");
         txtoduracion =new Label("Duración");
         unidadMedida = new ComboBox();
         unidadMedida.setWidth(115, Unit.PIXELS);

@@ -94,7 +94,7 @@ public class Post implements Task{
         if (accion != null ? !accion.equals(post.accion) : post.accion != null) return false;
         return mensaje != null ? mensaje.equals(post.mensaje) : post.mensaje == null;
     }
-    
+
     @Override
     public int hashCode() {
         int result = fechaUltimaEjecucion != null ? fechaUltimaEjecucion.hashCode() : 0;
