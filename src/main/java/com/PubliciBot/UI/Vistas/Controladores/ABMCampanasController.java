@@ -4,6 +4,7 @@ import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.AccionPublicitariaService;
 import com.PubliciBot.Services.CampanaService;
 import com.PubliciBot.Services.UsuarioService;
+import com.PubliciBot.Services.Utils;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.ABMAccionView;
 import com.PubliciBot.UI.Vistas.DemoAddressBook.ABMCampanasView;
@@ -217,7 +218,9 @@ public class ABMCampanasController extends HorizontalLayout {
         btnAgregarAccion = new Button("Agregar Acción");
         btnEjecutarAcciones = new Button("Ejecutar Acciones");
 
-        UploadReceiver uploadReceiver = new UploadReceiver("src/main/resources/" + armarNombreArchivo());
+        //UploadReceiver uploadReceiver = new UploadReceiver("src/main/resources/" + armarNombreArchivo());
+        UploadReceiver uploadReceiver = new UploadReceiver(Utils.getProperty("path.imagenes") + armarNombreArchivo());
+
         subirArchivo = new Upload("Examinar...", uploadReceiver);
 
         /*
@@ -232,9 +235,8 @@ public class ABMCampanasController extends HorizontalLayout {
 
     private String armarNombreArchivo()
     {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        nombreArchivoGenerado = dateFormat.format(new Date()) + ".png";
-        return nombreArchivoGenerado;
+        this.nombreArchivoGenerado = Utils.generarNombreArchivoImagen();
+        return this.nombreArchivoGenerado;
     }
 
     private void dibujarControles() {
@@ -344,17 +346,12 @@ public class ABMCampanasController extends HorizontalLayout {
             //MENSAJE CAMPAÑA
             String mensajeTxt = txtMensaje.getValue();
             Mensaje mensaje = null;
-            //TODO le puse NULL al path de la imagen porque estaba haciendo un toString() de un objeto imagen
-            if (imgImgenMensaje == null) {
-                mensaje = new Mensaje(mensajeTxt, null);
-            }
-            else if (mensajeTxt == null || mensajeTxt.equals("")) {
-                mensaje = new Mensaje(null, null);
-            }
-            else if (mensajeTxt == null || mensajeTxt.equals("")) {
-                mensaje = new Mensaje(null, imgImgenMensaje.toString());
-            } else
-                mensaje = new Mensaje(mensajeTxt, imgImgenMensaje.toString());
+
+            if(nombreArchivoGenerado!=null && nombreArchivoGenerado.trim() != "")
+                mensaje = new Mensaje(mensajeTxt, Utils.getProperty("path.imagenes") + nombreArchivoGenerado);
+            else
+                mensaje = new Mensaje(mensajeTxt, nombreArchivoGenerado);
+
             nuevaCampana.setMensaje(mensaje);
             Usuario actual = getUsuarioSesion();
             if(!actual.getCampanas().contains(nuevaCampana)) {

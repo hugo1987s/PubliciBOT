@@ -18,23 +18,21 @@ import java.util.Properties;
 public class AccionPublicitariaService {
 
 
-
-    public AccionPublicitariaService(){
+    public AccionPublicitariaService() {
 
     }
 
 
-
-
     public boolean publicar(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal) {
-        TipoMedio tipo=accionPublicitaria.getMedio().getTipoMedio();
+        TipoMedio tipo = accionPublicitaria.getMedio().getTipoMedio();
 
         switch (tipo) {
-            case EMAIL: return enviarMail(accionPublicitaria,mensajeLocal) ;
+            case EMAIL:
+                return enviarMail(accionPublicitaria, mensajeLocal);
 
 
-            case TWITTER: return false;
-
+            case TWITTER:
+                return false;
 
 
         }
@@ -42,11 +40,7 @@ public class AccionPublicitariaService {
     }
 
 
-
-
-
-    private boolean enviarMail(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal)
-    {
+    private boolean enviarMail(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal) {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
@@ -59,7 +53,7 @@ public class AccionPublicitariaService {
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
 
-                        return new PasswordAuthentication("megafonomailer","IvoVirginia2017");
+                        return new PasswordAuthentication("megafonomailer", "IvoVirginia2017");
 
                     }
                 });
@@ -92,8 +86,7 @@ public class AccionPublicitariaService {
             // add it
             multipart.addBodyPart(messageBodyPart);
 
-            if(mensajeLocal.getImagenMensajePath() !=null && mensajeLocal.getImagenMensajePath().trim() != "")
-            {
+            if (mensajeLocal.getImagenMensajePath() != null && mensajeLocal.getImagenMensajePath().trim() != "") {
                 // second part (the image)
                 messageBodyPart = new MimeBodyPart();
 
@@ -124,45 +117,37 @@ public class AccionPublicitariaService {
 
         } catch (MessagingException e) {
 
-            System.out.println("Error de Envio:"+ e);
+            System.out.println("Error de Envio:" + e);
             return false;
 
 
         }
     }
 
-    private boolean enviarTelegram(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal)
-    {
+    private boolean enviarTelegram(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal) {
         return false;
     }
 
-    private boolean enviarWhatsApp(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal)
-    {
+    private boolean enviarWhatsApp(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal) {
         return false;
     }
 
-    private boolean postearFacebook(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal)
-    {
+    private boolean postearFacebook(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal) {
         return false;
     }
 
-    private boolean postearLinkedIn(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal)
-    {
+    private boolean postearLinkedIn(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal) {
         return false;
     }
 
-    private boolean enviarTwitter(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal)
-    {
+    private boolean enviarTwitter(AccionPublicitaria accionPublicitaria, Mensaje mensajeLocal) {
         return false;
     }
 
 
-
-
-    public AccionPublicitaria crearAccionStub(String destino){
-        return new AccionPublicitaria("TEST", 0, new Medio(),destino);
+    public AccionPublicitaria crearAccionStub(String destino) {
+        return new AccionPublicitaria("TEST", 0, new Medio(), destino);
     }
-
 
 
 }
