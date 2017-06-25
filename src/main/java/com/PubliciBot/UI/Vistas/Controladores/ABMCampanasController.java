@@ -286,10 +286,18 @@ public class ABMCampanasController extends HorizontalLayout {
 
     public void crearCampana(Campana campana){
         this.nuevaCampana = campana;
-
+        System.out.println("campaña "+nuevaCampana);
 
         Usuario actual = getUsuarioSesion();
         editada = getCampanaParaEdicion(actual);
+        if(editada == null){
+            try {
+                editada = campana.clone();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(editada);
 
 
         if(campana != null ){
@@ -303,11 +311,15 @@ public class ABMCampanasController extends HorizontalLayout {
             // Commit the fields from UI to DAO
             formFieldBindings.commit();
 
+            if(editada.equals(nuevaCampana))
+                return;
+
             Usuario actual = getUsuarioSesion();
             actual.getCampanas().remove(editada);
             usuarioService.agregarCampañaAUsuario(nuevaCampana,actual);
             usuarioService.guardarUsuario(actual);
             addressbookUIView.refreshCampanas("filtroTest");
+
         } catch (FieldGroup.CommitException e) {
             e.printStackTrace();
         }

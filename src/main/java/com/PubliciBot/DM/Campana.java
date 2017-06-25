@@ -1,6 +1,7 @@
 package com.PubliciBot.DM;
 
 import com.PubliciBot.Services.Tasker;
+import org.apache.commons.beanutils.BeanUtils;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
@@ -12,7 +13,7 @@ import java.util.Date;
 /**
  * Created by Hugo on 14/05/2017.
  */
-public class Campana implements Serializable{
+public class Campana implements Serializable, Cloneable{
 
     @Size(min=2, max=10, message="El nombre debe tener entre 2 y 10 caracteres.")
     @javax.validation.constraints.NotNull
@@ -210,5 +211,14 @@ public class Campana implements Serializable{
         result = 31 * result + (posts != null ? posts.hashCode() : 0);
         result = 31 * result + (estadoCampana != null ? estadoCampana.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public Campana clone() throws CloneNotSupportedException {
+        try {
+            return (Campana) BeanUtils.cloneBean(this);
+        } catch (Exception ex) {
+            throw new CloneNotSupportedException();
+        }
     }
 }

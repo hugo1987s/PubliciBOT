@@ -166,6 +166,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
                estadoABMCampana = estadoABMCampana.EDICIONCAMPANA;
                abmCampanasController.setVisible(true);
                seleccionada = (Campana)campanasList.getSelectedRow();
+               System.out.println("edicion "+ seleccionada);
                abmCampanasController.crearCampana(seleccionada);
                campanasList.deselect(campanasList.getSelectedRow());
            }
