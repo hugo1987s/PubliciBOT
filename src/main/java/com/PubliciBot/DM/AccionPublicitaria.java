@@ -94,7 +94,9 @@ public class AccionPublicitaria {
 
     @Override
     public String toString(){
-        return this.nombreAccion;
+
+
+        return "Nombre: "+this.nombreAccion+"\n Medio:"+this.medio.toString()+"\n Destino: "+this.destino+"\nPeriodicidad: "+this.periodicidadSegundos+" Segundos";
     }
 
 

@@ -81,11 +81,11 @@ public class Tasker extends Thread{
 
                System.out.print("Fecha inicio: " + p.getFechaInicio() + " es antes que ahora?: " + Date.from(NOW));
                if (p.getFechaInicio().before(Date.from(NOW))) { //Si el Post Todavia Esta vigente (supero la fecha de inicio)
-                   System.out.println("SI");
+                   System.out.println("  SI");
 
                    System.out.print("FechaCaducidad: " + p.getFechaCaducidad() + " es despues que ahora?: " + Date.from(NOW));
                    if (p.getFechaCaducidad().after((Date.from(NOW)))) {  //Si no supero la fecha de caducidad
-                       System.out.println("SI");
+                       System.out.println(" SI");
 
 
                        if (p.getFechaUltimaEjecucion() != null) {
@@ -110,7 +110,7 @@ public class Tasker extends Thread{
 
                }
 
-               System.out.println("NO: NO CALIFICA PARA EJECUCION: " + p.getAccion().getNombreAccion());
+               System.out.println(" NO: NO CALIFICA PARA EJECUCION: " + p.getAccion().getNombreAccion());
                System.out.println("\n\n");
            }
         }

@@ -54,6 +54,7 @@ public class Medio {
 
     @Override
     public String toString(){
-        return this.tipoMedio.toString();
+
+        return "Tipo de Medio: "+this.tipoMedio.toString();
     }
 }

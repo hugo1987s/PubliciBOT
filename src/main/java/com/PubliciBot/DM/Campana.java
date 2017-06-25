@@ -78,11 +78,7 @@ public class Campana implements Serializable{
 
         Calendar c = Calendar.getInstance();
         c.setTime(fechaInicio);
-        System.out.println("Campana: "+this.nombre+" Duracion: "+duracion+" "+unidadMedida+" lo que equivale a :"+ duracion*unidadMedida.unidadASegundos());
-
         c.add(Calendar.SECOND, duracion*unidadMedida.unidadASegundos());
-
-
 
      return  c.getTime();
     }
@@ -92,6 +88,8 @@ public class Campana implements Serializable{
         System.out.println(" Caducidad: "+ calcularCaducidad());
         Post post=new Post(this.fechaInicio,calcularCaducidad(),accion,mensaje);
         this.posts.add(post);
+       // System.out.println("Campana: "+this.nombre+" Duracion: "+duracion+" "+unidadMedida+" lo que equivale a :"+ duracion*unidadMedida.unidadASegundos()+" Segundos");
+
         Tasker.addTask(post);
     }
 
@@ -176,7 +174,9 @@ public class Campana implements Serializable{
                 "Mensaje "+this.mensaje.toString()+"\n"+
                 "Inicio "+ this.fechaInicio.toString()+"\n"+
                 "Estado "+ this.estadoCampana.toString()+"\n"+
-                "Tags "+ this.tags+"\n";
+                "Tags "+ this.tags+"\n"+
+                "Acciones "+ this.acciones+"\n"
+                ;
     }
 
     @Override
