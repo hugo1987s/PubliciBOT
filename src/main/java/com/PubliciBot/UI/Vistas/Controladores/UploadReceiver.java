@@ -8,31 +8,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.vaadin.server.FileResource;
-import com.vaadin.server.VaadinService;
-import com.vaadin.ui.Image;
-import com.vaadin.ui.Upload;
 import com.vaadin.ui.Upload.Receiver;
 
-public class UploadReceiver implements Receiver , Upload.SucceededListener {
+public class UploadReceiver implements Receiver {
     private static final long serialVersionUID = 2215337036540966711L;
-
-    // Find the application directory
-    String basepath = VaadinService.getCurrent()
-            .getBaseDirectory().getAbsolutePath() + "/WEB-INF/images/";
-
-    final Image image = new Image("Imagen subida");
-    private File file;
-    // Image as a file resource
-    //FileResource resource = new FileResource(new File(basepath +
-          //  "/WEB-INF/images/image.png"));
-
     OutputStream outputFile = null;
+
+    private String fileName;
+
+    public UploadReceiver(String fileName)
+    {
+        this.fileName = fileName;
+    }
+
     @Override
     public OutputStream receiveUpload(String strFilename, String strMIMEType) {
         File file=null;
         try {
-            file = new File(basepath + strFilename);
+            file = new File(this.getFileName());
             if(!file.exists()) {
                 file.createNewFile();
             }
@@ -54,8 +47,11 @@ public class UploadReceiver implements Receiver , Upload.SucceededListener {
         }
     }
 
-    @Override
-    public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
-        image.setSource(new FileResource(file));
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

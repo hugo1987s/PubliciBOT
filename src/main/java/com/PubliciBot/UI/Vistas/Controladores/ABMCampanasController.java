@@ -14,6 +14,7 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.ui.*;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,7 +53,7 @@ public class ABMCampanasController extends HorizontalLayout {
 
     Button btnEjecutarAcciones;
 
-    Upload uploadFile;
+    Upload subirArchivo;
 
     UsuarioService usuarioService = new UsuarioService();
 
@@ -65,6 +66,7 @@ public class ABMCampanasController extends HorizontalLayout {
 
     Button cancelar;
 
+    String nombreArchivoGenerado;
 //comment
 
     public ABMCampanasController(ABMCampanasView adbUI) {
@@ -214,18 +216,26 @@ public class ABMCampanasController extends HorizontalLayout {
 
         btnAgregarAccion = new Button("Agregar Acción");
         btnEjecutarAcciones = new Button("Ejecutar Acciones");
-        UploadReceiver receiver = new UploadReceiver();
 
-// Create the upload with a caption and set receiver later
+        UploadReceiver uploadReceiver = new UploadReceiver("src/main/resources/" + armarNombreArchivo());
+        subirArchivo = new Upload("Examinar...", uploadReceiver);
+
+        /*
         uploadFile = new Upload("Upload Image Here", receiver);
 
         uploadFile.setImmediate(true);
         uploadFile.setButtonCaption("Subir imagen");
 
         uploadFile.addSucceededListener(receiver);
-
+*/
     }
 
+    private String armarNombreArchivo()
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        nombreArchivoGenerado = dateFormat.format(new Date()) + ".png";
+        return nombreArchivoGenerado;
+    }
 
     private void dibujarControles() {
 
@@ -239,7 +249,7 @@ public class ABMCampanasController extends HorizontalLayout {
 
         horizontalLayout.addComponents(duracion, unidadMedida);
         horizontalLayout.setSpacing(true);
-        layoutcampana.addComponents(horizontalLayout, txtMensaje, uploadFile);
+        layoutcampana.addComponents(horizontalLayout, txtMensaje, subirArchivo);
 
         HorizontalLayout horizontalLayoutbotones = new HorizontalLayout();
         horizontalLayoutbotones.addComponents(seleccionarTags);
