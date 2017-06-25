@@ -5,7 +5,6 @@ import com.PubliciBot.Services.Tasker;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -203,10 +202,12 @@ public class Campana implements Serializable{
         int result = nombre != null ? nombre.hashCode() : 0;
         result = 31 * result + (descripcion != null ? descripcion.hashCode() : 0);
         result = 31 * result + duracion;
+        result = 31 * result + (unidadMedida != null ? unidadMedida.hashCode() : 0);
         result = 31 * result + (fechaInicio != null ? fechaInicio.hashCode() : 0);
         result = 31 * result + (mensaje != null ? mensaje.hashCode() : 0);
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         result = 31 * result + (acciones != null ? acciones.hashCode() : 0);
+        result = 31 * result + (posts != null ? posts.hashCode() : 0);
         result = 31 * result + (estadoCampana != null ? estadoCampana.hashCode() : 0);
         return result;
     }
