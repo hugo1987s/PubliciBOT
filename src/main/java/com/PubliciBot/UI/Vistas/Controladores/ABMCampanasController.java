@@ -331,6 +331,9 @@ public class ABMCampanasController extends HorizontalLayout {
             }
             addressbookUIView.refreshCampanas("filtroTest");
 
+
+
+
         } catch (FieldGroup.CommitException e) {
             // Validation exceptions could be shown here
         }

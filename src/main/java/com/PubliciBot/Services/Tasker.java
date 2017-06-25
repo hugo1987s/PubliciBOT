@@ -49,7 +49,7 @@ public class Tasker extends Thread{
             for(Sender sender : senders){
                 sender.run();
             }
-            System.out.println("////////////Tasker: sleep por 1 minuto///////////////");
+            System.out.println("////////////Tasker: sleep por 10 segundos///////////////");
             System.out.println("\n\n");
 
             try {

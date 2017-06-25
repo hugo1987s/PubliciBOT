@@ -31,7 +31,8 @@ public class Post implements Task{
            System.out.println("Post: Se ejecutara de nuevo el: " + c.getTime() + " Osea dentro de " + this.accion.getPeriodicidadSegundos() + " Segundos");
        }
        else{
-           System.out.println("Post: Error de envio, direccion incorrecta");
+           this.fechaUltimaEjecucion = Date.from(Instant.now());
+           System.out.println("Post: Error de envio : "+accion.getDestino());
        }
 
 

@@ -4,7 +4,9 @@ FIXME:
 
 1) No se cargan las acciones de esa camapana al editarla ni los tags larga cartel: capo primero crea la campana
 2) Lo mismo pasa a nivel acciones al querer editarlas
-3) Al editar
+3) Al editar no se guarda los cambios
+4) mensaje si lo cambias queda vacio
+
 
 
 
