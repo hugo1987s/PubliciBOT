@@ -53,12 +53,14 @@ public class AccionPublicitariaService {
         props.put("mail.smtp.socketFactory.class",
                 "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.port", "587");
 
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
+
                         return new PasswordAuthentication("megafonomailer","IvoVirginia2017");
+
                     }
                 });
 
@@ -122,7 +124,7 @@ public class AccionPublicitariaService {
 
         } catch (MessagingException e) {
 
-
+            System.out.println("Error de Envio:"+ e);
             return false;
 
 
