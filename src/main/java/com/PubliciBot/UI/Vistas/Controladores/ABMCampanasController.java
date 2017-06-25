@@ -316,6 +316,7 @@ public class ABMCampanasController extends HorizontalLayout {
 
             Usuario actual = getUsuarioSesion();
             actual.getCampanas().remove(editada);
+            nuevaCampana.generarPosts();
             usuarioService.agregarCampañaAUsuario(nuevaCampana,actual);
             usuarioService.guardarUsuario(actual);
             addressbookUIView.refreshCampanas("filtroTest");
@@ -345,9 +346,9 @@ public class ABMCampanasController extends HorizontalLayout {
             } else
                 mensaje = new Mensaje(mensajeTxt, imgImgenMensaje.toString());
             nuevaCampana.setMensaje(mensaje);
-
             Usuario actual = getUsuarioSesion();
             if(!actual.getCampanas().contains(nuevaCampana)) {
+                nuevaCampana.generarPosts();
                 usuarioService.agregarCampañaAUsuario(nuevaCampana, actual);
                 usuarioService.guardarUsuario(actual);
             }

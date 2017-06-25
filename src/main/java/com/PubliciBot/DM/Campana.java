@@ -89,8 +89,14 @@ public class Campana implements Serializable, Cloneable{
         Post post=new Post(this.fechaInicio,calcularCaducidad(),accion,mensaje);
         this.posts.add(post);
        // System.out.println("Campana: "+this.nombre+" Duracion: "+duracion+" "+unidadMedida+" lo que equivale a :"+ duracion*unidadMedida.unidadASegundos()+" Segundos");
-
+        //FIXME el tasker lo deberia
         Tasker.addTask(post);
+    }
+
+    public void generarPosts(){
+        posts.clear();
+        for(AccionPublicitaria a :acciones)
+            agregarPost(a);
     }
 
     public String getNombre() {
@@ -151,7 +157,7 @@ public class Campana implements Serializable, Cloneable{
 
     public void addAccion(AccionPublicitaria accion) {
         this.acciones.add(accion);
-        agregarPost(accion);
+
     }
 
     public EstadoCampana getEstadoCampana() {
