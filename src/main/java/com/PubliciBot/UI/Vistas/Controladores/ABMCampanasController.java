@@ -121,6 +121,7 @@ public class ABMCampanasController extends HorizontalLayout {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 if (nuevaCampana != null) {
+                    accionView2.refreshAcciones(nuevaCampana);
                     accionView.setModal(true);
                     UI.getCurrent().addWindow(accionView);
                 } else {
@@ -294,7 +295,6 @@ public class ABMCampanasController extends HorizontalLayout {
         try {
             // Commit the fields from UI to DAO
             formFieldBindings.commit();
-
             Usuario actual = getUsuarioSesion();
             usuarioService.guardarUsuario(actual);
             addressbookUIView.refreshCampanas("filtroTest");

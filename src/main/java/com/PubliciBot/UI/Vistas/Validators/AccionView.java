@@ -35,7 +35,6 @@ public class AccionView extends VerticalLayout{
     public AccionView(ABMCampanasController abmCampanasController){
         super();
 
-       // refreshAcciones(nuevaCampana);
         abmAccionController  = new ABMAccionController(this, abmCampanasController);
         abmAccionController.setVisible(false);
         configureComponents();
@@ -54,6 +53,7 @@ public class AccionView extends VerticalLayout{
                 accionList.deselect(accionList.getSelectedRow());
             }
         });
+
         //campanasList.setColumnOrder("nombre","descripcion");
         accionList.addSelectionListener(new SelectionEvent.SelectionListener() {
             @Override

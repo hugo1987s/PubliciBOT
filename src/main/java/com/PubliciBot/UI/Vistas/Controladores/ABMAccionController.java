@@ -217,10 +217,11 @@ public class ABMAccionController extends HorizontalLayout {
             // Commit the fields from UI to DAO
             formFieldBindings.commit();
             agregarMedio();
-           Campana actual = abmCampanasController.getNuevaCampana();
+            Campana actual = abmCampanasController.getNuevaCampana();
 
             if(!actual.getAcciones().contains(nuevaAccion)) {
                 actual.addAccion(nuevaAccion);
+                System.out.println(actual.getAcciones());
             }
             accionView.refreshAcciones(actual);
 

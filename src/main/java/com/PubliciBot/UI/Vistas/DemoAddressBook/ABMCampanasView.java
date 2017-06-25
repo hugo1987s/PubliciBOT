@@ -156,8 +156,6 @@ public class ABMCampanasView extends VerticalLayout implements View {
                        removeComponent(btnEditarCampaña);
                        estadisticasCampanaController = null;
                    }
-
-
                }
            }
        });
@@ -167,7 +165,10 @@ public class ABMCampanasView extends VerticalLayout implements View {
            public void buttonClick(Button.ClickEvent clickEvent) {
                estadoABMCampana = estadoABMCampana.EDICIONCAMPANA;
                abmCampanasController.setVisible(true);
-               abmCampanasController.crearCampana((Campana)campanasList.getSelectedRow());
+               seleccionada = (Campana)campanasList.getSelectedRow();
+               Usuario actual = getUsuarioSesion();
+               System.out.println(actual.getCampanas().contains(seleccionada));
+               abmCampanasController.crearCampana(seleccionada);
                campanasList.deselect(campanasList.getSelectedRow());
            }
        });
