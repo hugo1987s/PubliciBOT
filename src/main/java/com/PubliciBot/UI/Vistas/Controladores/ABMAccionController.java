@@ -132,7 +132,7 @@ public class ABMAccionController extends HorizontalLayout {
     private void initComponents() {
         publicitariaService = new AccionPublicitariaService();
         nombreAccion = new TextField("Nombre");
-        periodicidadSegundos = new TextField("Periodicicad");
+        periodicidadSegundos = new TextField("Periodicidad");
         periodicidadSegundos.addValidator(new EnteroValidator());
 
         cboPeriodicidad = new ComboBox("Unidad de medida");
