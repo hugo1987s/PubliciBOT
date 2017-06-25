@@ -53,6 +53,30 @@ public class Medio {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Medio medio = (Medio) o;
+
+        if (tipoMedio != medio.tipoMedio) return false;
+        if (usuarioPerfilOrigen != null ? !usuarioPerfilOrigen.equals(medio.usuarioPerfilOrigen) : medio.usuarioPerfilOrigen != null)
+            return false;
+        if (contrasenaPerfilOrigen != null ? !contrasenaPerfilOrigen.equals(medio.contrasenaPerfilOrigen) : medio.contrasenaPerfilOrigen != null)
+            return false;
+        return perfilDestino != null ? perfilDestino.equals(medio.perfilDestino) : medio.perfilDestino == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = tipoMedio != null ? tipoMedio.hashCode() : 0;
+        result = 31 * result + (usuarioPerfilOrigen != null ? usuarioPerfilOrigen.hashCode() : 0);
+        result = 31 * result + (contrasenaPerfilOrigen != null ? contrasenaPerfilOrigen.hashCode() : 0);
+        result = 31 * result + (perfilDestino != null ? perfilDestino.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString(){
 
         return "Tipo de Medio: "+this.tipoMedio.toString();

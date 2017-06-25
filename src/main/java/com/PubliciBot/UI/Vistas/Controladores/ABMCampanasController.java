@@ -45,6 +45,7 @@ public class ABMCampanasController extends HorizontalLayout {
     HorizontalLayout hl;
     Button detalleCampanaSeleccionada;
     Campana nuevaCampana;
+    Campana editada;
 
     Button btnAgregarAccion;
     VerticalLayout verticalLayout;
@@ -285,6 +286,12 @@ public class ABMCampanasController extends HorizontalLayout {
 
     public void crearCampana(Campana campana){
         this.nuevaCampana = campana;
+
+
+        Usuario actual = getUsuarioSesion();
+        editada = getCampanaParaEdicion(actual);
+
+
         if(campana != null ){
             formFieldBindings = BeanFieldGroup.bindFieldsBuffered(campana, this);
             nombre.focus();
@@ -295,7 +302,10 @@ public class ABMCampanasController extends HorizontalLayout {
         try {
             // Commit the fields from UI to DAO
             formFieldBindings.commit();
+
             Usuario actual = getUsuarioSesion();
+            actual.getCampanas().remove(editada);
+            usuarioService.agregarCampañaAUsuario(nuevaCampana,actual);
             usuarioService.guardarUsuario(actual);
             addressbookUIView.refreshCampanas("filtroTest");
         } catch (FieldGroup.CommitException e) {
@@ -338,5 +348,22 @@ public class ABMCampanasController extends HorizontalLayout {
 
     public Button getBtnGuardarCampana() {
         return btnGuardarCampana;
+    }
+
+    private Campana getCampanaParaEdicion(Usuario user){
+        for(Campana c: user.getCampanas()){
+            if (nuevaCampana.equals(c))
+                return c;
+
+        }
+        return null;
+    }
+
+    private void setEditadaPorNueva(Usuario user){
+        for(Campana c: user.getCampanas()){
+            if (editada.equals(c)){
+                c = nuevaCampana;
+            }
+        }
     }
 }

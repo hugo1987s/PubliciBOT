@@ -221,7 +221,6 @@ public class ABMAccionController extends HorizontalLayout {
 
             if(!actual.getAcciones().contains(nuevaAccion)) {
                 actual.addAccion(nuevaAccion);
-                System.out.println(actual.getAcciones());
             }
             accionView.refreshAcciones(actual);
 
