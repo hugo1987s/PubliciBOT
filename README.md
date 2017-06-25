@@ -4,7 +4,7 @@ FIXME:
 
 1) No se cargan las acciones de esa camapana al editarla ni los tags larga cartel: capo primero crea la campana
 2) Lo mismo pasa a nivel acciones al querer editarlas
-3) Si selecciono 1 minuto en accion se pone 3600 osea 1 hora
+3) Al editar
 
 
 

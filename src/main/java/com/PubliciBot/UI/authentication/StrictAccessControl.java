@@ -46,7 +46,14 @@ public class StrictAccessControl implements AccessControl {
 
     @Override
     public boolean isUserInRole(String role) {
-        return recoveredUser.getRol().getDescripcion().equals(role);
+        if(recoveredUser!=null)
+            if(recoveredUser.getRol()!=null)
+                if(recoveredUser.getRol().getDescripcion()!=null)
+                    if(role!=null)
+                        return recoveredUser.getRol().getDescripcion().equals(role);
+
+        return false;
+
     }
 
     @Override

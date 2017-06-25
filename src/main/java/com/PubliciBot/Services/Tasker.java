@@ -53,7 +53,7 @@ public class Tasker extends Thread{
             System.out.println("\n\n");
 
             try {
-                Thread.sleep(60000); //se duerme y vuelve a mandar cada 1 minuto
+                Thread.sleep(10000); //se duerme y vuelve a mandar cada 1 minuto
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

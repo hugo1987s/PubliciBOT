@@ -21,7 +21,7 @@ public class Post implements Task{
     public void execute() {
         AccionPublicitariaService APS=new AccionPublicitariaService();
        boolean enviado= APS.publicar(accion,mensaje);
-        enviado=true; //testing
+
        if(enviado) {
            this.fechaUltimaEjecucion = Date.from(Instant.now());
 
@@ -31,7 +31,7 @@ public class Post implements Task{
            System.out.println("Post: Se ejecutara de nuevo el: " + c.getTime() + " Osea dentro de " + this.accion.getPeriodicidadSegundos() + " Segundos");
        }
        else{
-           System.out.println("Error de envio");
+           System.out.println("Post: Error de envio, direccion incorrecta");
        }
 
 
