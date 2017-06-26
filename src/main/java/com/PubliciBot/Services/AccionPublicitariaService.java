@@ -87,16 +87,20 @@ public class AccionPublicitariaService {
             multipart.addBodyPart(messageBodyPart);
 
             if (mensajeLocal.getImagenMensajePath() != null && mensajeLocal.getImagenMensajePath().trim() != "") {
-                // second part (the image)
-                messageBodyPart = new MimeBodyPart();
 
                 DataSource fds = new FileDataSource(mensajeLocal.getImagenMensajePath());
 
-                messageBodyPart.setDataHandler(new DataHandler(fds));
-                messageBodyPart.setHeader("Content-ID", "<image>");
+                if(Utils.isExistFile(mensajeLocal.getImagenMensajePath()))
+                {
+                    // second part (the image)
+                    messageBodyPart = new MimeBodyPart();
 
-                // add image to the multipart
-                multipart.addBodyPart(messageBodyPart);
+                    messageBodyPart.setDataHandler(new DataHandler(fds));
+                    messageBodyPart.setHeader("Content-ID", "<image>");
+
+                    // add image to the multipart
+                    multipart.addBodyPart(messageBodyPart);
+                }
             }
 
             // put everything together

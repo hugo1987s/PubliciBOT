@@ -1,5 +1,6 @@
 package com.PubliciBot.Services;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,5 +22,15 @@ public class Utils {
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         return dateFormat.format(new Date()) + ".png";
+    }
+
+    public static boolean isExistFile(String file)
+    {
+        File archivo = new File(file);
+
+        if (archivo.exists())
+            return true;
+
+        return false;
     }
 }
