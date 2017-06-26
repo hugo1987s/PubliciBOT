@@ -230,12 +230,17 @@ public class ABMCampanasView extends VerticalLayout implements View {
         left.setSizeFull();
         campanasList.setSizeFull();
         left.setExpandRatio(campanasList, 1);
+        Panel panel=new Panel();
 
-        HorizontalLayout mainLayout = new HorizontalLayout(left, abmCampanasController);
+        panel.setSizeFull();
+
+
+        HorizontalLayout mainLayout = new HorizontalLayout(left,abmCampanasController);
+        panel.setContent(mainLayout);
         mainLayout.setSizeFull();
         mainLayout.setExpandRatio(left, 1);
         mainLayout.setMargin(true);
-        this.addComponent(mainLayout);
+        this.addComponent(panel);
         // Split and allow resizing
     }
 

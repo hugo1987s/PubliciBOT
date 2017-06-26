@@ -3,7 +3,9 @@ package com.PubliciBot.UI.Vistas.Controladores;
 import com.PubliciBot.DM.Tag;
 import com.PubliciBot.Services.ArbolTagsService;
 import com.PubliciBot.UI.Vistas.ABMTagsView;
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.Collection;
 
@@ -19,11 +21,14 @@ public class ABMTagsController extends VerticalLayout {
         TextField txtNuevoTag = new TextField("");
         txtNuevoTag.setMaxLength(30);
         Label Title = new Label("Administracion de Tags");
-        Button btnAgregarTag = new Button("Agregar");
+        Button btnAgregarTag = new Button("+ Tag");
         Button btneliminarTag = new Button("Eliminar");
 
         arbolTagService.recuperarArbol();
         treeVaadin = arbolTagService.convertirArbolaTree(treeVaadin);
+        btneliminarTag.setStyleName(ValoTheme.BUTTON_DANGER);
+        btnAgregarTag.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        btnAgregarTag.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
 
         btnAgregarTag.addClickListener(new Button.ClickListener() {

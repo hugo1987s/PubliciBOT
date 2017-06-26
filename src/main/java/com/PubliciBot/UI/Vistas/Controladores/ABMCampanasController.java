@@ -11,7 +11,6 @@ import com.PubliciBot.UI.Vistas.VistaCamapana.ABMCampanasView;
 import com.PubliciBot.UI.Vistas.VistaCamapana.SelectorTags;
 import com.PubliciBot.UI.Vistas.VistaCamapana.AccionView;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
-import com.sun.org.apache.bcel.internal.generic.LADD;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.event.ShortcutAction;
@@ -148,6 +147,8 @@ public class ABMCampanasController extends HorizontalLayout {
                 setVisible(false);
             }
         });
+        this.addStyleName("v-scrollable");
+        this.setHeight("100%");
 
         this.setSpacing(false);
     }
@@ -243,7 +244,7 @@ public class ABMCampanasController extends HorizontalLayout {
         VerticalLayout layoutcampana = new VerticalLayout();
 
         layoutcampana.setMargin(true);
-        //layoutcampana.setSpacing(true);
+        layoutcampana.setSpacing(true);
 
         layoutcampana.addComponents( nombre, descripcion, fechaInicio, txtoduracion);
 
@@ -285,8 +286,8 @@ public class ABMCampanasController extends HorizontalLayout {
 
 
         verticalLayout.addComponent(layoutcampana);
-        verticalLayout.setSpacing(false);
-        verticalLayout.addStyleName("layout-with-border");
+        verticalLayout.setSpacing(true);
+        //verticalLayout.addStyleName();
         this.addComponent(verticalLayout);
 
         this.setMargin(true);

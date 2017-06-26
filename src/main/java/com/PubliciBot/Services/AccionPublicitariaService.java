@@ -62,7 +62,7 @@ public class AccionPublicitariaService {
 
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("megafonomailer@gmail.com"));
-            message.setSubject("Megafono Mailer te envia una mensaje!");
+            message.setSubject("Publicibot Mailer te envia una mensaje!");
 
             message.addRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(accionPublicitaria.getDestino()));

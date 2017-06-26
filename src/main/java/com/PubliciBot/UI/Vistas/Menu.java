@@ -53,7 +53,7 @@ public class Menu extends CssLayout {
 
         // logout menu item
         MenuBar logoutMenu = new MenuBar();
-        logoutMenu.addItem(MyUI.get().getAccessControl().getPrincipalName()+" Cerrar Sesion", VaadinIcons.SIGN_OUT, new Command() {
+        logoutMenu.addItem(" Cerrar Sesion", VaadinIcons.SIGN_OUT, new Command() {
 
             @Override
             public void menuSelected(MenuItem selectedItem) {

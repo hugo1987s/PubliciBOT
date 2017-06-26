@@ -8,4 +8,17 @@ public enum DuracionCampana {
     MES,
     BIMESTRE,
     SEMESTRE;
+    @Override
+    public String toString(){
+        switch (this){
+            case MES: return "Mes";
+            case SEMANA: return "Semana";
+            case BIMESTRE: return "Bimestre";
+            case SEMESTRE: return "Semestre";
+            default: return "";
+
+
+        }
+    }
+
 }

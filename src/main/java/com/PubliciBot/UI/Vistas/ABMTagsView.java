@@ -4,6 +4,7 @@ import com.PubliciBot.UI.Vistas.Controladores.ABMTagsController;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 
@@ -11,7 +12,7 @@ import com.vaadin.ui.VerticalLayout;
  * Created by Hugo on 14/05/2017.
  */
     @Theme("mytheme")
-    public class ABMTagsView extends VerticalLayout implements View{
+    public class ABMTagsView extends Panel implements View{
         public static final String VIEW_NAME = "Tags";
         Tree treeVaadin;
 
@@ -21,7 +22,7 @@ import com.vaadin.ui.VerticalLayout;
         ABMTagsView()
         {
             ABMTagsController ABCTRL = new ABMTagsController(this);
-            this.addComponent(ABCTRL);
+            this.setContent(ABCTRL);
         }
 
     @Override
