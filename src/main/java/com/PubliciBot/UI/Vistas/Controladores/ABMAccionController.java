@@ -2,11 +2,13 @@ package com.PubliciBot.UI.Vistas.Controladores;
 
 import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.AccionPublicitariaService;
-import com.PubliciBot.UI.Vistas.Validators.AccionView;
+import com.PubliciBot.UI.Vistas.VistaCamapana.AccionView;
 import com.PubliciBot.UI.Vistas.Validators.EnteroValidator;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * Created by Hugo on 10/06/2017.
@@ -151,7 +153,11 @@ public class ABMAccionController extends HorizontalLayout {
         txtCuentaDestino = new TextField("Cuenta destino");
 
         btnAceptar = new Button("Aceptar");
-        cancelar = new Button ("cancelar");
+        cancelar = new Button ("Cancelar");
+        btnAceptar.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        btnAceptar.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+
+
 
     }
 
@@ -182,7 +188,8 @@ public class ABMAccionController extends HorizontalLayout {
         fl.addComponent(cancelar);
 
         this.addComponent(fl);
-
+        this.setSpacing(true);
+        this.setMargin(true);
         panelMail.setVisible(false);
         panelRedes.setVisible(false);
     }

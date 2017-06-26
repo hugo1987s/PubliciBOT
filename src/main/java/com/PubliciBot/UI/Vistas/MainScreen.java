@@ -1,8 +1,8 @@
 package com.PubliciBot.UI.Vistas;
 
 import com.PubliciBot.UI.MyUI;
-import com.PubliciBot.UI.Vistas.DemoAddressBook.ABMCampanasView;
 
+import com.PubliciBot.UI.Vistas.VistaCamapana.ABMCampanasView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;

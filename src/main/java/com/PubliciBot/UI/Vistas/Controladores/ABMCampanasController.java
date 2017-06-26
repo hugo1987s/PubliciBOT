@@ -6,14 +6,17 @@ import com.PubliciBot.Services.CampanaService;
 import com.PubliciBot.Services.UsuarioService;
 import com.PubliciBot.Services.Utils;
 import com.PubliciBot.UI.MyUI;
-import com.PubliciBot.UI.Vistas.ABMAccionView;
-import com.PubliciBot.UI.Vistas.DemoAddressBook.ABMCampanasView;
-import com.PubliciBot.UI.Vistas.SelectorTags;
-import com.PubliciBot.UI.Vistas.Validators.AccionView;
+import com.PubliciBot.UI.Vistas.VistaCamapana.ABMAccionView;
+import com.PubliciBot.UI.Vistas.VistaCamapana.ABMCampanasView;
+import com.PubliciBot.UI.Vistas.VistaCamapana.SelectorTags;
+import com.PubliciBot.UI.Vistas.VistaCamapana.AccionView;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
+import com.sun.org.apache.bcel.internal.generic.LADD;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -27,7 +30,7 @@ public class ABMCampanasController extends HorizontalLayout {
     Label lblTitulo;
 
     TextField nombre;
-    TextArea descripcion;
+    TextField descripcion;
     DateField fechaInicio;
     TextField duracion;
     ComboBox unidadMedida;
@@ -73,7 +76,7 @@ public class ABMCampanasController extends HorizontalLayout {
         super();
 
         this.addressbookUIView = adbUI;
-        setSpacing(true);
+        setMargin(true);
         initComponents();
         dibujarControles();
         cargarComboDuracion();
@@ -146,7 +149,7 @@ public class ABMCampanasController extends HorizontalLayout {
             }
         });
 
-
+        this.setSpacing(false);
     }
 
     private boolean nuevaCampanaNoTieneTags() {
@@ -181,7 +184,7 @@ public class ABMCampanasController extends HorizontalLayout {
         accionView = new ABMAccionView(accionView2);
         publicitariaService = new AccionPublicitariaService();
         nombre = new TextField("Nombre");
-        descripcion = new TextArea("Descripción");
+        descripcion = new TextField("Descripción");
         fechaInicio = new DateField("Fecha de inicio");
         fechaInicio.setValue(Date.from(Instant.now()));
         duracion = new TextField();
@@ -191,19 +194,21 @@ public class ABMCampanasController extends HorizontalLayout {
 
         txtMensaje = new TextArea("Mensaje adjunto");
         txtMensaje.setValue("Mensaje de Prueba");
-       //imgImgenMensaje = new Image("Imagen adjunta");
+        //imgImgenMensaje = new Image("Imagen adjunta");
 
-        seleccionarTags = new Button("Seleccionar Tags");
-        btnGuardarCampana = new Button("Guardar Campaña");
+        seleccionarTags = new Button("Tags");
+        btnGuardarCampana = new Button(" Guardar ");
 
-        detalleCampanaSeleccionada = new Button("Detalles Campana");
-        cancelar = new Button("cancelar");
+        //detalleCampanaSeleccionada = new Button("Detalles Campaña");
+        cancelar = new Button("Cancelar");
+        btnGuardarCampana.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        btnGuardarCampana.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
         hl = new HorizontalLayout();
-        hl.setSpacing(true);
 
-        btnAgregarAccion = new Button("Agregar Acción");
-        btnEjecutarAcciones = new Button("Ejecutar Acciones");
+
+        btnAgregarAccion = new Button("Acciones");
+
 
          //UploadReceiver uploadReceiver = new UploadReceiver("src/main/resources/" + armarNombreArchivo());
         UploadReceiver uploadReceiver = new UploadReceiver(Utils.getProperty("path.imagenes") + armarNombreArchivo());
@@ -212,6 +217,7 @@ public class ABMCampanasController extends HorizontalLayout {
 
 
         creadasEnSesion = new ArrayList<>();
+
 
         /*
         uploadFile = new Upload("Upload Image Here", receiver);
@@ -235,35 +241,60 @@ public class ABMCampanasController extends HorizontalLayout {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
 
         VerticalLayout layoutcampana = new VerticalLayout();
+
         layoutcampana.setMargin(true);
-        layoutcampana.setSpacing(true);
-        layoutcampana.addComponents(lblTitulo, nombre, descripcion, fechaInicio, txtoduracion);
+        //layoutcampana.setSpacing(true);
+
+        layoutcampana.addComponents( nombre, descripcion, fechaInicio, txtoduracion);
 
         horizontalLayout.addComponents(duracion, unidadMedida);
         horizontalLayout.setSpacing(true);
         layoutcampana.addComponents(horizontalLayout, txtMensaje, subirArchivo);
+        subirArchivo.setWidth(50,Unit.PERCENTAGE);
 
-        HorizontalLayout horizontalLayoutbotones = new HorizontalLayout();
-        horizontalLayoutbotones.addComponents(seleccionarTags);
+        seleccionarTags.setWidth(100,Unit.PERCENTAGE);
+       // cancelar.setWidth(100,Unit.PERCENTAGE);
+      //  btnGuardarCampana.setWidth(100,Unit.PERCENTAGE);
+      //  btnAgregarAccion.setWidth(100,Unit.PERCENTAGE);
+      //  seleccionarTags.setWidth(100,Unit.PERCENTAGE);
 
-        //horizontalLayoutbotones.addComponent(btnEjecutarAcciones);
-        horizontalLayoutbotones.setSpacing(true);
-        layoutcampana.addComponent(horizontalLayoutbotones);
-        layoutcampana.addComponent(btnAgregarAccion);
-        layoutcampana.addComponent(btnGuardarCampana);
-        layoutcampana.addComponent(cancelar);
+        VerticalLayout layoutcampanaEspaciada = new VerticalLayout();
+        GridLayout grid = new GridLayout(2,2);
+
+
+        layoutcampanaEspaciada.setSpacing(true);
+
+        //layoutcampana.setSpacing(true);
+
+
+        grid.setSpacing(true);
+
+
+        layoutcampanaEspaciada.addComponent(grid);
+
+
+        grid.addComponents(seleccionarTags);
+        grid.addComponent(btnAgregarAccion);
+
+        grid.addComponent(btnGuardarCampana);
+        grid.addComponent(cancelar);
+
+        layoutcampanaEspaciada.addComponent(grid);
+
+        layoutcampana.addComponent(layoutcampanaEspaciada);
 
 
         verticalLayout.addComponent(layoutcampana);
+        verticalLayout.setSpacing(false);
+        verticalLayout.addStyleName("layout-with-border");
         this.addComponent(verticalLayout);
 
-        hl.addComponents(detalleCampanaSeleccionada, btnEjecutarAcciones);
+        this.setMargin(true);
 
-        detalleCampanaSeleccionada.setVisible(false);
-        btnEjecutarAcciones.setVisible(false);
 
-        VerticalLayout verticalLayoutGrid = new VerticalLayout();
-        verticalLayoutGrid.setSizeFull();
+
+
+
 
     }
 

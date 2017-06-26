@@ -1,4 +1,4 @@
-package com.PubliciBot.UI.Vistas.Validators;
+package com.PubliciBot.UI.Vistas.VistaCamapana;
 
 import com.PubliciBot.DM.AccionPublicitaria;
 import com.PubliciBot.DM.Campana;
@@ -26,7 +26,7 @@ public class AccionView extends VerticalLayout{
     ABMAccionController abmAccionController ;
 
     EstadisticasCampanaController estadisticasCampanaController ;
-    Button nuevaAccion = new Button ("Nueva Accion");
+    Button nuevaAccion = new Button ("+ Accion");
     AccionPublicitaria seleccionada;
     Button btnEditarAccion = new Button("Editar Accion");
     EstadoABMAccion estadoABMAccion;
@@ -39,6 +39,11 @@ public class AccionView extends VerticalLayout{
         abmAccionController.setVisible(false);
         configureComponents();
         buildLayout();
+        //Scrolleable
+        this.addStyleName("v-scrollable");
+        this.setHeight("100%");
+
+
     }
 
     private void configureComponents() {

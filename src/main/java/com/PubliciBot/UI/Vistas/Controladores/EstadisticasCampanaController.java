@@ -66,6 +66,8 @@ public class EstadisticasCampanaController extends VerticalLayout {
         addComponent(accionCampana);
         for(Label label: accionesCampana)
             addComponent(label);
+        this.setMargin(true);
+        this.setSpacing(true);
 
     }
 

@@ -1,6 +1,6 @@
-package com.PubliciBot.UI.Vistas;
+package com.PubliciBot.UI.Vistas.VistaCamapana;
 
-import com.PubliciBot.UI.Vistas.Validators.AccionView;
+import com.PubliciBot.UI.Vistas.VistaCamapana.AccionView;
 import com.vaadin.ui.Window;
 
 /**
@@ -12,8 +12,8 @@ public class ABMAccionView  extends Window {
 
     public ABMAccionView(AccionView accionView) {
         this.setContent(accionView);
-        this.setWidth("1270");
-        this.setHeight("720");
+        this.setSizeFull();
+
 		//commmnbet
     }
 
