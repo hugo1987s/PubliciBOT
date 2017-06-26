@@ -4,6 +4,7 @@ import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.AccionPublicitariaService;
 import com.PubliciBot.Services.CampanaService;
 import com.PubliciBot.Services.UsuarioService;
+import com.PubliciBot.Services.Utils;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.ABMAccionView;
 import com.PubliciBot.UI.Vistas.DemoAddressBook.ABMCampanasView;
@@ -14,7 +15,6 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.ui.*;
 
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -310,17 +310,7 @@ public class ABMCampanasController extends HorizontalLayout {
             else
                 mensaje = new Mensaje(mensajeTxt, nombreArchivoGenerado);
 			
-            //TODO le puse NULL al path de la imagen porque estaba haciendo un toString() de un objeto imagen
-            if (imgImgenMensaje == null) {
-                mensaje = new Mensaje(mensajeTxt, null);
-            }
-            else if (mensajeTxt == null || mensajeTxt.equals("")) {
-                mensaje = new Mensaje(null, null);
-            }
-            else if (mensajeTxt == null || mensajeTxt.equals("")) {
-                mensaje = new Mensaje(null, imgImgenMensaje.toString());
-            } else
-                mensaje = new Mensaje(mensajeTxt, imgImgenMensaje.toString());
+
             nuevaCampana.setMensaje(mensaje);
 
 
