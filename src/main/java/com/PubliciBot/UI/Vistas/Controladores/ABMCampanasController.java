@@ -336,12 +336,15 @@ public class ABMCampanasController extends HorizontalLayout {
             //MENSAJE CAMPAÑA
             String mensajeTxt = txtMensaje.getValue();
             Mensaje mensaje = null;
-			
+
+
 			if(nombreArchivoGenerado!=null && nombreArchivoGenerado.trim() != "")
-                mensaje = new Mensaje(mensajeTxt, Utils.getProperty("path.imagenes") + nombreArchivoGenerado);
-            else
-                mensaje = new Mensaje(mensajeTxt, nombreArchivoGenerado);
-			
+                mensaje = new Mensaje(mensajeTxt, Utils.getProperty("path.imagenes") + nombreArchivoGenerado,nuevaCampana.getDescripcion());
+            else {
+
+                   mensaje = new Mensaje(mensajeTxt, nombreArchivoGenerado,nuevaCampana.getDescripcion());
+
+            }
 
             nuevaCampana.setMensaje(mensaje);
             nuevaCampana.generarPosts();

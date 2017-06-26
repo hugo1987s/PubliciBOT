@@ -99,7 +99,7 @@ public class LoginScreen extends CssLayout {
         loginInformation.setStyleName("login-information");
         Label loginInfoText = new Label(
                 "<h1>Información de inicio de Sesion</h1>"
-                        + "Loggearse como &quot;admin&quot; para control total. No es necesaria una contraseña",
+                        + "Loggearse como &quot;admin&quot; para control total. \n Como &quot;cliente&quot; para tener acceso solo a Camapañas y como &quot;tecnico&quot; para tener acceso solo a Tags. \n Las contraseñas son iguales a el usuario ingresado!",
                 ContentMode.HTML);
         loginInfoText.setSizeFull();
         loginInformation.addComponent(loginInfoText);

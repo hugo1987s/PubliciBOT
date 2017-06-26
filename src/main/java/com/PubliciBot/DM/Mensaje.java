@@ -6,16 +6,29 @@ package com.PubliciBot.DM;
 public class Mensaje {
     private String textoMensaje;
     private String imagenMensajePath;
+    private String asunto;
 
     public Mensaje(String textoMensaje, String imagenMensaje) {
         this.textoMensaje = textoMensaje;
         this.imagenMensajePath = imagenMensaje;
     }
 
+    public Mensaje(String textoMensaje, String imagenMensaje,String asunto) {
+        this.asunto=asunto;
+        this.textoMensaje = textoMensaje;
+        this.imagenMensajePath = imagenMensaje;
+    }
+
     public Mensaje (){
         this.textoMensaje = "";
+        this.asunto = "";
         this.imagenMensajePath = "";
     }
+
+    public String getAsunto() {
+        return asunto;
+    }
+
     public String getTextoMensaje() {
         return textoMensaje;
     }

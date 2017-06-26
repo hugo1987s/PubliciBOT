@@ -1,5 +1,7 @@
 # PubliciBot
 Sistema para generar camapañas publicitarias en redes sociales.
+
+Demo: http://publicibot.ddns.net
 FIXME:
 
 1) Al editar tags de una campaña no se borran los anteriores que ya estaban agregados
