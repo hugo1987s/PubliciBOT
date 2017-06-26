@@ -44,6 +44,8 @@ public class Campana implements Serializable, Cloneable{
     @javax.validation.constraints.NotNull
     private EstadoCampana estadoCampana;
 
+    private Long id;
+
 
     public Campana(String nombre, String descripcion, Date fechaInicio, int duracion, UnidadMedida unidadMedida, Mensaje mensaje ) {
         this.nombre = nombre;
@@ -226,5 +228,13 @@ public class Campana implements Serializable, Cloneable{
         } catch (Exception ex) {
             throw new CloneNotSupportedException();
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

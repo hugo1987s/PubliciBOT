@@ -1,6 +1,6 @@
 package com.PubliciBot.DM;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Hugo on 19/05/2017.
@@ -10,7 +10,7 @@ public class Usuario {
     private String mail;
     private String contrasena;
     private Rol rol;
-    private ArrayList<Campana> campanas;
+    private HashMap<Long,Campana> campanas;
 
     public Usuario() {
         new Usuario("", "", new Rol());
@@ -21,7 +21,7 @@ public class Usuario {
         this.mail = mail;
         this.contrasena = contrasena;
         this.rol = rol;
-        this.campanas = new ArrayList<>();
+        this.campanas = new HashMap<Long,Campana>();
     }
 
 
@@ -70,11 +70,11 @@ public class Usuario {
                 "\nRol: "     +this.rol.toString();
     }
 
-    public ArrayList<Campana> getCampanas() {
+    public HashMap<Long,Campana> getCampanas() {
         return campanas;
     }
 
-    public void setCampanas(ArrayList<Campana> campanas) {
+    public void setCampanas(HashMap<Long,Campana> campanas) {
         this.campanas = campanas;
     }
 }

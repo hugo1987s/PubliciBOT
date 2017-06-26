@@ -4,7 +4,6 @@ import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.AccionPublicitariaService;
 import com.PubliciBot.Services.CampanaService;
 import com.PubliciBot.Services.UsuarioService;
-import com.PubliciBot.Services.Utils;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.ABMAccionView;
 import com.PubliciBot.UI.Vistas.DemoAddressBook.ABMCampanasView;
@@ -47,7 +46,8 @@ public class ABMCampanasController extends HorizontalLayout {
     HorizontalLayout hl;
     Button detalleCampanaSeleccionada;
     Campana nuevaCampana;
-    Campana editada;
+
+    ArrayList<Campana> creadasEnSesion;
 
     Button btnAgregarAccion;
     VerticalLayout verticalLayout;
@@ -64,7 +64,6 @@ public class ABMCampanasController extends HorizontalLayout {
 
     BeanFieldGroup<Campana> formFieldBindings;
 
-
     Button cancelar;
 
     String nombreArchivoGenerado;
@@ -78,9 +77,6 @@ public class ABMCampanasController extends HorizontalLayout {
         initComponents();
         dibujarControles();
         cargarComboDuracion();
-
-
-
 
         //SE ABRE VENTANA PARA ASIGNAR TAGS A CAMPAÑA
         seleccionarTags.addClickListener(new Button.ClickListener() {
@@ -119,8 +115,6 @@ public class ABMCampanasController extends HorizontalLayout {
 
         });
 
-
-
         btnAgregarAccion.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
@@ -138,10 +132,7 @@ public class ABMCampanasController extends HorizontalLayout {
         btnGuardarCampana.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                if(adbUI.getEstadoABMCampana() == ABMCampanasView.EstadoABMCampana.NUEVACAMPANA)
-                    guardar();
-               if(adbUI.getEstadoABMCampana() == ABMCampanasView.EstadoABMCampana.EDICIONCAMPANA)
-                   guardarEdicion();
+                guardar();
                 setVisible(false);
 
                 //MedioService medioService = new MedioService(nuevaCampana.getAcciones())
@@ -154,10 +145,6 @@ public class ABMCampanasController extends HorizontalLayout {
                 setVisible(false);
             }
         });
-
-
-
-
 
 
     }
@@ -218,10 +205,13 @@ public class ABMCampanasController extends HorizontalLayout {
         btnAgregarAccion = new Button("Agregar Acción");
         btnEjecutarAcciones = new Button("Ejecutar Acciones");
 
-        //UploadReceiver uploadReceiver = new UploadReceiver("src/main/resources/" + armarNombreArchivo());
+         //UploadReceiver uploadReceiver = new UploadReceiver("src/main/resources/" + armarNombreArchivo());
         UploadReceiver uploadReceiver = new UploadReceiver(Utils.getProperty("path.imagenes") + armarNombreArchivo());
 
         subirArchivo = new Upload("Examinar...", uploadReceiver);
+
+
+        creadasEnSesion = new ArrayList<>();
 
         /*
         uploadFile = new Upload("Upload Image Here", receiver);
@@ -235,7 +225,7 @@ public class ABMCampanasController extends HorizontalLayout {
 
     private String armarNombreArchivo()
     {
-        this.nombreArchivoGenerado = Utils.generarNombreArchivoImagen();
+         this.nombreArchivoGenerado = Utils.generarNombreArchivoImagen();
         return this.nombreArchivoGenerado;
     }
 
@@ -298,19 +288,6 @@ public class ABMCampanasController extends HorizontalLayout {
 
     public void crearCampana(Campana campana){
         this.nuevaCampana = campana;
-        System.out.println("campaña "+nuevaCampana);
-
-        Usuario actual = getUsuarioSesion();
-        editada = getCampanaParaEdicion(actual);
-        if(editada == null){
-            try {
-                editada = campana.clone();
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println(editada);
-
 
         if(campana != null ){
             formFieldBindings = BeanFieldGroup.bindFieldsBuffered(campana, this);
@@ -318,25 +295,6 @@ public class ABMCampanasController extends HorizontalLayout {
         }
     }
 
-    public void guardarEdicion(){
-        try {
-            // Commit the fields from UI to DAO
-            formFieldBindings.commit();
-
-            if(editada.equals(nuevaCampana))
-                return;
-
-            Usuario actual = getUsuarioSesion();
-            actual.getCampanas().remove(editada);
-            nuevaCampana.generarPosts();
-            usuarioService.agregarCampañaAUsuario(nuevaCampana,actual);
-            usuarioService.guardarUsuario(actual);
-            addressbookUIView.refreshCampanas("filtroTest");
-
-        } catch (FieldGroup.CommitException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void guardar() {
         try {
@@ -346,23 +304,30 @@ public class ABMCampanasController extends HorizontalLayout {
             //MENSAJE CAMPAÑA
             String mensajeTxt = txtMensaje.getValue();
             Mensaje mensaje = null;
-
-            if(nombreArchivoGenerado!=null && nombreArchivoGenerado.trim() != "")
+			
+			if(nombreArchivoGenerado!=null && nombreArchivoGenerado.trim() != "")
                 mensaje = new Mensaje(mensajeTxt, Utils.getProperty("path.imagenes") + nombreArchivoGenerado);
             else
                 mensaje = new Mensaje(mensajeTxt, nombreArchivoGenerado);
-
-            nuevaCampana.setMensaje(mensaje);
-            Usuario actual = getUsuarioSesion();
-            if(!actual.getCampanas().contains(nuevaCampana)) {
-                nuevaCampana.generarPosts();
-                usuarioService.agregarCampañaAUsuario(nuevaCampana, actual);
-                usuarioService.guardarUsuario(actual);
+			
+            //TODO le puse NULL al path de la imagen porque estaba haciendo un toString() de un objeto imagen
+            if (imgImgenMensaje == null) {
+                mensaje = new Mensaje(mensajeTxt, null);
             }
+            else if (mensajeTxt == null || mensajeTxt.equals("")) {
+                mensaje = new Mensaje(null, null);
+            }
+            else if (mensajeTxt == null || mensajeTxt.equals("")) {
+                mensaje = new Mensaje(null, imgImgenMensaje.toString());
+            } else
+                mensaje = new Mensaje(mensajeTxt, imgImgenMensaje.toString());
+            nuevaCampana.setMensaje(mensaje);
+
+
+            Usuario actual = getUsuarioSesion();
+            usuarioService.agregarCampañaAUsuario(nuevaCampana,actual);
+            usuarioService.guardarUsuario(actual);
             addressbookUIView.refreshCampanas("filtroTest");
-
-
-
 
         } catch (FieldGroup.CommitException e) {
             // Validation exceptions could be shown here
@@ -373,20 +338,4 @@ public class ABMCampanasController extends HorizontalLayout {
         return btnGuardarCampana;
     }
 
-    private Campana getCampanaParaEdicion(Usuario user){
-        for(Campana c: user.getCampanas()){
-            if (nuevaCampana.equals(c))
-                return c;
-
-        }
-        return null;
-    }
-
-    private void setEditadaPorNueva(Usuario user){
-        for(Campana c: user.getCampanas()){
-            if (editada.equals(c)){
-                c = nuevaCampana;
-            }
-        }
-    }
 }

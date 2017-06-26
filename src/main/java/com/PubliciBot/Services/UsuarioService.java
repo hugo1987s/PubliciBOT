@@ -42,7 +42,15 @@ public class UsuarioService {
     }
 
     public void agregarCampañaAUsuario(Campana campana, Usuario user){
-        user.getCampanas().add(campana);
+        Long lon = new Long(user.getCampanas().size());
+        if(campana.getId() == null){
+            campana.setId(lon++);
+        }
+
+        System.out.println("campana con acciones "+campana);
+
+        System.out.println("campana con acciones "+campana);
+        user.getCampanas().put(campana.getId(),campana);
     }
 
     public void guardarUsuario(Usuario user){

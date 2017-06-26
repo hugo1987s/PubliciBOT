@@ -78,13 +78,8 @@ public class ABMAccionController extends HorizontalLayout {
                 //controller.getPublicitariaService().setAccionPublicitaria(crearAccion());
                 //AccionPublicitaria ac = controller.getPublicitariaService().getAccionPublicitaria();
 
-
-                    if (accionView.getEstadoABMAccion() == AccionView.EstadoABMAccion.NUEVAACCION) {
-                        guardarAccion();
-                    }
-                    else if (accionView.getEstadoABMAccion() == AccionView.EstadoABMAccion.EDICIONACCION)
-                        guardarEdicionAccion();
-                    setVisible(false);
+                guardarAccion();
+                setVisible(false);
                     /*
                     abmCampanasController.getNuevaCampana().addAccion(crearAccion());
                     Collection<Window> views = ((MyUI) getUI()).getWindows();
@@ -200,17 +195,6 @@ public class ABMAccionController extends HorizontalLayout {
         }
     }
 
-    public void guardarEdicionAccion(){
-        try {
-            // Commit the fields from UI to DAO
-            formFieldBindings.commit();
-            Campana actual = abmCampanasController.getNuevaCampana();
-            accionView.refreshAcciones(actual);
-
-        } catch (FieldGroup.CommitException e) {
-            // Validation exceptions could be shown here
-        }
-    }
 
     public void guardarAccion() {
         try {
@@ -219,9 +203,7 @@ public class ABMAccionController extends HorizontalLayout {
             agregarMedio();
             Campana actual = abmCampanasController.getNuevaCampana();
 
-            if(!actual.getAcciones().contains(nuevaAccion)) {
-                actual.addAccion(nuevaAccion);
-            }
+            actual.addAccion(nuevaAccion);
             accionView.refreshAcciones(actual);
 
         } catch (FieldGroup.CommitException e) {

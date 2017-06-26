@@ -9,8 +9,7 @@ import org.neodatis.odb.Objects;
 import org.neodatis.odb.core.query.IQuery;
 import org.neodatis.odb.core.query.nq.SimpleNativeQuery;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * Created by Max on 6/4/2017.
@@ -18,7 +17,7 @@ import java.util.List;
 public class CampanaDAONeodatis extends DAONeodatis<Campana> implements CampanaDAO {
 
     @Override
-    public List<Campana> recuperarCampanas(Usuario usuario) {
+    public HashMap<Long,Campana> recuperarCampanas(Usuario usuario) {
         ODB odb = null;
         try {
             odb = ODBFactory.open(fileNameNeodatisDB);
@@ -30,7 +29,7 @@ public class CampanaDAONeodatis extends DAONeodatis<Campana> implements CampanaD
             Objects<Object> usuarios = odb.getObjects(usuarioDeCampana);
             if(usuarios != null) {
                 Usuario user = (Usuario) (usuarios.getFirst());
-                ArrayList<Campana> ret = user.getCampanas();
+                HashMap<Long,Campana> ret = user.getCampanas();
                 return ret;
             }
         } catch (Exception e) {
@@ -38,6 +37,6 @@ public class CampanaDAONeodatis extends DAONeodatis<Campana> implements CampanaD
         } finally {
             odb.close();
         }
-        return new ArrayList<>();
+        return new HashMap<Long,Campana>();
     }
 }

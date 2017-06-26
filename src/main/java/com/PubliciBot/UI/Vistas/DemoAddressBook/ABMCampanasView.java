@@ -121,12 +121,20 @@ public class ABMCampanasView extends VerticalLayout implements View {
                 estadoABMCampana =estadoABMCampana.NUEVACAMPANA;
                 abmCampanasController.setVisible(true);
                 abmCampanasController.crearCampana(new Campana());
+                if(estadisticasCampanaController != null)
+                    removeComponent(estadisticasCampanaController);
+                removeComponent(btnEditarCampaña);
             }
         });
         //campanasList.setColumnOrder("nombre","descripcion");
        campanasList.addSelectionListener(new SelectionEvent.SelectionListener() {
            @Override
            public void select(SelectionEvent selectionEvent) {
+               if(abmCampanasController.isVisible()){
+                   campanasList.deselect(campanasList.getSelectedRow());
+                   return;
+               }
+
                if(seleccionada == null) {
                    seleccionada = (Campana) campanasList.getSelectedRow();
                    estadisticasCampanaController = new EstadisticasCampanaController(seleccionada);
@@ -163,12 +171,15 @@ public class ABMCampanasView extends VerticalLayout implements View {
        btnEditarCampaña.addClickListener(new Button.ClickListener() {
            @Override
            public void buttonClick(Button.ClickEvent clickEvent) {
+               if(estadisticasCampanaController.isVisible())
+                   estadisticasCampanaController.setVisible(false);
                estadoABMCampana = estadoABMCampana.EDICIONCAMPANA;
                abmCampanasController.setVisible(true);
                seleccionada = (Campana)campanasList.getSelectedRow();
-               System.out.println("edicion "+ seleccionada);
                abmCampanasController.crearCampana(seleccionada);
                campanasList.deselect(campanasList.getSelectedRow());
+               removeComponent(estadisticasCampanaController);
+               removeComponent(btnEditarCampaña);
            }
        });
         campanasList.setContainerDataSource(new BeanItemContainer<>(Campana.class));
@@ -242,7 +253,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
     public void refreshCampanas(String stringFilter) {
         campanaService.recuperarCampanas(getUsuarioSesion());
         campanasList.setContainerDataSource(new BeanItemContainer<>(
-                Campana.class, campanaService.getCampanasGuardadas()));
+                Campana.class, campanaService.findAll()));
         //contactForm.setVisible(false);
     }
 
