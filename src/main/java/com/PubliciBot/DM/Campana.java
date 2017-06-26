@@ -101,6 +101,21 @@ public class Campana implements Serializable, Cloneable{
             agregarPost(a);
     }
 
+    public void eliminarPost(AccionPublicitaria a){
+        for(int i = 0 ; i < this.posts.size(); i++){
+            Post p = posts.get(i);
+            if(p.getAccion().equals(a)){
+                this.posts.remove(p);
+                Tasker.removeTask(p);
+            }
+            i++;
+        }
+    }
+
+    public ArrayList<Post> getPosts(){
+       return this.posts;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -160,6 +175,11 @@ public class Campana implements Serializable, Cloneable{
     public void addAccion(AccionPublicitaria accion) {
         this.acciones.add(accion);
 
+    }
+
+
+    public void removeAccion(AccionPublicitaria accion){
+        this.acciones.remove(accion);
     }
 
     public EstadoCampana getEstadoCampana() {

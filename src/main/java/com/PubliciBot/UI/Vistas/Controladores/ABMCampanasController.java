@@ -1,10 +1,7 @@
 package com.PubliciBot.UI.Vistas.Controladores;
 
 import com.PubliciBot.DM.*;
-import com.PubliciBot.Services.AccionPublicitariaService;
-import com.PubliciBot.Services.CampanaService;
-import com.PubliciBot.Services.UsuarioService;
-import com.PubliciBot.Services.Utils;
+import com.PubliciBot.Services.*;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.VistaCamapana.ABMAccionView;
 import com.PubliciBot.UI.Vistas.VistaCamapana.ABMCampanasView;
@@ -363,6 +360,7 @@ public class ABMCampanasController extends HorizontalLayout {
 
     public void eliminar(Campana seleccionada) {
         Usuario actual = getUsuarioSesion();
+        Tasker.clearTasks();
         actual.getCampanas().remove(seleccionada.getId());
         usuarioService.guardarUsuario(actual);
         addressbookUIView.refreshCampanas();

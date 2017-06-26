@@ -202,7 +202,6 @@ public class ABMAccionController extends HorizontalLayout {
     public void crearAccion(AccionPublicitaria accion) {
         this.nuevaAccion = accion;
         if (accion != null) {
-
             formFieldBindings = BeanFieldGroup.bindFieldsBuffered(accion, this);
         }
     }
@@ -215,7 +214,6 @@ public class ABMAccionController extends HorizontalLayout {
             agregarMedio();
             Campana actual = abmCampanasController.getNuevaCampana();
 
-
             actual.addAccion(nuevaAccion);
             accionView.refreshAcciones(actual);
 
@@ -224,4 +222,10 @@ public class ABMAccionController extends HorizontalLayout {
         }
     }
 
+    public void eliminarAccion(AccionPublicitaria selectedRow) {
+        Campana actual = abmCampanasController.getNuevaCampana();
+        actual.eliminarPost(selectedRow);
+        actual.removeAccion(selectedRow);
+        accionView.refreshAcciones(actual);
+    }
 }

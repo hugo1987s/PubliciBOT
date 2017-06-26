@@ -28,7 +28,7 @@ public class AccionView extends VerticalLayout{
     EstadisticasCampanaController estadisticasCampanaController ;
     Button nuevaAccion = new Button ("+ Accion");
     AccionPublicitaria seleccionada;
-    Button btnEditarAccion = new Button("Editar Accion");
+    Button eliminarAccion = new Button("Eliminar Accion");
     EstadoABMAccion estadoABMAccion;
 
 
@@ -64,33 +64,32 @@ public class AccionView extends VerticalLayout{
             public void select(SelectionEvent selectionEvent) {
                 if(seleccionada == null) {
                     seleccionada = (AccionPublicitaria) accionList.getSelectedRow();
-                    addComponent(btnEditarAccion);
+                    addComponent(eliminarAccion);
                 }
                 else {
                     AccionPublicitaria seleccionadaGrid = (AccionPublicitaria) accionList.getSelectedRow();
                     if(seleccionadaGrid != null) {
                         if(estadisticasCampanaController != null) {
-                            removeComponent(btnEditarAccion);
+                            removeComponent(eliminarAccion);
                             seleccionada = seleccionadaGrid;
-                            addComponent(btnEditarAccion);
+                            addComponent(eliminarAccion);
                         }
                         else{
                             seleccionada = seleccionadaGrid;
-                            addComponent(btnEditarAccion);
+                            addComponent(eliminarAccion);
                         }
                     }
                     else{
-                        removeComponent(btnEditarAccion);
+                        removeComponent(eliminarAccion);
                     }
                 }
             }
         });
 
-        btnEditarAccion.addClickListener(new Button.ClickListener() {
+        eliminarAccion.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                abmAccionController.setVisible(true);
-                abmAccionController.crearAccion((AccionPublicitaria)accionList.getSelectedRow());
+                abmAccionController.eliminarAccion((AccionPublicitaria)accionList.getSelectedRow());
                 accionList.deselect(accionList.getSelectedRow());
             }
         });

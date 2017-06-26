@@ -1,15 +1,12 @@
 package com.PubliciBot.Services;
 
 import com.PubliciBot.DAO.Interfaces.Task;
-
 import com.PubliciBot.DAO.Neodatis.DAONeodatis;
-import com.PubliciBot.DM.Campana;
 import com.PubliciBot.DM.Post;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
 import java.util.Stack;
 
 public class Tasker extends Thread{
@@ -136,7 +133,9 @@ public class Tasker extends Thread{
        dbtasks.add((Post)task);
     }
 
+    public static void removeTask(Task task){dbtasks.remove((Post) task);}
 
+    public static void clearTasks(){dbtasks.clear();}
 
     public static Tasker getTasker(){
         if(tasker==null){
