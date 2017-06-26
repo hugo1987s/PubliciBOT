@@ -87,7 +87,7 @@ public class LoginScreen extends CssLayout {
         forgotPassword.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                showNotification(new Notification("Pista: Prueba cualquier cosa"));
+                showNotification(new Notification("Pista: es igual que el usuario!"));
             }
         });
         forgotPassword.addStyleName(ValoTheme.BUTTON_LINK);
