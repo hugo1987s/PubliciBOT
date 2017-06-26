@@ -1,19 +1,16 @@
 # PubliciBot
 Sistema para generar camapañas publicitarias en redes sociales.
+
+Demo: http://publicibot.ddns.net
 FIXME:
 
-1) Se crean campañas duplicadas al editar
-
-
-
-
-
-
+1) Al editar tags de una campaña no se borran los anteriores que ya estaban agregados
+2) Al agregar una campaña nueva no se vacia la casilla "Mensaje"
+3)Null Pointer exception al editar nombre de una accion
 
 TODO:
-1)Que la camapaña mande fotos
-2) Agregar un boton eliminar campaña y acciones
-3)no se permite DESseleccioanr Tags hacer un boton Deseleccionar?
+1) Agregar un boton eliminar campaña y acciones
+2)no se permite DESseleccioanr Tags hacer un boton Deseleccionar?
 
 **LINKS UTILES:**
 

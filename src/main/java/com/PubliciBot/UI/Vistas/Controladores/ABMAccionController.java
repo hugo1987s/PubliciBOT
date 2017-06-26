@@ -54,6 +54,7 @@ public class ABMAccionController extends HorizontalLayout {
                 panelRedes.setVisible(false);
                 panelMail.setVisible(true);
             } else {
+                this.getUI().showNotification("Aun no implementado, por el momento solo Email");
                 panelRedes.setVisible(true);
                 panelMail.setVisible(false);
             }
@@ -131,14 +132,18 @@ public class ABMAccionController extends HorizontalLayout {
         nombreAccion = new TextField("Nombre");
         periodicidadSegundos = new TextField("Periodicidad");
         periodicidadSegundos.addValidator(new EnteroValidator());
-
+        periodicidadSegundos.setValue("1");
         cboPeriodicidad = new ComboBox("Unidad de medida");
         cboPeriodicidad.addItems(PeriodicidadAccion.values());
         cboPeriodicidad.setNullSelectionAllowed(false);
+        cboPeriodicidad.setValue(PeriodicidadAccion.MES);
+
 
         cboMedio = new ComboBox("Posteo en");
         cboMedio.addItems(TipoMedio.values());
         cboMedio.setNullSelectionAllowed(false);
+        cboMedio.setValue(TipoMedio.EMAIL);
+
 
         destino = new TextField("Email destino");
 
@@ -151,7 +156,6 @@ public class ABMAccionController extends HorizontalLayout {
         txtUsuarioOrigen = new TextField("Usuario");
         txtPasswordOrigen = new PasswordField("Contraseña");
         txtCuentaDestino = new TextField("Cuenta destino");
-
         btnAceptar = new Button("Aceptar");
         cancelar = new Button ("Cancelar");
         btnAceptar.setStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -190,7 +194,7 @@ public class ABMAccionController extends HorizontalLayout {
         this.addComponent(fl);
         this.setSpacing(true);
         this.setMargin(true);
-        panelMail.setVisible(false);
+        panelMail.setVisible(true);
         panelRedes.setVisible(false);
     }
 
@@ -198,6 +202,7 @@ public class ABMAccionController extends HorizontalLayout {
     public void crearAccion(AccionPublicitaria accion) {
         this.nuevaAccion = accion;
         if (accion != null) {
+
             formFieldBindings = BeanFieldGroup.bindFieldsBuffered(accion, this);
         }
     }
@@ -209,6 +214,7 @@ public class ABMAccionController extends HorizontalLayout {
             formFieldBindings.commit();
             agregarMedio();
             Campana actual = abmCampanasController.getNuevaCampana();
+
 
             actual.addAccion(nuevaAccion);
             accionView.refreshAcciones(actual);
