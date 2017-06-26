@@ -44,14 +44,8 @@ public class ABMCampanasView extends VerticalLayout implements View {
         VerticalLayout content = new VerticalLayout();
         // content has undefined height by default - just don't set one
 
-       /* grillaCampana.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                refreshCampanas("filtroTest");
-            }
-        });
-        */
-        refreshCampanas("filtroTest");
+
+        refreshCampanas();
         this.setSpacing(false);
     }
 
@@ -60,9 +54,9 @@ public class ABMCampanasView extends VerticalLayout implements View {
 
     ABMCampanasController abmCampanasController = new ABMCampanasController(this);
     EstadisticasCampanaController estadisticasCampanaController ;
-    Button grillaCampana = new Button("Ver campañas");
     Button nuevaCampana = new Button("+ Campaña");
     Button btnEditarCampaña = new Button("Editar");
+    Button borrarCampaña = new Button ("Eliminar");
     Campana seleccionada;
     EstadoABMCampana estadoABMCampana;
 
@@ -73,11 +67,6 @@ public class ABMCampanasView extends VerticalLayout implements View {
      * default Vaadin components are in the com.vaadin.ui package and there
      * are over 500 more in vaadin.com/directory.
      */
-
-
-
-    // ContactForm is an example of a custom component class
-
 
 
     /* The "Main method".
@@ -95,13 +84,6 @@ public class ABMCampanasView extends VerticalLayout implements View {
          * only the needed changes to the web page without loading a new page.
          */
 
-       //ADRESS BOOK
-
-
-
-
-
-
 
         // ABM CAMPAÑAS CONTROLLER
         abmCampanasController.setVisible(false);
@@ -110,12 +92,12 @@ public class ABMCampanasView extends VerticalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 campanasList.deselect(campanasList.getSelectedRow());
-                estadoABMCampana =estadoABMCampana.NUEVACAMPANA;
                 abmCampanasController.setVisible(true);
                 abmCampanasController.crearCampana(new Campana());
                 if(estadisticasCampanaController != null)
                     removeComponent(estadisticasCampanaController);
                 actions.removeComponent(btnEditarCampaña);
+                actions.removeComponent(borrarCampaña);
             }
         });
 
@@ -132,6 +114,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
                    estadisticasCampanaController = new EstadisticasCampanaController(seleccionada);
                    addComponent(estadisticasCampanaController);
                    actions.addComponent(btnEditarCampaña);
+                   actions.addComponent(borrarCampaña);
 
                }
                else {
@@ -140,21 +123,25 @@ public class ABMCampanasView extends VerticalLayout implements View {
                        if(estadisticasCampanaController != null) {
                            removeComponent(estadisticasCampanaController);
                            actions.removeComponent(btnEditarCampaña);
+                           actions.removeComponent(borrarCampaña);
                            seleccionada = seleccionadaGrid;
                            estadisticasCampanaController = new EstadisticasCampanaController(seleccionada);
                            addComponent(estadisticasCampanaController);
                            actions.addComponent(btnEditarCampaña);
+                           actions.addComponent(borrarCampaña);
                        }
                        else{
                            seleccionada = seleccionadaGrid;
                            estadisticasCampanaController = new EstadisticasCampanaController(seleccionada);
                            addComponent(estadisticasCampanaController);
                            actions.addComponent(btnEditarCampaña);
+                           actions.addComponent(borrarCampaña);
                        }
                    }
                    else{
                        removeComponent(estadisticasCampanaController);
                        actions.removeComponent(btnEditarCampaña);
+                       actions.removeComponent(borrarCampaña);
                        estadisticasCampanaController = null;
                    }
                }
@@ -166,13 +153,27 @@ public class ABMCampanasView extends VerticalLayout implements View {
            public void buttonClick(Button.ClickEvent clickEvent) {
                if(estadisticasCampanaController.isVisible())
                    estadisticasCampanaController.setVisible(false);
-               estadoABMCampana = estadoABMCampana.EDICIONCAMPANA;
                abmCampanasController.setVisible(true);
                seleccionada = (Campana)campanasList.getSelectedRow();
                abmCampanasController.crearCampana(seleccionada);
                campanasList.deselect(campanasList.getSelectedRow());
                removeComponent(estadisticasCampanaController);
                actions.removeComponent(btnEditarCampaña);
+               actions.removeComponent(borrarCampaña);
+           }
+       });
+
+       borrarCampaña.addClickListener(new Button.ClickListener() {
+           @Override
+           public void buttonClick(Button.ClickEvent clickEvent) {
+               if(estadisticasCampanaController.isVisible())
+                   estadisticasCampanaController.setVisible(false);
+               seleccionada = (Campana)campanasList.getSelectedRow();
+               removeComponent(estadisticasCampanaController);
+               abmCampanasController.eliminar(seleccionada);
+               campanasList.deselect(campanasList.getSelectedRow());
+               actions.removeComponent(btnEditarCampaña);
+               actions.removeComponent(borrarCampaña);
            }
        });
         campanasList.setContainerDataSource(new BeanItemContainer<>(Campana.class));
@@ -182,8 +183,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
         campanasList.removeColumn("mensaje");
         campanasList.removeColumn("id");
 
-
-          campanasList.setColumnOrder("nombre","descripcion","estadoCampana","duracion","unidadMedida","fechaInicio");
+        campanasList.setColumnOrder("nombre","descripcion","estadoCampana","duracion","unidadMedida","fechaInicio");
 
 
     }
@@ -200,28 +200,9 @@ public class ABMCampanasView extends VerticalLayout implements View {
      * with Vaadin Designer, CSS and HTML.
      */
     private void buildLayout() {
-        /*/viejo
-        HorizontalLayout actions = new HorizontalLayout(filter, newContact);
-        actions.setWidth("100%");
-        filter.setWidth("100%");
-        actions.setExpandRatio(filter, 1);
-
-        VerticalLayout left = new VerticalLayout(actions,contactList);
-        left.setSizeFull();
-        contactList.setSizeFull();
-        left.setExpandRatio(contactList, 1);
-
-
-        HorizontalLayout mainLayout = new HorizontalLayout(left, contactForm);
-        mainLayout.setSizeFull();
-        mainLayout.setExpandRatio(left, 1);
-       // FIN VIEJO*/
-
-        //
         actions = new HorizontalLayout(nuevaCampana);
         actions.setSpacing(true);
         nuevaCampana.setStyleName(ValoTheme.BUTTON_PRIMARY);
-
 
         VerticalLayout left = new VerticalLayout(campanasList,actions);
 
@@ -231,7 +212,6 @@ public class ABMCampanasView extends VerticalLayout implements View {
         Panel panel=new Panel();
 
         panel.setSizeFull();
-
 
         HorizontalLayout mainLayout = new HorizontalLayout(left,abmCampanasController);
         panel.setContent(mainLayout);
@@ -255,7 +235,7 @@ public void addComponentScrollable(){
 
 }
 
-    public void refreshCampanas(String stringFilter) {
+    public void refreshCampanas() {
         campanaService.recuperarCampanas(getUsuarioSesion());
         campanasList.setContainerDataSource(new BeanItemContainer<>(
                 Campana.class, campanaService.findAll()));

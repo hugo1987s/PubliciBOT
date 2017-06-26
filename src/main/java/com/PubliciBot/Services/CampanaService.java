@@ -49,9 +49,6 @@ public class CampanaService {
         return this.campanasGuardadas;
     }
 
-    public void guardarCampana(Campana campana){
-        this.campanaDao.guardar(campana);
-    }
 
     public List<Campana> findAll() {
         ArrayList arrayList = new ArrayList();

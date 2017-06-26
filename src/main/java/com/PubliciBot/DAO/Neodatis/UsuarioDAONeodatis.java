@@ -1,6 +1,7 @@
 package com.PubliciBot.DAO.Neodatis;
 
 import com.PubliciBot.DAO.Interfaces.UsuarioDAO;
+import com.PubliciBot.DM.Campana;
 import com.PubliciBot.DM.Usuario;
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
@@ -8,6 +9,8 @@ import org.neodatis.odb.Objects;
 import org.neodatis.odb.core.query.IQuery;
 import org.neodatis.odb.core.query.criteria.Where;
 import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
+
+import java.util.Collection;
 
 /**
  * Created by Max on 6/4/2017.
@@ -31,6 +34,11 @@ public class UsuarioDAONeodatis extends DAONeodatis<Usuario> implements UsuarioD
                 IQuery usuarioCorrecto = new CriteriaQuery(Usuario.class, Where.equal("mail", user.getMail()));
                 Objects<Usuario> usuarioRecuperado = odb.getObjects(usuarioCorrecto);
                 recovered = usuarioRecuperado.getFirst();
+                Collection campanas = recovered.getCampanas().values();
+                for(Object obj: campanas){
+                    Campana c = (Campana) obj;
+                    odb.delete(c);
+                }
                 odb.delete(recovered);
                 odb.store(nuevo);
             } catch (Exception e) {

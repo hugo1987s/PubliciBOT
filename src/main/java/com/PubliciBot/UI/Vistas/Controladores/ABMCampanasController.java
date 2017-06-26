@@ -320,6 +320,8 @@ public class ABMCampanasController extends HorizontalLayout {
 
     public void crearCampana(Campana campana){
         this.nuevaCampana = campana;
+        String mensajeCampana = campana.getMensaje().getTextoMensaje();
+        txtMensaje.setValue(mensajeCampana);
 
         if(campana != null ){
             formFieldBindings = BeanFieldGroup.bindFieldsBuffered(campana, this);
@@ -349,15 +351,17 @@ public class ABMCampanasController extends HorizontalLayout {
             Usuario actual = getUsuarioSesion();
             usuarioService.agregarCampañaAUsuario(nuevaCampana,actual);
             usuarioService.guardarUsuario(actual);
-            addressbookUIView.refreshCampanas("filtroTest");
+            addressbookUIView.refreshCampanas();
 
         } catch (FieldGroup.CommitException e) {
             // Validation exceptions could be shown here
         }
     }
 
-    public Button getBtnGuardarCampana() {
-        return btnGuardarCampana;
+    public void eliminar(Campana seleccionada) {
+        Usuario actual = getUsuarioSesion();
+        actual.getCampanas().remove(seleccionada.getId());
+        usuarioService.guardarUsuario(actual);
+        addressbookUIView.refreshCampanas();
     }
-
 }

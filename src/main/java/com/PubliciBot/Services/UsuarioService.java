@@ -46,11 +46,11 @@ public class UsuarioService {
         if(campana.getId() == null){
             campana.setId(lon++);
         }
-
-        System.out.println("campana con acciones "+campana);
-
-        System.out.println("campana con acciones "+campana);
         user.getCampanas().put(campana.getId(),campana);
+    }
+
+    public void eliminarCampaña(Campana campana, Usuario actual){
+        actual.getCampanas().remove(campana);
     }
 
     public void guardarUsuario(Usuario user){
