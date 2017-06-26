@@ -11,4 +11,16 @@ public enum TipoMedio {
     TELEGRAM,
     WHATSAPP;
 
+   /* @Override
+    public String toString() {
+        switch (this) {
+            case EMAIL:
+                return "Email";
+            default:
+                return "";
+
+
+        }
+
+    }*/
 }

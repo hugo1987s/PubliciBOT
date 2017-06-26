@@ -24,7 +24,7 @@ public class UsuarioDAONeodatis extends DAONeodatis<Usuario> implements UsuarioD
         }
         else {
             Usuario nuevo = new Usuario(user.getMail(), user.getContrasena(), user.getRol());
-            nuevo.getCampanas().addAll(user.getCampanas());
+            nuevo.getCampanas().putAll(user.getCampanas());
             ODB odb = null;
             try {
                 odb = ODBFactory.open(fileNameNeodatisDB);

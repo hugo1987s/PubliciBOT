@@ -16,6 +16,7 @@ public class AccionPublicitaria {
         this.nombreAccion = "";
         this.periodicidadSegundos = 60;
         this.medio = new Medio();
+        this.destino = "";
     }
 
     public int getPeriodicidadSegundos() {
@@ -52,7 +53,6 @@ public class AccionPublicitaria {
         this.nombreAccion = nombreAccion;
     }
 
-
     public int getValorPeriodicidad() {
         return periodicidadSegundos;
     }
@@ -61,12 +61,42 @@ public class AccionPublicitaria {
         this.periodicidadSegundos = valorPeriodicidad;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AccionPublicitaria that = (AccionPublicitaria) o;
+
+        if (periodicidadSegundos != that.periodicidadSegundos) return false;
+        if (nombreAccion != null ? !nombreAccion.equals(that.nombreAccion) : that.nombreAccion != null) return false;
+        if (medio != null ? !medio.equals(that.medio) : that.medio != null) return false;
+        return destino != null ? destino.equals(that.destino) : that.destino == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nombreAccion != null ? nombreAccion.hashCode() : 0;
+        result = 31 * result + periodicidadSegundos;
+        result = 31 * result + (medio != null ? medio.hashCode() : 0);
+        result = 31 * result + (destino != null ? destino.hashCode() : 0);
+        return result;
+    }
+
     public Medio getMedio() {
         return medio;
     }
 
     public void setMedio(Medio medio) {
         this.medio = medio;
+    }
+
+
+    @Override
+    public String toString(){
+
+
+        return "Nombre: "+this.nombreAccion+"\n Medio:"+this.medio.toString()+"\n Destino: "+this.destino+"\nPeriodicidad: "+this.periodicidadSegundos+" Segundos";
     }
 
 

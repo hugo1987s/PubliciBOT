@@ -4,8 +4,9 @@ import com.PubliciBot.DM.Privilegio;
 import com.PubliciBot.DM.Rol;
 import com.PubliciBot.DM.Usuario;
 import com.PubliciBot.Services.UsuarioService;
-import com.PubliciBot.UI.Vistas.ABMCampanasView;
+
 import com.PubliciBot.UI.Vistas.ABMTagsView;
+import com.PubliciBot.UI.Vistas.EdicionCampanasView;
 
 /**
  * Created by Max on 6/4/2017.
@@ -46,7 +47,14 @@ public class StrictAccessControl implements AccessControl {
 
     @Override
     public boolean isUserInRole(String role) {
-        return recoveredUser.getRol().getDescripcion().equals(role);
+        if(recoveredUser!=null)
+            if(recoveredUser.getRol()!=null)
+                if(recoveredUser.getRol().getDescripcion()!=null)
+                    if(role!=null)
+                        return recoveredUser.getRol().getDescripcion().equals(role);
+
+        return false;
+
     }
 
     @Override
@@ -67,7 +75,7 @@ public class StrictAccessControl implements AccessControl {
     }
 
     private void crearCliente(){
-        Privilegio<ABMCampanasView> cliente = new Privilegio<>(ABMCampanasView.class);
+        Privilegio<EdicionCampanasView> cliente = new Privilegio<>(EdicionCampanasView.class);
         Rol rolCliente = new Rol("Cliente");
         rolCliente.add(cliente);
         Usuario clientUser =  new Usuario("cliente","cliente",rolCliente);
@@ -79,7 +87,7 @@ public class StrictAccessControl implements AccessControl {
     private void crearAdmin(){
         Privilegio<ABMTagsView> admin = new Privilegio<>(ABMTagsView.class);
         Privilegio<ABMTagsView> tecnico = new Privilegio<>(ABMTagsView.class);
-        Privilegio<ABMCampanasView> cliente = new Privilegio<>(ABMCampanasView.class);
+        Privilegio<EdicionCampanasView> cliente = new Privilegio<>(EdicionCampanasView.class);
         Rol rolAdmin = new Rol("admin");
         rolAdmin.add(admin);
         rolAdmin.add(tecnico);

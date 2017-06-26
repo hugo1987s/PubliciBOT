@@ -12409,6 +12409,14 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: hidden;
 }
 
+.mytheme .blue {
+	color: #2e6aff;
+}
+
+.mytheme .layout-with-border {
+	border: 1px solid inherit;
+}
+
 .mytheme .login-screen {
 	background: #3b3f42;
 	background-image: url(img/archetype-login-bg.jpg);

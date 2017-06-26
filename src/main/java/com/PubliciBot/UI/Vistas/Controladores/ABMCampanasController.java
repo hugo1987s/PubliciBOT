@@ -3,13 +3,19 @@ package com.PubliciBot.UI.Vistas.Controladores;
 import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.AccionPublicitariaService;
 import com.PubliciBot.Services.CampanaService;
+import com.PubliciBot.Services.UsuarioService;
+import com.PubliciBot.Services.Utils;
 import com.PubliciBot.UI.MyUI;
-import com.PubliciBot.UI.Vistas.ABMAccionView;
-import com.PubliciBot.UI.Vistas.DetalleCampanaView;
-import com.PubliciBot.UI.Vistas.SelectorTags;
+import com.PubliciBot.UI.Vistas.VistaCamapana.ABMAccionView;
+import com.PubliciBot.UI.Vistas.VistaCamapana.ABMCampanasView;
+import com.PubliciBot.UI.Vistas.VistaCamapana.SelectorTags;
+import com.PubliciBot.UI.Vistas.VistaCamapana.AccionView;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
-import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -22,90 +28,57 @@ public class ABMCampanasController extends HorizontalLayout {
 
     Label lblTitulo;
 
-    TextField txtNombreCampana;
-    TextArea txtDescripcion;
-    DateField dfFechaInicio;
-    TextField txtDuracion;
-    ComboBox cboUnidadTiempo;
+    TextField nombre;
+    TextField descripcion;
+    DateField fechaInicio;
+    TextField duracion;
+    ComboBox unidadMedida;
     TextArea txtMensaje;
     Image imgImgenMensaje;
     Label txtoduracion;
 
     Button btnGuardarCampana;
-    Button btnVerCampanasGuardadas;
+
     Button seleccionarTags;
-    Button crearCampana;
     CampanaService campanaService;
 
     AccionPublicitariaService publicitariaService;
     ABMAccionView accionView;
 
     HorizontalLayout hl;
-    ListSelect campanasGuardadas;
-    ArrayList<Campana> campanasGuardadasList;
     Button detalleCampanaSeleccionada;
-    Campana campañaSeleccionada;
     Campana nuevaCampana;
+
+    ArrayList<Campana> creadasEnSesion;
 
     Button btnAgregarAccion;
     VerticalLayout verticalLayout;
 
     Button btnEjecutarAcciones;
 
-    Grid campanasList;
-    Button btnGrilla = new Button("Ver Grilla");
-    Upload uploadFile;
+    Upload subirArchivo;
 
+    UsuarioService usuarioService = new UsuarioService();
+
+    ABMCampanasView addressbookUIView;
+
+    AccionView accionView2;
+
+    BeanFieldGroup<Campana> formFieldBindings;
+
+    Button cancelar;
+
+    String nombreArchivoGenerado;
 //comment
 
-    public ABMCampanasController() {
+    public ABMCampanasController(ABMCampanasView adbUI) {
         super();
 
-        setSpacing(true);
+        this.addressbookUIView = adbUI;
+        setMargin(true);
         initComponents();
         dibujarControles();
         cargarComboDuracion();
-
-
-        crearCampana.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                //datos de campaña
-                String nombreCampana = txtNombreCampana.getValue();
-                String descripcion = txtDescripcion.getValue();
-                Date fechaCreacion = dfFechaInicio.getValue();
-                int duracion = 0;
-                if (!txtDuracion.getValue().equals(""))
-                    duracion = Integer.parseInt(txtDuracion.getValue());
-                UnidadMedida unidadMedida = obtenerUnidadMedida();
-                String mensajeTxt = txtMensaje.getValue();
-                Mensaje mensaje = null;
-
-                //TODO le puse NULL al path de la imagen porque estaba haciendo un toString() de un objeto imagen
-                if (imgImgenMensaje == null) {
-                    mensaje = new Mensaje(mensajeTxt, null);
-                }
-                if (mensajeTxt == null || mensajeTxt.equals("")) {
-                    mensaje = new Mensaje(null, null);
-                } else
-                    mensaje = new Mensaje(mensajeTxt, null);
-                /*
-                if (mensajeTxt == null || mensajeTxt.equals("")) {
-                    mensaje = new Mensaje(null, imgImgenMensaje.toString());
-                } else
-                    mensaje = new Mensaje(mensajeTxt, imgImgenMensaje.toString());
-                */
-                boolean vacios = nombreCampana.equals("") || descripcion.equals("") || fechaCreacion.equals("") || duracion == 0 || unidadMedida == null || mensajeTxt.equals("") || mensaje == null;
-                boolean txtVacio = txtDuracion.getValue().equals("") || txtDuracion == null || nombreCampana == null || descripcion == null || fechaCreacion == null;
-                if (vacios || txtVacio) {
-                    Notification.show("Capo, llena los campos antes plz");
-                    return;
-                }
-                else {
-                    nuevaCampana = new Campana(nombreCampana, descripcion, fechaCreacion, duracion*unidadMedida.unidadASegundos(), mensaje);
-                }
-            }
-        });
 
         //SE ABRE VENTANA PARA ASIGNAR TAGS A CAMPAÑA
         seleccionarTags.addClickListener(new Button.ClickListener() {
@@ -144,28 +117,11 @@ public class ABMCampanasController extends HorizontalLayout {
 
         });
 
-        btnVerCampanasGuardadas.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                agregarListaCampanas();
-                getSelectedCampaign();
-            }
-        });
-
-        detalleCampanaSeleccionada.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                DetalleCampanaView detalleCampañaView = new DetalleCampanaView(campañaSeleccionada);
-                detalleCampañaView.setModal(true);
-                UI.getCurrent().addWindow(detalleCampañaView);
-                // campanaService.agregarAccionPublicitariaACampana(nueva);
-            }
-        });
-
         btnAgregarAccion.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 if (nuevaCampana != null) {
+                    accionView2.refreshAcciones(nuevaCampana);
                     accionView.setModal(true);
                     UI.getCurrent().addWindow(accionView);
                 } else {
@@ -175,35 +131,26 @@ public class ABMCampanasController extends HorizontalLayout {
         });
 
 
-
-
-        btnEjecutarAcciones.addClickListener(new Button.ClickListener() {
+        btnGuardarCampana.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
+                guardar();
+                setVisible(false);
 
-                if(campañaSeleccionada!=null)
-                {
-                    for(AccionPublicitaria accion : campañaSeleccionada.getAcciones()  )
-                    {
-                        if(accion.getMedio().getTipoMedio().equals(TipoMedio.EMAIL))
-                        {
-                            AccionPublicitariaService aps=new AccionPublicitariaService();
-                            aps.publicar(accion, nuevaCampana.getMensaje());
-
-                        }
-                    }
-                }
+                //MedioService medioService = new MedioService(nuevaCampana.getAcciones())
             }
         });
 
-        btnGrilla.addClickListener(new Button.ClickListener() {
+        cancelar.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                cargarGrilla();
+                setVisible(false);
             }
         });
+        this.addStyleName("v-scrollable");
+        this.setHeight("100%");
 
-
+        this.setSpacing(false);
     }
 
     private boolean nuevaCampanaNoTieneTags() {
@@ -211,18 +158,11 @@ public class ABMCampanasController extends HorizontalLayout {
     }
 
 
-    private void cargarGrilla()
-    {
-        Usuario actual = getUsuarioSesion();
-        if (actual != null) {
-            campanasList.setContainerDataSource(new BeanItemContainer<>(
-                    Campana.class, campanaService.findAll(actual)));
-        }
-    }
+
 
     private UnidadMedida obtenerUnidadMedida() {
 
-        return (UnidadMedida) cboUnidadTiempo.getValue();
+        return (UnidadMedida) unidadMedida.getValue();
         /*UnidadMedida unidadMedida = null;
         if(unidad.equals("MES"))
             unidadMedida = UnidadMedida.MES;
@@ -241,146 +181,127 @@ public class ABMCampanasController extends HorizontalLayout {
         campanaService = new CampanaService();
 
         lblTitulo = new Label("Administración de Campañas");
-        accionView = new ABMAccionView(this);
+        accionView2 = new AccionView(this);
+        accionView = new ABMAccionView(accionView2);
         publicitariaService = new AccionPublicitariaService();
-        txtNombreCampana = new TextField("Nombre");
-        txtNombreCampana.setValue("Campaña: " + Integer.toString(Date.from(Instant.now()).getDate()) + "/" + Integer.toString(Date.from(Instant.now()).getMonth())
-                + ":" + Integer.toString(Date.from(Instant.now()).getSeconds()));
-        txtDescripcion = new TextArea("Descripción");
-        txtDescripcion.setValue("Creada el " + Date.from(Instant.now()).toString());
-        dfFechaInicio = new DateField("Fecha de inicio");
-        dfFechaInicio.setValue(Date.from(Instant.now()));
-        txtDuracion = new TextField();
-        txtDuracion.setValue("1");
+        nombre = new TextField("Nombre");
+        descripcion = new TextField("Descripción");
+        fechaInicio = new DateField("Fecha de inicio");
+        fechaInicio.setValue(Date.from(Instant.now()));
+        duracion = new TextField();
         txtoduracion =new Label("Duración");
-        cboUnidadTiempo = new ComboBox();
-        cboUnidadTiempo.setWidth(115, Unit.PIXELS);
+        unidadMedida = new ComboBox();
+        unidadMedida.setWidth(115, Unit.PIXELS);
 
         txtMensaje = new TextArea("Mensaje adjunto");
         txtMensaje.setValue("Mensaje de Prueba");
-        imgImgenMensaje = new Image("Imagen adjunta");
-        crearCampana = new Button("Crear campaña");
-        seleccionarTags = new Button("Seleccionar Tags");
-        btnGuardarCampana = new Button("Guardar Campaña");
-        btnVerCampanasGuardadas = new Button("Ver Campañas Guardadas");
-        detalleCampanaSeleccionada = new Button("Detalles Campana");
-        campanasGuardadas = new ListSelect("Campañas guardadas");
-        campanasGuardadasList = new ArrayList<Campana>();
+        //imgImgenMensaje = new Image("Imagen adjunta");
+
+        seleccionarTags = new Button("Tags");
+        btnGuardarCampana = new Button(" Guardar ");
+
+        //detalleCampanaSeleccionada = new Button("Detalles Campaña");
+        cancelar = new Button("Cancelar");
+        btnGuardarCampana.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        btnGuardarCampana.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+
         hl = new HorizontalLayout();
-        hl.setSpacing(true);
 
-        btnAgregarAccion = new Button("Agregar Acción");
-        btnEjecutarAcciones = new Button("Ejecutar Acciones");
 
-        campanasList = new Grid();
-        campanasList.setContainerDataSource(new BeanItemContainer<>(Campana.class));
+        btnAgregarAccion = new Button("Acciones");
 
-        UploadReceiver receiver = new UploadReceiver();
 
-// Create the upload with a caption and set receiver later
+         //UploadReceiver uploadReceiver = new UploadReceiver("src/main/resources/" + armarNombreArchivo());
+        UploadReceiver uploadReceiver = new UploadReceiver(Utils.getProperty("path.imagenes") + armarNombreArchivo());
+
+        subirArchivo = new Upload("Agregar Imagen...", uploadReceiver);
+        subirArchivo.setButtonCaption("Subir");
+
+        creadasEnSesion = new ArrayList<>();
+
+
+        /*
         uploadFile = new Upload("Upload Image Here", receiver);
 
         uploadFile.setImmediate(true);
         uploadFile.setButtonCaption("Subir imagen");
 
         uploadFile.addSucceededListener(receiver);
-
-    }
-
-
-    private void dibujarControles() {
-
-        verticalLayout = new VerticalLayout();
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-
-        VerticalLayout layoutcampana = new VerticalLayout();
-        layoutcampana.setMargin(true);
-        layoutcampana.setSpacing(true);
-        layoutcampana.addComponents(lblTitulo, txtNombreCampana, txtDescripcion, dfFechaInicio, txtoduracion);
-
-        horizontalLayout.addComponents(txtDuracion, cboUnidadTiempo);
-        horizontalLayout.setSpacing(true);
-        layoutcampana.addComponents(horizontalLayout, txtMensaje, imgImgenMensaje, uploadFile);
-
-        HorizontalLayout horizontalLayoutbotones = new HorizontalLayout();
-        horizontalLayoutbotones.addComponents(crearCampana, seleccionarTags, btnAgregarAccion, btnGuardarCampana, btnVerCampanasGuardadas, btnGrilla);
-
-        //horizontalLayoutbotones.addComponent(btnEjecutarAcciones);
-        horizontalLayoutbotones.setSpacing(true);
-        layoutcampana.addComponent(horizontalLayoutbotones);
-
-        verticalLayout.addComponent(layoutcampana);
-        this.addComponent(verticalLayout);
-
-        hl.addComponents(campanasGuardadas, detalleCampanaSeleccionada, btnEjecutarAcciones);
-
-        detalleCampanaSeleccionada.setVisible(false);
-        btnEjecutarAcciones.setVisible(false);
-
-        VerticalLayout verticalLayoutGrid = new VerticalLayout(campanasList);
-        verticalLayoutGrid.setSizeFull();
-        campanasList.setSizeFull();
-    }
-/*
-    private void dibujarControles() {
-
-        verticalLayout = new VerticalLayout();
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-
-        VerticalLayout layoutcampana = new VerticalLayout();
-        layoutcampana.setMargin(true);
-        layoutcampana.setSpacing(true);
-        layoutcampana.addComponent(lblTitulo);
-        layoutcampana.addComponent(txtNombreCampana);
-        layoutcampana.addComponent(txtDescripcion);
-        layoutcampana.addComponent(dfFechaInicio);
-        layoutcampana.addComponent(txtoduracion);
-        horizontalLayout.addComponent(txtDuracion);
-        horizontalLayout.addComponent(cboUnidadTiempo);
-        horizontalLayout.setSpacing(true);
-        layoutcampana.addComponent(horizontalLayout);
-        layoutcampana.addComponent(txtMensaje);
-        layoutcampana.addComponent(imgImgenMensaje);
-
-        HorizontalLayout horizontalLayoutbotones = new HorizontalLayout();
-
-        horizontalLayoutbotones.addComponent(crearCampana);
-        horizontalLayoutbotones.addComponent(seleccionarTags);
-        horizontalLayoutbotones.addComponent(btnAgregarAccion);
-        horizontalLayoutbotones.addComponent(btnGuardarCampana);
-        horizontalLayoutbotones.addComponent(btnVerCampanasGuardadas);
-        //horizontalLayoutbotones.addComponent(btnEjecutarAcciones);
-        horizontalLayoutbotones.setSpacing(true);
-        layoutcampana.addComponent(horizontalLayoutbotones);
-
-        verticalLayout.addComponent(layoutcampana);
-        this.addComponent(verticalLayout);
-
-        hl.addComponent(campanasGuardadas);
-        hl.addComponent(detalleCampanaSeleccionada);
-        hl.addComponent(btnEjecutarAcciones);
-        detalleCampanaSeleccionada.setVisible(false);
-        btnEjecutarAcciones.setVisible(false);
-
-    }
 */
-    private void cargarComboDuracion() {
-        cboUnidadTiempo.addItems(UnidadMedida.values());
-        cboUnidadTiempo.setValue(UnidadMedida.SEMANA);
     }
 
-    private void agregarListaCampanas() {
-        this.removeComponent(hl);
-        Usuario actual = getUsuarioSesion();
-        if (actual != null) {
-            campanaService.recuperarCampanas(actual);
-            ArrayList<Campana> campanas = campanaService.getCampanasGuardadas();
-            for (Campana camp : campanas) {
-                campanasGuardadas.addItem(camp.getNombre());
-                campanasGuardadasList.add(camp);
-            }
-            this.addComponent(hl);
-        }
+    private String armarNombreArchivo()
+    {
+         this.nombreArchivoGenerado = Utils.generarNombreArchivoImagen();
+        return this.nombreArchivoGenerado;
+    }
+
+    private void dibujarControles() {
+
+        verticalLayout = new VerticalLayout();
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+
+        VerticalLayout layoutcampana = new VerticalLayout();
+
+        layoutcampana.setMargin(true);
+        layoutcampana.setSpacing(true);
+
+        layoutcampana.addComponents( nombre, descripcion, fechaInicio, txtoduracion);
+
+        horizontalLayout.addComponents(duracion, unidadMedida);
+        horizontalLayout.setSpacing(true);
+        layoutcampana.addComponents(horizontalLayout, txtMensaje, subirArchivo);
+        subirArchivo.setWidth(50,Unit.PERCENTAGE);
+
+        seleccionarTags.setWidth(100,Unit.PERCENTAGE);
+       // cancelar.setWidth(100,Unit.PERCENTAGE);
+      //  btnGuardarCampana.setWidth(100,Unit.PERCENTAGE);
+      //  btnAgregarAccion.setWidth(100,Unit.PERCENTAGE);
+      //  seleccionarTags.setWidth(100,Unit.PERCENTAGE);
+
+        VerticalLayout layoutcampanaEspaciada = new VerticalLayout();
+        GridLayout grid = new GridLayout(2,2);
+
+
+        layoutcampanaEspaciada.setSpacing(true);
+
+        //layoutcampana.setSpacing(true);
+
+
+        grid.setSpacing(true);
+
+
+        layoutcampanaEspaciada.addComponent(grid);
+
+
+        grid.addComponents(seleccionarTags);
+        grid.addComponent(btnAgregarAccion);
+
+        grid.addComponent(btnGuardarCampana);
+        grid.addComponent(cancelar);
+
+        layoutcampanaEspaciada.addComponent(grid);
+
+        layoutcampana.addComponent(layoutcampanaEspaciada);
+
+
+        verticalLayout.addComponent(layoutcampana);
+        verticalLayout.setSpacing(true);
+        //verticalLayout.addStyleName();
+        this.addComponent(verticalLayout);
+
+        this.setMargin(true);
+
+
+
+
+
+
+    }
+
+    private void cargarComboDuracion() {
+        unidadMedida.addItems(UnidadMedida.values());
+        unidadMedida.setValue(UnidadMedida.SEMANA);
     }
 
     private Usuario getUsuarioSesion() {
@@ -388,25 +309,6 @@ public class ABMCampanasController extends HorizontalLayout {
         return strictAccessControl.getRecoveredUser();
     }
 
-
-    private void getSelectedCampaign() {
-        campanasGuardadas.addValueChangeListener(event -> {// Java 8
-            for (Campana c : campanasGuardadasList) {
-                String nombre = c.getNombre();
-                if (event.getProperty().getValue() != null) {
-
-                    String evento = event.getProperty().getValue().toString();
-                    if (nombre.equals(evento)) {
-                        campañaSeleccionada = c;
-                        detalleCampanaSeleccionada.setVisible(true);
-                        btnEjecutarAcciones.setVisible(true);
-                    }
-                } else {
-                    campanasGuardadasList.remove(c);
-                }
-            }
-        });
-    }
 
     public AccionPublicitariaService getPublicitariaService() {
         return this.publicitariaService;
@@ -416,8 +318,46 @@ public class ABMCampanasController extends HorizontalLayout {
         return this.nuevaCampana;
     }
 
+    public void crearCampana(Campana campana){
+        this.nuevaCampana = campana;
+
+        if(campana != null ){
+            formFieldBindings = BeanFieldGroup.bindFieldsBuffered(campana, this);
+            nombre.focus();
+        }
+    }
+
+
+    public void guardar() {
+        try {
+            // Commit the fields from UI to DAO
+            formFieldBindings.commit();
+
+            //MENSAJE CAMPAÑA
+            String mensajeTxt = txtMensaje.getValue();
+            Mensaje mensaje = null;
+			
+			if(nombreArchivoGenerado!=null && nombreArchivoGenerado.trim() != "")
+                mensaje = new Mensaje(mensajeTxt, Utils.getProperty("path.imagenes") + nombreArchivoGenerado);
+            else
+                mensaje = new Mensaje(mensajeTxt, nombreArchivoGenerado);
+			
+
+            nuevaCampana.setMensaje(mensaje);
+            nuevaCampana.generarPosts();
+
+            Usuario actual = getUsuarioSesion();
+            usuarioService.agregarCampañaAUsuario(nuevaCampana,actual);
+            usuarioService.guardarUsuario(actual);
+            addressbookUIView.refreshCampanas("filtroTest");
+
+        } catch (FieldGroup.CommitException e) {
+            // Validation exceptions could be shown here
+        }
+    }
 
     public Button getBtnGuardarCampana() {
         return btnGuardarCampana;
     }
+
 }

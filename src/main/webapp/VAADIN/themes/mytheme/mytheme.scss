@@ -67,7 +67,12 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
 @mixin mytheme {
   @include valo;
 
-
+.blue {
+    color: rgb(46, 106, 255)
+}
+.layout-with-border {
+    border: 1px solid inherit;
+}
   // login screen - for small screens, see below
   .login-screen {
     background: $editor-background-color;

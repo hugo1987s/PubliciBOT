@@ -22,6 +22,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<!-- If there are no local customisations, this can also be "fetch" or "cdn" -->
 		<vaadin.widgetset.mode>local</vaadin.widgetset.mode>
+
 	</properties>
 
 	<repositories>
@@ -76,6 +77,13 @@
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
 		</dependency>
 
 		<dependency>
@@ -167,6 +175,12 @@
 						<name>prop</name>
 						<value>propiedad</value>
 					</systemProperty>
+					<systemProperty>
+						<name>path.imagenes</name>
+						<value>src/main/resources/</value>
+					</systemProperty>
+
+
 					</systemProperties>
 				</configuration>
 			</plugin>

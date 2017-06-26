@@ -1,5 +1,6 @@
 package com.PubliciBot.UI;
 
+import com.PubliciBot.DM.DuracionCampana;
 import com.PubliciBot.Services.Tasker;
 import com.PubliciBot.UI.Vistas.MainScreen;
 import com.PubliciBot.UI.authentication.AccessControl;
@@ -35,7 +36,8 @@ public class MyUI extends UI {
     protected void init(VaadinRequest vaadinRequest) {
 
         Tasker tasker=Tasker.getTasker();
-        tasker.start();
+        if(!tasker.isAlive())
+            tasker.start();
 
         Responsive.makeResponsive(this);
         setLocale(vaadinRequest.getLocale());

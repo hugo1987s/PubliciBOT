@@ -1,4 +1,4 @@
-package com.PubliciBot.UI.Vistas;
+package com.PubliciBot.UI.Vistas.VistaCamapana;
 
 import com.PubliciBot.DM.Tag;
 import com.PubliciBot.Services.ArbolTagsService;

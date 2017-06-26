@@ -4,7 +4,7 @@ import com.PubliciBot.DAO.Neodatis.CampanaDAONeodatis;
 import com.PubliciBot.DM.*;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -12,11 +12,11 @@ import java.util.List;
  */
 public class CampanaService {
 
-    private ArrayList<Campana> campanasGuardadas;
+    private HashMap<Long,Campana> campanasGuardadas;
     private CampanaDAONeodatis campanaDao;
 
     public CampanaService(){
-        this.campanasGuardadas = new ArrayList<>();
+        this.campanasGuardadas = new HashMap<Long,Campana>();
         this.campanaDao = new CampanaDAONeodatis();
     }
 
@@ -41,25 +41,24 @@ public class CampanaService {
         campana.setUnidadMedida(unidad);
     }
 
-
-
     public void recuperarCampanas(Usuario usuario){
-        this.campanasGuardadas = (ArrayList<Campana>) campanaDao.recuperarCampanas(usuario);
+        this.campanasGuardadas = (HashMap<Long,Campana>) campanaDao.recuperarCampanas(usuario);
     }
 
-
-    public synchronized List<Campana> findAll(Usuario usuario)
-    {
-       return  campanaDao.recuperarCampanas(usuario);
-
-    }
-
-    public ArrayList<Campana> getCampanasGuardadas(){
+    public HashMap<Long,Campana> getCampanasGuardadas(){
         return this.campanasGuardadas;
     }
 
     public void guardarCampana(Campana campana){
         this.campanaDao.guardar(campana);
+    }
+
+    public List<Campana> findAll() {
+        ArrayList arrayList = new ArrayList();
+        for (Campana campana : campanasGuardadas.values()) {
+            arrayList.add(campana);
+        }
+        return arrayList;
     }
 
 }
