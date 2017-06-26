@@ -214,8 +214,8 @@ public class ABMCampanasController extends HorizontalLayout {
          //UploadReceiver uploadReceiver = new UploadReceiver("src/main/resources/" + armarNombreArchivo());
         UploadReceiver uploadReceiver = new UploadReceiver(Utils.getProperty("path.imagenes") + armarNombreArchivo());
 
-        subirArchivo = new Upload("Examinar...", uploadReceiver);
-
+        subirArchivo = new Upload("Agregar Imagen...", uploadReceiver);
+        subirArchivo.setButtonCaption("Subir");
 
         creadasEnSesion = new ArrayList<>();
 

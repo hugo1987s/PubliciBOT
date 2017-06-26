@@ -184,9 +184,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
 
 
           campanasList.setColumnOrder("nombre","descripcion","estadoCampana","duracion","unidadMedida","fechaInicio");
-        for (Grid.Column c:campanasList.getColumns()){
-            System.out.println(c.getPropertyId());
-        }
+
 
     }
 
