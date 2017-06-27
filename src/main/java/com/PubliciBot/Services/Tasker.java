@@ -2,12 +2,12 @@ package com.PubliciBot.Services;
 
 import com.PubliciBot.DAO.Interfaces.Task;
 import com.PubliciBot.DAO.Neodatis.DAONeodatis;
+import com.PubliciBot.DM.Campana;
+import com.PubliciBot.DM.EstadoCampana;
 import com.PubliciBot.DM.Post;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Stack;
+import java.util.*;
 
 public class Tasker extends Thread{
 
@@ -16,23 +16,42 @@ public class Tasker extends Thread{
     private static Stack<Task> tasks;
     private static boolean run=false;
     private static ArrayList<Sender> senders;
-    private static ArrayList<Post>dbtasks;
+    private static HashSet<Post> dbtasks;
 
 
     private Tasker (){
         tasks=new Stack<>();
         senders =new ArrayList<>();
+        dbtasks=new HashSet<>();
         int cantsenders=1;
         for(int i=0; i<1;i++) {
             Sender sender = new Sender(this);
             senders.add(sender);
         }
         DAONeodatis daoNeodatis= new DAONeodatis();
-        this.dbtasks=(ArrayList<Post>)daoNeodatis.obtenerTodos(Post.class);
+
+        ArrayList<Campana> campanas=(ArrayList<Campana>)daoNeodatis.obtenerTodos(Campana.class);
+
+        Instant NOW=Instant.now();
+        long nowinSeconds=NOW.getEpochSecond();
 
 
+
+        for( Campana campana : campanas) {
+            if (campana.getFechaInicio().before(Date.from(NOW))) {
+                    campana.setEstadoCampana(EstadoCampana.ACTIVA);
+                    for(Post post :campana.getPosts()) {
+                        dbtasks.add(post);
+                    }
+            }
+
+        if(campana.calcularCaducidad().before(Date.from(NOW))){
+            campana.setEstadoCampana(EstadoCampana.FINALIZADA);
+        }
     }
 
+
+}
 
     @Override
     public void run() {
@@ -133,9 +152,12 @@ public class Tasker extends Thread{
        dbtasks.add((Post)task);
     }
 
-    public static void removeTask(Task task){dbtasks.remove((Post) task);}
+    public static void removeTask(Task task){
+        dbtasks.remove(task);
 
-    public static void clearTasks(){dbtasks.clear();}
+    }
+
+
 
     public static Tasker getTasker(){
         if(tasker==null){

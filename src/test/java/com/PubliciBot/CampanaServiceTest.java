@@ -1,11 +1,17 @@
 package com.PubliciBot;
 
+import org.junit.Test;
+
 /**
  * Created by Max on 6/10/2017.
  */
 public class CampanaServiceTest {
 
+
 /*
+
+
+
     @Test
     public void DAOTest() {
         CampanaService campanadeDB = new CampanaService();

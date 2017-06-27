@@ -1,5 +1,6 @@
 package com.PubliciBot.DM;
 
+import com.PubliciBot.DAO.Neodatis.DAONeodatis;
 import com.PubliciBot.Services.Tasker;
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -85,31 +86,12 @@ public class Campana implements Serializable, Cloneable{
      return  c.getTime();
     }
 
-
-    public void agregarPost(AccionPublicitaria accion){
-        System.out.println(" Caducidad: "+ calcularCaducidad());
-        Post post=new Post(this.fechaInicio,calcularCaducidad(),accion,mensaje);
-        this.posts.add(post);
-       // System.out.println("Campana: "+this.nombre+" Duracion: "+duracion+" "+unidadMedida+" lo que equivale a :"+ duracion*unidadMedida.unidadASegundos()+" Segundos");
-        //FIXME el tasker lo deberia
-        Tasker.addTask(post);
+    public void setPosts(ArrayList<Post> posts) {
+        this.posts = posts;
     }
 
-    public void generarPosts(){
-        posts.clear();
-        for(AccionPublicitaria a :acciones)
-            agregarPost(a);
-    }
-
-    public void eliminarPost(AccionPublicitaria a){
-        for(int i = 0 ; i < this.posts.size(); i++){
-            Post p = posts.get(i);
-            if(p.getAccion().equals(a)){
-                this.posts.remove(p);
-                Tasker.removeTask(p);
-            }
-            i++;
-        }
+    public boolean borrarPost(Post post){
+      return  this.posts.remove(post);
     }
 
     public ArrayList<Post> getPosts(){

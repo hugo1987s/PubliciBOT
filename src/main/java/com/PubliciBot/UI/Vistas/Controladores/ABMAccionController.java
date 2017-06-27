@@ -2,6 +2,7 @@ package com.PubliciBot.UI.Vistas.Controladores;
 
 import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.AccionPublicitariaService;
+import com.PubliciBot.Services.PostService;
 import com.PubliciBot.UI.Vistas.VistaCamapana.AccionView;
 import com.PubliciBot.UI.Vistas.Validators.EnteroValidator;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
@@ -224,7 +225,8 @@ public class ABMAccionController extends HorizontalLayout {
 
     public void eliminarAccion(AccionPublicitaria selectedRow) {
         Campana actual = abmCampanasController.getNuevaCampana();
-        actual.eliminarPost(selectedRow);
+        PostService PS=new PostService();
+        PS.eliminarPosts(actual,selectedRow);
         actual.removeAccion(selectedRow);
         accionView.refreshAcciones(actual);
     }

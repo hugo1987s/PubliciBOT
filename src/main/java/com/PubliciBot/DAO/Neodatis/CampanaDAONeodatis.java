@@ -39,4 +39,8 @@ public class CampanaDAONeodatis extends DAONeodatis<Campana> implements CampanaD
         }
         return new HashMap<Long,Campana>();
     }
+
+
+
+
 }

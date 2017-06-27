@@ -1,6 +1,5 @@
 package com.PubliciBot.UI;
 
-import com.PubliciBot.DM.DuracionCampana;
 import com.PubliciBot.Services.Tasker;
 import com.PubliciBot.UI.Vistas.MainScreen;
 import com.PubliciBot.UI.authentication.AccessControl;

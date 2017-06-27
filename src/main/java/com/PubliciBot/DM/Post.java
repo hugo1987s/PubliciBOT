@@ -98,8 +98,7 @@ public class Post implements Task{
 
     @Override
     public int hashCode() {
-        int result = fechaUltimaEjecucion != null ? fechaUltimaEjecucion.hashCode() : 0;
-        result = 31 * result + (fechaCaducidad != null ? fechaCaducidad.hashCode() : 0);
+        int result = fechaCaducidad != null ? fechaCaducidad.hashCode() : 0;
         result = 31 * result + (fechaInicio != null ? fechaInicio.hashCode() : 0);
         result = 31 * result + (accion != null ? accion.hashCode() : 0);
         result = 31 * result + (mensaje != null ? mensaje.hashCode() : 0);

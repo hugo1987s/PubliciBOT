@@ -5,8 +5,8 @@ package com.PubliciBot.DM;
  */
 public enum EstadoCampana {
     PRELIMINAR,
-    PLANIFICADA,
-    ACTIVA,
+    PAGA,
+    ACTIVA,FINALIZADA,
     CANCELADA;
 
 

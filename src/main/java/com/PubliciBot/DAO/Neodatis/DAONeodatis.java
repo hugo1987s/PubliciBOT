@@ -35,6 +35,7 @@ public class DAONeodatis<T> implements DAO<T> {
 		Objects<T> ret=null;
 			try {
 				odb = ODBFactory.open(fileNameNeodatisDB);
+
 				ret = odb.getObjects(c);
 			}
 		catch (Exception e){
@@ -45,6 +46,7 @@ public class DAONeodatis<T> implements DAO<T> {
 		}
 		return ret;
 	}
+
 
 	public void eliminar(T t){
 		ODB odb = null;
@@ -59,6 +61,25 @@ public class DAONeodatis<T> implements DAO<T> {
 			odb.close();
 		}
 	}
+
+	public boolean exists(T t){
+		ODB odb = null;
+		Objects<T> objs =null;
+		try {
+			odb = ODBFactory.open(fileNameNeodatisDB);
+
+			objs = odb.getObjects(t.getClass());
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		finally{
+			odb.close();
+		}
+		return objs.contains(t);
+	}
+
+
 
 	public List<T> buscar(T t, String campo, Object valor){
 		ODB odb = null;

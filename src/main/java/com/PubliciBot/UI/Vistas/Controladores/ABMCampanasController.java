@@ -330,6 +330,10 @@ public class ABMCampanasController extends HorizontalLayout {
     public void guardar() {
         try {
             // Commit the fields from UI to DAO
+
+
+
+
             formFieldBindings.commit();
 
             //MENSAJE CAMPAÑA
@@ -344,13 +348,16 @@ public class ABMCampanasController extends HorizontalLayout {
                    mensaje = new Mensaje(mensajeTxt, nombreArchivoGenerado,nuevaCampana.getDescripcion());
 
             }
-
+            PostService PS=new PostService();
             nuevaCampana.setMensaje(mensaje);
-            nuevaCampana.generarPosts();
+            PS.generarPosts(nuevaCampana);
+
 
             Usuario actual = getUsuarioSesion();
             usuarioService.agregarCampañaAUsuario(nuevaCampana,actual);
+
             usuarioService.guardarUsuario(actual);
+
             addressbookUIView.refreshCampanas();
 
         } catch (FieldGroup.CommitException e) {
@@ -359,10 +366,18 @@ public class ABMCampanasController extends HorizontalLayout {
     }
 
     public void eliminar(Campana seleccionada) {
+
         Usuario actual = getUsuarioSesion();
-        Tasker.clearTasks();
+
+
         actual.getCampanas().remove(seleccionada.getId());
         usuarioService.guardarUsuario(actual);
+        for(Post post : seleccionada.getPosts()){
+            Tasker.getTasker().removeTask(post);
+            System.out.println("Tasker: Eliminando posts:"+post);
+        }
+
+
         addressbookUIView.refreshCampanas();
     }
 }

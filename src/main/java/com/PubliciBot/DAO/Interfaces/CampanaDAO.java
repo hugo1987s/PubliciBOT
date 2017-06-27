@@ -11,4 +11,6 @@ import java.util.Map;
 public interface CampanaDAO extends DAO<Campana> {
 
     Map<Long,Campana> recuperarCampanas(Usuario usuario);
+
+
 }

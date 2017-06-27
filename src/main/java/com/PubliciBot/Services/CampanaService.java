@@ -1,6 +1,7 @@
 package com.PubliciBot.Services;
 
 import com.PubliciBot.DAO.Neodatis.CampanaDAONeodatis;
+import com.PubliciBot.DAO.Neodatis.DAONeodatis;
 import com.PubliciBot.DM.*;
 
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class CampanaService {
         campana.setEstadoCampana(estadoCampana);
     }
 
+
+
     public void agregarTagACampana(Campana campana, Tag tag)
     {
         campana.addTags(tag);
@@ -40,6 +43,9 @@ public class CampanaService {
         campana.setDuracion(dias);
         campana.setUnidadMedida(unidad);
     }
+
+
+
 
     public void recuperarCampanas(Usuario usuario){
         this.campanasGuardadas = (HashMap<Long,Campana>) campanaDao.recuperarCampanas(usuario);
