@@ -31,7 +31,8 @@ public class PostService {
     }
 
     public void eliminarPosts(Campana campana){
-        for(Post post :campana.getPosts()) {
+        for(int i=0 ;i<campana.getPosts().size();i++) {
+            Post post = campana.getPosts().get(i);
             campana.borrarPost(post);
             Tasker.getTasker().removeTask(post);
         }
