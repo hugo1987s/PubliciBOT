@@ -42,11 +42,12 @@ public class UsuarioService {
     }
 
     public void agregarCampañaAUsuario(Campana campana, Usuario user){
+        if(campana!=null){
         Long lon = new Long(user.getCampanas().size());
         if(campana.getId() == null){
             campana.setId(lon++);
         }
-        user.getCampanas().put(campana.getId(),campana);
+        user.getCampanas().put(campana.getId(),campana);}
     }
 
     public void eliminarCampaña(Campana campana, Usuario actual){

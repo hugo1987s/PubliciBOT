@@ -1,8 +1,10 @@
 package com.PubliciBot.UI.Vistas.VistaCamapana;
 
 import com.PubliciBot.DM.Campana;
+import com.PubliciBot.DM.EstadoCampana;
 import com.PubliciBot.DM.Usuario;
 import com.PubliciBot.Services.CampanaService;
+import com.PubliciBot.Services.UsuarioService;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.Controladores.ABMCampanasController;
 import com.PubliciBot.UI.Vistas.Controladores.EstadisticasCampanaController;
@@ -110,10 +112,13 @@ public class ABMCampanasView extends VerticalLayout implements View {
                }
 
                if(seleccionada == null) {
+
                    seleccionada = (Campana) campanasList.getSelectedRow();
                    estadisticasCampanaController = new EstadisticasCampanaController(seleccionada);
                    addComponent(estadisticasCampanaController);
-                   actions.addComponent(btnEditarCampaña);
+                   if(seleccionada.getEstadoCampana().equals(EstadoCampana.PRELIMINAR)) {
+                       actions.addComponent(btnEditarCampaña);
+                   }
                    actions.addComponent(borrarCampaña);
 
                }
@@ -127,14 +132,18 @@ public class ABMCampanasView extends VerticalLayout implements View {
                            seleccionada = seleccionadaGrid;
                            estadisticasCampanaController = new EstadisticasCampanaController(seleccionada);
                            addComponent(estadisticasCampanaController);
-                           actions.addComponent(btnEditarCampaña);
+                           if(seleccionada.getEstadoCampana().equals(EstadoCampana.PRELIMINAR)) {
+                               actions.addComponent(btnEditarCampaña);
+                           }
                            actions.addComponent(borrarCampaña);
                        }
                        else{
                            seleccionada = seleccionadaGrid;
                            estadisticasCampanaController = new EstadisticasCampanaController(seleccionada);
                            addComponent(estadisticasCampanaController);
-                           actions.addComponent(btnEditarCampaña);
+                           if(seleccionada.getEstadoCampana().equals(EstadoCampana.PRELIMINAR)) {
+                               actions.addComponent(btnEditarCampaña);
+                           }
                            actions.addComponent(borrarCampaña);
                        }
                    }
@@ -182,6 +191,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
         campanasList.removeColumn("acciones");
         campanasList.removeColumn("mensaje");
         campanasList.removeColumn("id");
+        campanasList.removeColumn("posts");
 
         campanasList.setColumnOrder("nombre","descripcion","estadoCampana","duracion","unidadMedida","fechaInicio");
 
@@ -236,6 +246,20 @@ public void addComponentScrollable(){
 }
 
     public void refreshCampanas() {
+        Usuario actual = getUsuarioSesion();
+        UsuarioService  usuarioService=new UsuarioService();
+        campanaService.recuperarCampanas(getUsuarioSesion());
+
+           for(Campana campana:campanaService.findAll()){
+
+               if(campana!=null) {
+
+                   campana.actualizarEstado();
+                   usuarioService.agregarCampañaAUsuario(campana, actual);
+               }
+            }
+
+        usuarioService.guardarUsuario(actual);
         campanaService.recuperarCampanas(getUsuarioSesion());
         campanasList.setContainerDataSource(new BeanItemContainer<>(
                 Campana.class, campanaService.findAll()));

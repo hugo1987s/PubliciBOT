@@ -35,20 +35,18 @@ public class Tasker extends Thread{
         Instant NOW=Instant.now();
         long nowinSeconds=NOW.getEpochSecond();
 
-
+        for( Campana campana : campanas) {
+            campana.actualizarEstado();
+        }
 
         for( Campana campana : campanas) {
-            if (campana.getFechaInicio().before(Date.from(NOW))) {
-                    campana.setEstadoCampana(EstadoCampana.ACTIVA);
+            if (campana.getEstadoCampana().equals(EstadoCampana.ACTIVA)) {
                     for(Post post :campana.getPosts()) {
                         dbtasks.add(post);
                     }
             }
-
-        if(campana.calcularCaducidad().before(Date.from(NOW))){
-            campana.setEstadoCampana(EstadoCampana.FINALIZADA);
         }
-    }
+
 
 
 }

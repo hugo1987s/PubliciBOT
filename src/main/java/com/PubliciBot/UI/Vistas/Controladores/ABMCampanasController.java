@@ -352,7 +352,9 @@ public class ABMCampanasController extends HorizontalLayout {
             PostService PS=new PostService();
             nuevaCampana.setMensaje(mensaje);
             PS.generarPosts(nuevaCampana);
+            nuevaCampana.actualizarEstado();
 
+            //nuevaCampana.setEstadoCampana(EstadoCampana.PRELIMINAR);
 
             Usuario actual = getUsuarioSesion();
             usuarioService.agregarCampañaAUsuario(nuevaCampana,actual);

@@ -7,6 +7,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -76,6 +77,65 @@ public class Campana implements Serializable, Cloneable{
 
         posts=new ArrayList<Post>();
     }
+
+
+    public boolean incompleta(){
+        if(this.acciones.size()>0)
+            return false;
+        return true;
+
+
+
+    }
+
+    public void actualizarEstado(){
+        if(this.incompleta()){
+            this.setEstadoCampana(EstadoCampana.PRELIMINAR);
+            //Si no tiene acciones no puede cambiar de estado
+            return;
+        }
+        Instant NOW=Instant.now();
+        long nowinSeconds=NOW.getEpochSecond();
+        boolean cambios=false;
+        EstadoCampana estadoanterior=this.getEstadoCampana();
+
+
+
+        if (this.getFechaInicio().after(Date.from(NOW))) {
+            this.setEstadoCampana(EstadoCampana.PRELIMINAR);
+            if(!estadoanterior.equals(estadoCampana)) {
+                System.out.println("CAMPAÑA: "+this.nombre+" --->Estado actualizado: "+this.estadoCampana);
+                cambios = true;
+            }
+
+        }
+
+        if (this.getFechaInicio().before(Date.from(NOW))) {
+                this.setEstadoCampana(EstadoCampana.ACTIVA);
+
+                if(!estadoanterior.equals(estadoCampana)) {
+                System.out.println("CAMPAÑA: "+this.nombre+" --->Estado actualizado: "+this.estadoCampana);
+                cambios = true;
+            }
+
+    }
+
+            if(this.calcularCaducidad().before(Date.from(NOW))){
+                this.setEstadoCampana(EstadoCampana.FINALIZADA);
+
+                if(!estadoanterior.equals(estadoCampana)) {
+                    System.out.println("CAMPAÑA: "+this.nombre+" --->Estado actualizado: "+this.estadoCampana);
+                    cambios = true;
+                }
+
+
+
+    }
+
+    if(cambios)
+        System.out.println("CAMPAÑA: "+this.nombre+" --->Estado anterior: "+estadoanterior);
+
+}
 
     public Date calcularCaducidad(){
 
@@ -189,6 +249,7 @@ public class Campana implements Serializable, Cloneable{
                 ;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -205,7 +266,7 @@ public class Campana implements Serializable, Cloneable{
         if (tags != null ? !tags.equals(campana.tags) : campana.tags != null) return false;
         if (acciones != null ? !acciones.equals(campana.acciones) : campana.acciones != null) return false;
         if (posts != null ? !posts.equals(campana.posts) : campana.posts != null) return false;
-        return estadoCampana == campana.estadoCampana;
+        return id != null ? id.equals(campana.id) : campana.id == null;
     }
 
     @Override
@@ -219,7 +280,7 @@ public class Campana implements Serializable, Cloneable{
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         result = 31 * result + (acciones != null ? acciones.hashCode() : 0);
         result = 31 * result + (posts != null ? posts.hashCode() : 0);
-        result = 31 * result + (estadoCampana != null ? estadoCampana.hashCode() : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         return result;
     }
 
