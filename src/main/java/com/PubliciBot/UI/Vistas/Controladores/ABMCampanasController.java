@@ -84,6 +84,7 @@ public class ABMCampanasController extends HorizontalLayout {
                 if(nuevaCampana == null)
                     Notification.show("primero se debe crear la campaña");
                 else {
+                    nuevaCampana.getTags().clear();
                     SelectorTags tagger = new SelectorTags();
                     tagger.setModal(true);
                     tagger.getSeleccionar().addClickListener(new Button.ClickListener() {
@@ -91,7 +92,6 @@ public class ABMCampanasController extends HorizontalLayout {
                         public void buttonClick(Button.ClickEvent clickEvent) {
                             ArrayList<Tag> tagsCampana = tagger.getSeleccionados();
                             for (Tag t : tagsCampana) {
-                                nuevaCampana.getTags().clear();
                                 campanaService.agregarTagACampana(nuevaCampana, t);
                             }
                             tagger.vaciarSeleccionados();
