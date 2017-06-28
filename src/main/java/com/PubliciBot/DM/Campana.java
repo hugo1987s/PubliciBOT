@@ -1,11 +1,7 @@
 package com.PubliciBot.DM;
 
-import com.PubliciBot.DAO.Neodatis.DAONeodatis;
-import com.PubliciBot.Services.Tasker;
 import org.apache.commons.beanutils.BeanUtils;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -17,33 +13,17 @@ import java.util.Date;
  */
 public class Campana implements Serializable, Cloneable{
 
-    @Size(min=2, max=10, message="El nombre debe tener entre 2 y 10 caracteres.")
-    @javax.validation.constraints.NotNull
+
     private String nombre;
-
-    @Size(min=10, max=100, message="La descripcion debe tener entre 2 y 10 caracteres.")
-    @javax.validation.constraints.NotNull
     private String descripcion;
-
-    @Min(1)
     private int duracion;
-
-    @javax.validation.constraints.NotNull
     private UnidadMedida unidadMedida;
-
-    @javax.validation.constraints.NotNull
     private Date fechaInicio;
-
-    @javax.validation.constraints.NotNull
     private Mensaje mensaje;
-
-    @Size(min = 1, message =  "La campaña debe tener al menos un tag")
     private ArrayList<Tag> tags;
-
     private ArrayList<AccionPublicitaria> acciones;
     private ArrayList<Post> posts;
 
-    @javax.validation.constraints.NotNull
     private EstadoCampana estadoCampana;
 
     private Long id;

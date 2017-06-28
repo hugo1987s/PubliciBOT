@@ -5,12 +5,15 @@ import com.PubliciBot.Services.*;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.VistaCamapana.ABMAccionView;
 import com.PubliciBot.UI.Vistas.VistaCamapana.ABMCampanasView;
-import com.PubliciBot.UI.Vistas.VistaCamapana.SelectorTags;
 import com.PubliciBot.UI.Vistas.VistaCamapana.AccionView;
+import com.PubliciBot.UI.Vistas.VistaCamapana.SelectorTags;
 import com.PubliciBot.UI.authentication.StrictAccessControl;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.validator.DateRangeValidator;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -133,7 +136,6 @@ public class ABMCampanasController extends HorizontalLayout {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 guardar();
-                setVisible(false);
 
                 //MedioService medioService = new MedioService(nuevaCampana.getAcciones())
             }
@@ -290,9 +292,29 @@ public class ABMCampanasController extends HorizontalLayout {
 
         this.setMargin(true);
 
+    }
 
-
-
+    private void validateFields(){
+        nombre.addValidator(
+                new StringLengthValidator(
+                        "Must be between 2 and 10 characters in length", 2, 10, false));
+        descripcion.addValidator(
+                new StringLengthValidator(
+                        "Debe estar entre 8 y 13 caracteres", 8,13,false));
+        fechaInicio.addValidator(
+               new DateRangeValidator("La fecha de inicio no puede ser antes hoy",new Date(),null, Resolution.YEAR ));
+        /*
+        duracion.addValidator(
+                new AbstractStringValidator("Numero invalido") {
+                    @Override
+                    protected boolean isValidValue(String s) {
+                        return s.matches("/ ^[1-9][0-9]*$");
+                    }
+                }
+        );
+        */
+        txtMensaje.addValidator(new StringLengthValidator(
+                "Debe estar entre 10 y 100 caracteres", 10,100,false));
 
 
     }
@@ -317,6 +339,7 @@ public class ABMCampanasController extends HorizontalLayout {
     }
 
     public void crearCampana(Campana campana){
+        validateFields();
         this.nuevaCampana = campana;
         String mensajeCampana = campana.getMensaje().getTextoMensaje();
         txtMensaje.setValue(mensajeCampana);
@@ -330,39 +353,37 @@ public class ABMCampanasController extends HorizontalLayout {
 
     public void guardar() {
         try {
-            // Commit the fields from UI to DAO
+            boolean areValidFields = formFieldBindings.isValid();
+            System.out.println(areValidFields);
+            if(areValidFields) {
+                System.out.println("not valid fields");
+                // Commit the fields from UI to DAO
+                formFieldBindings.commit();
 
+                //MENSAJE CAMPAÑA
+                String mensajeTxt = txtMensaje.getValue();
+                Mensaje mensaje = null;
 
+                if (nombreArchivoGenerado != null && nombreArchivoGenerado.trim() != "")
+                    mensaje = new Mensaje(mensajeTxt, Utils.getProperty("path.imagenes") + nombreArchivoGenerado, nuevaCampana.getDescripcion());
+                else {
+                    mensaje = new Mensaje(mensajeTxt, nombreArchivoGenerado, nuevaCampana.getDescripcion());
+                }
 
+                PostService PS = new PostService();
+                nuevaCampana.setMensaje(mensaje);
+                PS.generarPosts(nuevaCampana);
+                nuevaCampana.actualizarEstado();
 
-            formFieldBindings.commit();
+                //nuevaCampana.setEstadoCampana(EstadoCampana.PRELIMINAR);
 
-            //MENSAJE CAMPAÑA
-            String mensajeTxt = txtMensaje.getValue();
-            Mensaje mensaje = null;
+                Usuario actual = getUsuarioSesion();
+                usuarioService.agregarCampañaAUsuario(nuevaCampana, actual);
+                usuarioService.guardarUsuario(actual);
+                setVisible(false);
 
-
-			if(nombreArchivoGenerado!=null && nombreArchivoGenerado.trim() != "")
-                mensaje = new Mensaje(mensajeTxt, Utils.getProperty("path.imagenes") + nombreArchivoGenerado,nuevaCampana.getDescripcion());
-            else {
-
-                   mensaje = new Mensaje(mensajeTxt, nombreArchivoGenerado,nuevaCampana.getDescripcion());
-
+                addressbookUIView.refreshCampanas();
             }
-            PostService PS=new PostService();
-            nuevaCampana.setMensaje(mensaje);
-            PS.generarPosts(nuevaCampana);
-            nuevaCampana.actualizarEstado();
-
-            //nuevaCampana.setEstadoCampana(EstadoCampana.PRELIMINAR);
-
-            Usuario actual = getUsuarioSesion();
-            usuarioService.agregarCampañaAUsuario(nuevaCampana,actual);
-
-            usuarioService.guardarUsuario(actual);
-
-            addressbookUIView.refreshCampanas();
-
         } catch (FieldGroup.CommitException e) {
             // Validation exceptions could be shown here
         }
