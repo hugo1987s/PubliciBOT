@@ -99,7 +99,7 @@ public class LoginScreen extends CssLayout {
         loginInformation.setStyleName("login-information");
         Label loginInfoText = new Label(
                 "<h1>Información de inicio de Sesion</h1>"
-                        + "Loggearse como &quot;admin&quot; para control total. \n Como &quot;cliente&quot; para tener acceso solo a Camapañas y como &quot;tecnico&quot; para tener acceso solo a Tags. \n Las contraseñas son iguales a el usuario ingresado!",
+                        + "Loggearse como &quot;admin&quot; para control total. \n Como &quot;cliente&quot; para tener acceso solo a Campañas y como &quot;tecnico&quot; para tener acceso solo a Tags. \n Las contraseñas son iguales al usuario ingresado!",
                 ContentMode.HTML);
         loginInfoText.setSizeFull();
         loginInformation.addComponent(loginInfoText);
@@ -111,7 +111,7 @@ public class LoginScreen extends CssLayout {
             loginListener.loginSuccessful();
         } else {
             showNotification(new Notification("Credenciales Incorrectas",
-                    "Porfavor revisa las credenciales e intenta nuevamente",
+                    "Por favor, revisa las credenciales e intenta nuevamente",
                     Notification.Type.HUMANIZED_MESSAGE));
             username.focus();
         }
