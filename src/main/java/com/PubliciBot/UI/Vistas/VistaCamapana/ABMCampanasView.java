@@ -59,6 +59,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
     Button nuevaCampana = new Button("+ Campaña");
     Button btnEditarCampaña = new Button("Editar");
     Button borrarCampaña = new Button ("Eliminar");
+    Button verImagen = new Button("Imagen");
     Campana seleccionada;
     EstadoABMCampana estadoABMCampana;
 
@@ -120,6 +121,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
                        actions.addComponent(btnEditarCampaña);
                    }
                    actions.addComponent(borrarCampaña);
+                   actions.addComponent(verImagen);
 
                }
                else {
@@ -129,6 +131,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
                            removeComponent(estadisticasCampanaController);
                            actions.removeComponent(btnEditarCampaña);
                            actions.removeComponent(borrarCampaña);
+                           actions.removeComponent(verImagen);
                            seleccionada = seleccionadaGrid;
                            estadisticasCampanaController = new EstadisticasCampanaController(seleccionada);
                            addComponent(estadisticasCampanaController);
@@ -136,6 +139,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
                                actions.addComponent(btnEditarCampaña);
                            }
                            actions.addComponent(borrarCampaña);
+                           actions.addComponent(verImagen);
                        }
                        else{
                            seleccionada = seleccionadaGrid;
@@ -145,12 +149,14 @@ public class ABMCampanasView extends VerticalLayout implements View {
                                actions.addComponent(btnEditarCampaña);
                            }
                            actions.addComponent(borrarCampaña);
+                           actions.addComponent(verImagen);
                        }
                    }
                    else{
                        removeComponent(estadisticasCampanaController);
                        actions.removeComponent(btnEditarCampaña);
                        actions.removeComponent(borrarCampaña);
+                       actions.removeComponent(verImagen);
                        estadisticasCampanaController = null;
                    }
                }
@@ -169,6 +175,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
                removeComponent(estadisticasCampanaController);
                actions.removeComponent(btnEditarCampaña);
                actions.removeComponent(borrarCampaña);
+               actions.removeComponent(verImagen);
            }
        });
 
@@ -183,8 +190,23 @@ public class ABMCampanasView extends VerticalLayout implements View {
                campanasList.deselect(campanasList.getSelectedRow());
                actions.removeComponent(btnEditarCampaña);
                actions.removeComponent(borrarCampaña);
+               actions.removeComponent(verImagen);
            }
        });
+
+       verImagen.addClickListener(new Button.ClickListener() {
+           @Override
+           public void buttonClick(Button.ClickEvent clickEvent) {
+               //TODO aca agregar el popup para imagen (HUGO) TIP: RECORDAR QUE LA CAMPANA "seleccionada" ES LA CAMPANA QUE SE PUEDE VER LA IMAGEN
+               seleccionada = (Campana)campanasList.getSelectedRow();
+               removeComponent(estadisticasCampanaController);
+               abmCampanasController.eliminar(seleccionada);
+               //ESTO ESTA POR SI DA CONFLICTOS SALIR DE UN POPUP Y SELECCIONAR OTRA CAMPAÑA SI QUERES COMENTALO Y PROBA SI NO TIRA ERROR
+               campanasList.deselect(campanasList.getSelectedRow());
+
+           }
+       });
+
         campanasList.setContainerDataSource(new BeanItemContainer<>(Campana.class));
 
         campanasList.removeColumn("tags");
