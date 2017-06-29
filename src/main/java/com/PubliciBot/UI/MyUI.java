@@ -25,7 +25,7 @@ import javax.servlet.annotation.WebServlet;
  * layouts.
  */
 @Viewport("user-scalable=no,initial-scale=1.0")
-@Theme("mytheme")
+@Theme("newtheme")
 public class MyUI extends UI {
 //
     private AccessControl accessControl = new StrictAccessControl();

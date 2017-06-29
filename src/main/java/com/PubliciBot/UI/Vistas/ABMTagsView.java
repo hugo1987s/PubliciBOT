@@ -11,7 +11,7 @@ import com.vaadin.ui.VerticalLayout;
 /**
  * Created by Hugo on 14/05/2017.
  */
-    @Theme("mytheme")
+    @Theme("newtheme")
     public class ABMTagsView extends Panel implements View{
         public static final String VIEW_NAME = "Tags";
         Tree treeVaadin;

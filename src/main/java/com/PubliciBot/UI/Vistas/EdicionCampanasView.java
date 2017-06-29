@@ -8,7 +8,7 @@ import com.vaadin.ui.VerticalLayout;
 /**
  * Created by Hugo on 25/05/2017.
  */
-@Theme("mytheme")
+@Theme("newtheme")
 public class EdicionCampanasView extends VerticalLayout implements View {
 
     public static final String VIEW_NAME = "Campañas";

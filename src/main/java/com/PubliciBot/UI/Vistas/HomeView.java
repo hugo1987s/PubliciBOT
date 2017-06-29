@@ -4,11 +4,9 @@ import com.PubliciBot.UI.MyUI;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.CustomLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 
 public class HomeView extends VerticalLayout implements View {
 
@@ -21,11 +19,12 @@ public class HomeView extends VerticalLayout implements View {
         // you can add Vaadin components in predefined slots in the custom
         // layout
 
-
+        Image image = new Image(null, new ThemeResource("img/Logoazul2x2.png"));
+      //  image.setStyleName("logo");
+        aboutContent.addComponent(image);
 
         aboutContent.addComponent(
-                new Label(VaadinIcons.HOME.getHtml()
-                        + "  Bienvenido  "
+                new Label( "  Bienvenido  "
                         + MyUI.get().getAccessControl().getPrincipalName(), ContentMode.HTML), "info");
 
         setSizeFull();
