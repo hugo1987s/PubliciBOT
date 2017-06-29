@@ -2,6 +2,9 @@ package com.PubliciBot.Services;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -32,5 +35,18 @@ public class Utils {
             return true;
 
         return false;
+    }
+
+    public static String renameFile(String fullPathSource, String pathDestino)
+    {
+        String ret = pathDestino + generarNombreArchivoImagen();
+        Path source = Paths.get(fullPathSource);
+        try {
+            Files.move(source, source.resolveSibling(ret));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
     }
 }

@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import com.PubliciBot.Services.Utils;
 import com.vaadin.ui.Upload.Receiver;
 
 public class UploadReceiver implements Receiver {
@@ -16,15 +17,19 @@ public class UploadReceiver implements Receiver {
 
     private String fileName;
 
+    /*
     public UploadReceiver(String fileName)
+
     {
         this.fileName = fileName;
     }
-
+*/
     @Override
     public OutputStream receiveUpload(String strFilename, String strMIMEType) {
         File file=null;
         try {
+            this.setFileName(Utils.getProperty("path.imagenes") + Utils.generarNombreArchivoImagen());
+
             file = new File(this.getFileName());
             if(!file.exists()) {
                 file.createNewFile();

@@ -57,6 +57,7 @@ public class ABMCampanasController extends HorizontalLayout {
     Button btnEjecutarAcciones;
 
     Upload subirArchivo;
+    UploadReceiver uploadReceiver;
 
     UsuarioService usuarioService = new UsuarioService();
 
@@ -68,7 +69,7 @@ public class ABMCampanasController extends HorizontalLayout {
 
     Button cancelar;
 
-    String nombreArchivoGenerado;
+
 //comment
 
     public ABMCampanasController(ABMCampanasView adbUI) {
@@ -157,23 +158,10 @@ public class ABMCampanasController extends HorizontalLayout {
         return nuevaCampana.getTags().size() == 0;
     }
 
-
-
-
     private UnidadMedida obtenerUnidadMedida() {
 
         return (UnidadMedida) unidadMedida.getValue();
-        /*UnidadMedida unidadMedida = null;
-        if(unidad.equals("MES"))
-            unidadMedida = UnidadMedida.MES;
-        if(unidad.equals("SEMANA"))
-            unidadMedida = UnidadMedida.SEMANA;
-        if(unidad.equals("BIMESTRE"))
-            unidadMedida = UnidadMedida.BIMESTRE;
-        if(unidad.equals("SEMESTRE"))
-            unidadMedida = UnidadMedida.SEMESTRE;
-        return unidadMedida;
-        */
+
     }
 
     private void initComponents() {
@@ -211,30 +199,14 @@ public class ABMCampanasController extends HorizontalLayout {
         btnAgregarAccion = new Button("Acciones");
 
 
-         //UploadReceiver uploadReceiver = new UploadReceiver("src/main/resources/" + armarNombreArchivo());
-        UploadReceiver uploadReceiver = new UploadReceiver(Utils.getProperty("path.imagenes") + armarNombreArchivo());
+        uploadReceiver = new UploadReceiver();
 
         subirArchivo = new Upload("Agregar Imagen...", uploadReceiver);
         subirArchivo.setButtonCaption("Subir");
 
         creadasEnSesion = new ArrayList<>();
-
-
-        /*
-        uploadFile = new Upload("Upload Image Here", receiver);
-
-        uploadFile.setImmediate(true);
-        uploadFile.setButtonCaption("Subir imagen");
-
-        uploadFile.addSucceededListener(receiver);
-*/
     }
 
-    private String armarNombreArchivo()
-    {
-         this.nombreArchivoGenerado = Utils.generarNombreArchivoImagen();
-        return this.nombreArchivoGenerado;
-    }
 
     private void dibujarControles() {
 
@@ -254,25 +226,13 @@ public class ABMCampanasController extends HorizontalLayout {
         subirArchivo.setWidth(50,Unit.PERCENTAGE);
 
         seleccionarTags.setWidth(100,Unit.PERCENTAGE);
-       // cancelar.setWidth(100,Unit.PERCENTAGE);
-      //  btnGuardarCampana.setWidth(100,Unit.PERCENTAGE);
-      //  btnAgregarAccion.setWidth(100,Unit.PERCENTAGE);
-      //  seleccionarTags.setWidth(100,Unit.PERCENTAGE);
-
         VerticalLayout layoutcampanaEspaciada = new VerticalLayout();
         GridLayout grid = new GridLayout(2,2);
 
-
         layoutcampanaEspaciada.setSpacing(true);
-
         //layoutcampana.setSpacing(true);
-
-
         grid.setSpacing(true);
-
-
         layoutcampanaEspaciada.addComponent(grid);
-
 
         grid.addComponents(seleccionarTags);
         grid.addComponent(btnAgregarAccion);
@@ -281,9 +241,7 @@ public class ABMCampanasController extends HorizontalLayout {
         grid.addComponent(cancelar);
 
         layoutcampanaEspaciada.addComponent(grid);
-
         layoutcampana.addComponent(layoutcampanaEspaciada);
-
 
         verticalLayout.addComponent(layoutcampana);
         verticalLayout.setSpacing(true);
@@ -364,11 +322,9 @@ public class ABMCampanasController extends HorizontalLayout {
                 String mensajeTxt = txtMensaje.getValue();
                 Mensaje mensaje = null;
 
-                if (nombreArchivoGenerado != null && nombreArchivoGenerado.trim() != "")
-                    mensaje = new Mensaje(mensajeTxt, Utils.getProperty("path.imagenes") + nombreArchivoGenerado, nuevaCampana.getDescripcion());
-                else {
-                    mensaje = new Mensaje(mensajeTxt, nombreArchivoGenerado, nuevaCampana.getDescripcion());
-                }
+                String fileNameFinal = uploadReceiver.getFileName();
+                mensaje = new Mensaje(mensajeTxt, fileNameFinal, nuevaCampana.getDescripcion());
+                uploadReceiver.setFileName(null);
 
                 PostService PS = new PostService();
                 nuevaCampana.setMensaje(mensaje);
