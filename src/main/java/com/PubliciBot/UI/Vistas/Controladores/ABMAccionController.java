@@ -169,12 +169,14 @@ public class ABMAccionController extends HorizontalLayout {
         cboPeriodicidad.addItems(PeriodicidadAccion.values());
         cboPeriodicidad.setNullSelectionAllowed(false);
         cboPeriodicidad.setValue(PeriodicidadAccion.MES);
+        cboPeriodicidad.setTextInputAllowed(false);
 
 
         cboMedio = new ComboBox("Posteo en");
         cboMedio.addItems(TipoMedio.values());
         cboMedio.setNullSelectionAllowed(false);
         cboMedio.setValue(TipoMedio.EMAIL);
+        cboMedio.setTextInputAllowed(false);
 
 
         destino = new TextField("Email destino");

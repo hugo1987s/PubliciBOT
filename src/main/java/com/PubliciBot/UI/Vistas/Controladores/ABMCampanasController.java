@@ -193,6 +193,8 @@ public class ABMCampanasController extends HorizontalLayout {
         txtoduracion =new Label("Duración");
         unidadMedida = new ComboBox();
         unidadMedida.setWidth(115, Unit.PIXELS);
+        unidadMedida.setNullSelectionAllowed(false);
+        unidadMedida.setTextInputAllowed(false);
 
         txtMensaje = new TextArea("Mensaje adjunto");
         txtMensaje.setValue("Mensaje de Prueba");
