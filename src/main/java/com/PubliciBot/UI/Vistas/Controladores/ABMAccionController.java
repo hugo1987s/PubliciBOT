@@ -3,10 +3,12 @@ package com.PubliciBot.UI.Vistas.Controladores;
 import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.AccionPublicitariaService;
 import com.PubliciBot.Services.PostService;
-import com.PubliciBot.UI.Vistas.VistaCamapana.AccionView;
 import com.PubliciBot.UI.Vistas.Validators.EnteroValidator;
+import com.PubliciBot.UI.Vistas.VistaCamapana.AccionView;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.validator.IntegerRangeValidator;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -34,8 +36,7 @@ public class ABMAccionController extends HorizontalLayout {
     AccionPublicitaria nuevaAccion;
 
     BeanFieldGroup<AccionPublicitaria> formFieldBindings;
-
-    private AccionPublicitariaService publicitariaService;
+private AccionPublicitariaService publicitariaService;
 
     ABMCampanasController abmCampanasController;
     AccionView accionView;
@@ -49,6 +50,7 @@ public class ABMAccionController extends HorizontalLayout {
         dibujarControles();
         abmCampanasController = controller;
         this.accionView = accionView;
+        setListeners();
 
         cboMedio.addValueChangeListener(event -> {
             if (cboMedio.getValue().toString().toUpperCase() == TipoMedio.EMAIL.toString().toUpperCase()) {
@@ -83,7 +85,7 @@ public class ABMAccionController extends HorizontalLayout {
                 //AccionPublicitaria ac = controller.getPublicitariaService().getAccionPublicitaria();
 
                 guardarAccion();
-                setVisible(false);
+
                     /*
                     abmCampanasController.getNuevaCampana().addAccion(crearAccion());
                     Collection<Window> views = ((MyUI) getUI()).getWindows();
@@ -102,6 +104,31 @@ public class ABMAccionController extends HorizontalLayout {
             }
         });
     }
+
+    private void setListeners(){
+        nombreAccion.addValueChangeListener(e -> cleanValidators());
+        destino.addValueChangeListener(e -> cleanValidators());
+        periodicidadSegundos.addValueChangeListener(e -> cleanValidators());
+    }
+
+    private void cleanValidators(){
+        nombreAccion.removeAllValidators();
+        destino.removeAllValidators();
+        periodicidadSegundos.removeAllValidators();
+        validateFields();
+    }
+    private void validateFields(){
+        nombreAccion.addValidator(
+                new StringLengthValidator(
+                        "Must be between 2 and 10 characters in length", 2, 10, false));
+        //TODO FALTARIA AGREGAR MAIL
+        destino.addValidator(
+                new StringLengthValidator(
+                        "Debe estar entre 10 y 20 caracteres", 10,20,false));
+        periodicidadSegundos.addValidator(
+                new IntegerRangeValidator("Como minimo 1", 1, Integer.MAX_VALUE ));
+    }
+
 
     private void close(Window view) {
         view.close();
@@ -161,9 +188,6 @@ public class ABMAccionController extends HorizontalLayout {
         cancelar = new Button ("Cancelar");
         btnAceptar.setStyleName(ValoTheme.BUTTON_PRIMARY);
         btnAceptar.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-
-
-
     }
 
     private void dibujarControles() {
@@ -210,14 +234,17 @@ public class ABMAccionController extends HorizontalLayout {
 
     public void guardarAccion() {
         try {
-            // Commit the fields from UI to DAO
-            formFieldBindings.commit();
-            agregarMedio();
-            Campana actual = abmCampanasController.getNuevaCampana();
+            boolean areValid = formFieldBindings.isValid();
+            if(areValid) {
+                // Commit the fields from UI to DAO
+                formFieldBindings.commit();
+                agregarMedio();
+                Campana actual = abmCampanasController.getNuevaCampana();
 
-            actual.addAccion(nuevaAccion);
-            accionView.refreshAcciones(actual);
-
+                actual.addAccion(nuevaAccion);
+                accionView.refreshAcciones(actual);
+                setVisible(false);
+            }
         } catch (FieldGroup.CommitException e) {
             e.printStackTrace();
         }

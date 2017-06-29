@@ -11,6 +11,7 @@ import com.PubliciBot.UI.authentication.StrictAccessControl;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.validator.DateRangeValidator;
+import com.vaadin.data.validator.IntegerRangeValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.shared.ui.datefield.Resolution;
@@ -205,6 +206,16 @@ public class ABMCampanasController extends HorizontalLayout {
         subirArchivo.setButtonCaption("Subir");
 
         creadasEnSesion = new ArrayList<>();
+
+        setListeners();
+        /*
+        uploadFile = new Upload("Upload Image Here", receiver);
+
+        uploadFile.setImmediate(true);
+        uploadFile.setButtonCaption("Subir imagen");
+
+        uploadFile.addSucceededListener(receiver);
+*/
     }
 
 
@@ -226,6 +237,11 @@ public class ABMCampanasController extends HorizontalLayout {
         subirArchivo.setWidth(50,Unit.PERCENTAGE);
 
         seleccionarTags.setWidth(100,Unit.PERCENTAGE);
+       // cancelar.setWidth(100,Unit.PERCENTAGE);
+      //  btnGuardarCampana.setWidth(100,Unit.PERCENTAGE);
+      //  btnAgregarAccion.setWidth(100,Unit.PERCENTAGE);
+      //  seleccionarTags.setWidth(100,Unit.PERCENTAGE);
+
         VerticalLayout layoutcampanaEspaciada = new VerticalLayout();
         GridLayout grid = new GridLayout(2,2);
 
@@ -252,6 +268,22 @@ public class ABMCampanasController extends HorizontalLayout {
 
     }
 
+    private void setListeners(){
+        nombre.addValueChangeListener(e -> cleanValidators());
+        descripcion.addValueChangeListener(e -> cleanValidators());
+        fechaInicio.addValueChangeListener(e -> cleanValidators());
+        duracion.addValueChangeListener(e -> cleanValidators());
+        txtMensaje.addValueChangeListener(e-> cleanValidators());
+    }
+
+    private void cleanValidators(){
+        nombre.removeAllValidators();
+        descripcion.removeAllValidators();
+        fechaInicio.removeAllValidators();
+        duracion.removeAllValidators();
+        txtMensaje.removeAllValidators();
+        validateFields();
+    }
     private void validateFields(){
         nombre.addValidator(
                 new StringLengthValidator(
@@ -259,20 +291,16 @@ public class ABMCampanasController extends HorizontalLayout {
         descripcion.addValidator(
                 new StringLengthValidator(
                         "Debe estar entre 8 y 13 caracteres", 8,13,false));
+        Date now = fechaInicio.getValue();
+        now.setTime(now.getTime() - 1000000);
         fechaInicio.addValidator(
-               new DateRangeValidator("La fecha de inicio no puede ser antes hoy",new Date(),null, Resolution.YEAR ));
-        /*
+               new DateRangeValidator("La fecha de inicio no puede ser antes hoy",now,null, Resolution.YEAR ));
+
         duracion.addValidator(
-                new AbstractStringValidator("Numero invalido") {
-                    @Override
-                    protected boolean isValidValue(String s) {
-                        return s.matches("/ ^[1-9][0-9]*$");
-                    }
-                }
-        );
-        */
+                new IntegerRangeValidator("Como minimo 1", 1, Integer.MAX_VALUE ));
+
         txtMensaje.addValidator(new StringLengthValidator(
-                "Debe estar entre 10 y 100 caracteres", 10,100,false));
+                "Debe estar por debajo de los 20 caracteres", 0,100,false));
 
 
     }
@@ -297,7 +325,6 @@ public class ABMCampanasController extends HorizontalLayout {
     }
 
     public void crearCampana(Campana campana){
-        validateFields();
         this.nuevaCampana = campana;
         String mensajeCampana = campana.getMensaje().getTextoMensaje();
         txtMensaje.setValue(mensajeCampana);
@@ -312,9 +339,8 @@ public class ABMCampanasController extends HorizontalLayout {
     public void guardar() {
         try {
             boolean areValidFields = formFieldBindings.isValid();
-            System.out.println(areValidFields);
+
             if(areValidFields) {
-                System.out.println("not valid fields");
                 // Commit the fields from UI to DAO
                 formFieldBindings.commit();
 
