@@ -7,6 +7,7 @@ import com.PubliciBot.UI.Vistas.Validators.EnteroValidator;
 import com.PubliciBot.UI.Vistas.VistaCamapana.AccionView;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.IntegerRangeValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
@@ -117,8 +118,8 @@ public class ABMAccionController extends HorizontalLayout {
                         "Must be between 2 and 10 characters in length", 2, 10, false));
         //TODO FALTARIA AGREGAR MAIL
         destino.addValidator(
-                new StringLengthValidator(
-                        "Debe estar entre 10 y 20 caracteres", 10,20,false));
+                new EmailValidator("Debe ser una direccion de correo valida"));
+
         periodicidadSegundos.addValidator(
                 new IntegerRangeValidator("Como minimo 1", 1, Integer.MAX_VALUE ));
     }
@@ -238,6 +239,7 @@ public class ABMAccionController extends HorizontalLayout {
 
                 actual.addAccion(nuevaAccion);
                 accionView.refreshAcciones(actual);
+                clearValidators();
                 setVisible(false);
             }
         } catch (FieldGroup.CommitException e) {

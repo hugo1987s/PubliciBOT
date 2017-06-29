@@ -54,7 +54,7 @@ public class SelectorTags extends Window {
         });
 */
 
-        
+
         arbolTagService = new ArbolTagsService();
         arbolTagService.recuperarArbol();
         arbolVaadin = arbolTagService.convertirArbolaTree(arbolVaadin);
