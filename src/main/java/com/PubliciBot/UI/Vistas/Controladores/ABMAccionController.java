@@ -105,7 +105,11 @@ private AccionPublicitariaService publicitariaService;
         });
     }
 
-
+private void clearValidators(){
+        nombreAccion.removeAllValidators();
+        destino.removeAllValidators();
+        periodicidadSegundos.removeAllValidators();
+}
 
     private void validateFields(){
         nombreAccion.addValidator(

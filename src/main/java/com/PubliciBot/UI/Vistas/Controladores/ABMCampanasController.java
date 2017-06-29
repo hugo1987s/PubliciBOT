@@ -289,6 +289,16 @@ public class ABMCampanasController extends HorizontalLayout {
     }
 
 
+
+    private void cleanValidators(){
+        nombre.removeAllValidators();
+        descripcion.removeAllValidators();
+        fechaInicio.removeAllValidators();
+        duracion.removeAllValidators();
+        txtMensaje.removeAllValidators();
+        validateFields();
+    }
+
     private void validateFields(){
         nombre.addValidator(
                 new StringLengthValidator(
@@ -347,7 +357,7 @@ public class ABMCampanasController extends HorizontalLayout {
                 Usuario actual = getUsuarioSesion();
                 usuarioService.agregarCampañaAUsuario(nuevaCampana, actual);
                 usuarioService.guardarUsuario(actual);
-
+                cleanValidators();
                 setVisible(false);
 
                 addressbookUIView.refreshCampanas();
