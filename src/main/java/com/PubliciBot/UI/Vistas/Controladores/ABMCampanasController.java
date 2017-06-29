@@ -207,7 +207,7 @@ public class ABMCampanasController extends HorizontalLayout {
 
         creadasEnSesion = new ArrayList<>();
 
-        setListeners();
+
         /*
         uploadFile = new Upload("Upload Image Here", receiver);
 
@@ -268,42 +268,6 @@ public class ABMCampanasController extends HorizontalLayout {
 
     }
 
-    private void setListeners(){
-        nombre.addValueChangeListener(e -> cleanValidators());
-        descripcion.addValueChangeListener(e -> cleanValidators());
-        fechaInicio.addValueChangeListener(e -> cleanValidators());
-        duracion.addValueChangeListener(e -> cleanValidators());
-        txtMensaje.addValueChangeListener(e-> cleanValidators());
-    }
-
-    private void cleanValidators(){
-        nombre.removeAllValidators();
-        descripcion.removeAllValidators();
-        fechaInicio.removeAllValidators();
-        duracion.removeAllValidators();
-        txtMensaje.removeAllValidators();
-        validateFields();
-    }
-    private void validateFields(){
-        nombre.addValidator(
-                new StringLengthValidator(
-                        "Must be between 2 and 10 characters in length", 2, 10, false));
-        descripcion.addValidator(
-                new StringLengthValidator(
-                        "Debe estar entre 8 y 13 caracteres", 8,13,false));
-        Date now = fechaInicio.getValue();
-        now.setTime(now.getTime() - 1000000);
-        fechaInicio.addValidator(
-               new DateRangeValidator("La fecha de inicio no puede ser antes hoy",now,null, Resolution.YEAR ));
-
-        duracion.addValidator(
-                new IntegerRangeValidator("Como minimo 1", 1, Integer.MAX_VALUE ));
-
-        txtMensaje.addValidator(new StringLengthValidator(
-                "Debe estar por debajo de los 20 caracteres", 0,100,false));
-
-
-    }
 
     private void cargarComboDuracion() {
         unidadMedida.addItems(UnidadMedida.values());
@@ -324,7 +288,28 @@ public class ABMCampanasController extends HorizontalLayout {
         return this.nuevaCampana;
     }
 
+
+    private void validateFields(){
+        nombre.addValidator(
+                new StringLengthValidator(
+                        "Must be between 2 and 10 characters in length", 2, 10, false));
+        descripcion.addValidator(
+                new StringLengthValidator(
+                        "Debe estar entre 8 y 13 caracteres", 8,13,false));
+        Date now = fechaInicio.getValue();
+        now.setTime(now.getTime() - 1000000);
+        fechaInicio.addValidator(
+                new DateRangeValidator("La fecha de inicio no puede ser antes hoy",now,null, Resolution.YEAR ));
+
+        duracion.addValidator(
+                new IntegerRangeValidator("Como minimo 1", 1, Integer.MAX_VALUE ));
+
+        txtMensaje.addValidator(new StringLengthValidator(
+                "Debe estar por debajo de los 20 caracteres", 0,100,false));
+    }
+
     public void crearCampana(Campana campana){
+        validateFields();
         this.nuevaCampana = campana;
         String mensajeCampana = campana.getMensaje().getTextoMensaje();
         txtMensaje.setValue(mensajeCampana);
@@ -362,6 +347,7 @@ public class ABMCampanasController extends HorizontalLayout {
                 Usuario actual = getUsuarioSesion();
                 usuarioService.agregarCampañaAUsuario(nuevaCampana, actual);
                 usuarioService.guardarUsuario(actual);
+
                 setVisible(false);
 
                 addressbookUIView.refreshCampanas();

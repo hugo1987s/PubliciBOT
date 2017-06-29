@@ -50,7 +50,7 @@ private AccionPublicitariaService publicitariaService;
         dibujarControles();
         abmCampanasController = controller;
         this.accionView = accionView;
-        setListeners();
+
 
         cboMedio.addValueChangeListener(event -> {
             if (cboMedio.getValue().toString().toUpperCase() == TipoMedio.EMAIL.toString().toUpperCase()) {
@@ -105,18 +105,8 @@ private AccionPublicitariaService publicitariaService;
         });
     }
 
-    private void setListeners(){
-        nombreAccion.addValueChangeListener(e -> cleanValidators());
-        destino.addValueChangeListener(e -> cleanValidators());
-        periodicidadSegundos.addValueChangeListener(e -> cleanValidators());
-    }
 
-    private void cleanValidators(){
-        nombreAccion.removeAllValidators();
-        destino.removeAllValidators();
-        periodicidadSegundos.removeAllValidators();
-        validateFields();
-    }
+
     private void validateFields(){
         nombreAccion.addValidator(
                 new StringLengthValidator(
@@ -225,6 +215,7 @@ private AccionPublicitariaService publicitariaService;
 
 
     public void crearAccion(AccionPublicitaria accion) {
+        validateFields();
         this.nuevaAccion = accion;
         if (accion != null) {
             formFieldBindings = BeanFieldGroup.bindFieldsBuffered(accion, this);
