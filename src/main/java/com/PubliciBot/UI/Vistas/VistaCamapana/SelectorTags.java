@@ -1,11 +1,12 @@
 package com.PubliciBot.UI.Vistas.VistaCamapana;
 
+import com.PubliciBot.DM.Campana;
 import com.PubliciBot.DM.Tag;
 import com.PubliciBot.Services.ArbolTagsService;
-import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by Hugo on 26/05/2017.
@@ -36,6 +37,9 @@ public class SelectorTags extends Window {
         arbolVaadin = new Tree();
         arbolVaadin.setSelectable(true);
         arbolVaadin.setMultiSelect(true);
+
+
+        /*
         arbolVaadin.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
             public void itemClick(ItemClickEvent itemClickEvent) {
@@ -48,7 +52,9 @@ public class SelectorTags extends Window {
                     seleccionados.remove(nuevo);
             }
         });
+*/
 
+        
         arbolTagService = new ArbolTagsService();
         arbolTagService.recuperarArbol();
         arbolVaadin = arbolTagService.convertirArbolaTree(arbolVaadin);
@@ -97,5 +103,22 @@ public class SelectorTags extends Window {
         return this.arbolTagService;
     }
 
+    public boolean isSelected(Object obj){
+        return this.arbolVaadin.isSelected(obj);
+    }
 
+    public Collection getItems() {
+        return arbolVaadin.getItemIds();
+    }
+
+    public void setSelected(Campana campana){
+        Collection items = getItems();
+        Tag t ;
+        for(Object obj: items){
+            t = (Tag) obj;
+            if(campana.getTags().contains(t)){
+                arbolVaadin.select(obj);
+            }
+        }
+    }
 }

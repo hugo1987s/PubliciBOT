@@ -20,6 +20,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -89,20 +90,28 @@ public class ABMCampanasController extends HorizontalLayout {
                 if(nuevaCampana == null)
                     Notification.show("primero se debe crear la campaña");
                 else {
-                    nuevaCampana.getTags().clear();
                     SelectorTags tagger = new SelectorTags();
+                    tagger.setSelected(nuevaCampana);
                     tagger.setModal(true);
                     tagger.getSeleccionar().addClickListener(new Button.ClickListener() {
                         @Override
                         public void buttonClick(Button.ClickEvent clickEvent) {
-                            ArrayList<Tag> tagsCampana = tagger.getSeleccionados();
-                            for (Tag t : tagsCampana) {
-                                ArrayList<Tag> hijos = tagger.getArbolTagService().buscarTagPorPadre(t);
-                                for(Tag hijo : hijos)
-                                    campanaService.agregarTagACampana(nuevaCampana,hijo);
-                                campanaService.agregarTagACampana(nuevaCampana, t);
+                            nuevaCampana.getTags().clear();
+                            Collection tagsCampana = tagger.getItems();
+                            boolean isSelected ;
+                            for (Object obj : tagsCampana) {
+                                isSelected = tagger.isSelected(obj);
+                                if(isSelected) {
+                                    Tag t = (Tag) obj;
+                                    if(!nuevaCampana.getTags().contains(t)) {
+                                        ArrayList<Tag> hijos = tagger.getArbolTagService().buscarTagPorPadre(t);
+                                        for (Tag hijo : hijos)
+                                            campanaService.agregarTagACampana(nuevaCampana, hijo);
+                                        campanaService.agregarTagACampana(nuevaCampana, t);
+                                    }
+                                }
                             }
-                            tagger.vaciarSeleccionados();
+                            //tagger.vaciarSeleccionados();
                             tagger.close();
                             Notification.show("Campanas agregadas: " + nuevaCampana.getTags());
                         }
