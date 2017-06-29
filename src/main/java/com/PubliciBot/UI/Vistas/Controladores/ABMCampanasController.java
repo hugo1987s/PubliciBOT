@@ -159,6 +159,7 @@ public class ABMCampanasController extends HorizontalLayout {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 setVisible(false);
+                ABMCampanasView.setNuevaCampanaVisibility();
             }
         });
         this.addStyleName("v-scrollable");
@@ -220,6 +221,7 @@ public class ABMCampanasController extends HorizontalLayout {
         subirArchivo.setButtonCaption("Subir");
 
         creadasEnSesion = new ArrayList<>();
+
 
 
         /*
@@ -333,7 +335,6 @@ public class ABMCampanasController extends HorizontalLayout {
     }
 
     public void crearCampana(Campana campana){
-        validateFields();
         this.nuevaCampana = campana;
         String mensajeCampana = campana.getMensaje().getTextoMensaje();
         txtMensaje.setValue(mensajeCampana);
@@ -347,6 +348,7 @@ public class ABMCampanasController extends HorizontalLayout {
 
     public void guardar() {
         try {
+            cleanValidators();
             boolean areValidFields = formFieldBindings.isValid();
 
             if(areValidFields) {
@@ -375,6 +377,7 @@ public class ABMCampanasController extends HorizontalLayout {
                 setVisible(false);
 
                 addressbookUIView.refreshCampanas();
+                ABMCampanasView.setNuevaCampanaVisibility();
             }
         } catch (FieldGroup.CommitException e) {
             // Validation exceptions could be shown here

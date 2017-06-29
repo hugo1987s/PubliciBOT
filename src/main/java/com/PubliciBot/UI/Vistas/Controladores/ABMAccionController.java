@@ -69,33 +69,7 @@ public class ABMAccionController extends HorizontalLayout {
         btnAceptar.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-
-/*
-                if (cboPeriodicidad.getValue() == null || cboPeriodicidad.getValue() == "") {
-                    Notification.show("Debe seleccionar una periodicidad de posteo.");
-                    cboPeriodicidad.focus();
-                    return;
-                }
-
-                if (medio.getValue() == null || medio.getValue() == "") {
-                    Notification.show("Debe seleccionar un medio de posteo.");
-                    medio.focus();
-                    return;
-                }*/
-
-                //controller.getPublicitariaService().setAccionPublicitaria(crearAccion());
-                //AccionPublicitaria ac = controller.getPublicitariaService().getAccionPublicitaria();
-
                 guardarAccion();
-
-                    /*
-                    abmCampanasController.getNuevaCampana().addAccion(crearAccion());
-                    Collection<Window> views = ((MyUI) getUI()).getWindows();
-                    for(Window w : views)
-                        if(w instanceof  ABMAccionView) {
-                            close(w);
-                        }
-                        */
             }
         });
 
@@ -103,6 +77,7 @@ public class ABMAccionController extends HorizontalLayout {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 setVisible(false);
+                AccionView.setNuevaCcionVisibility();
             }
         });
     }
@@ -111,6 +86,7 @@ public class ABMAccionController extends HorizontalLayout {
         nombreAccion.removeAllValidators();
         destino.removeAllValidators();
         periodicidadSegundos.removeAllValidators();
+        validateFields();
     }
 
     private void validateFields(){
@@ -147,13 +123,9 @@ public class ABMAccionController extends HorizontalLayout {
 
         Medio medio = new Medio();
         medio.setTipoMedio((TipoMedio) this.cboMedio.getValue());
-
-        //if (medio.getTipoMedio().equals(TipoMedio.EMAIL))
-         //   nuevaAccion.setDestino(destino.getValue());
-
-            medio.setUsuarioPerfilOrigen(txtUsuarioOrigen.getValue());
-            medio.setContrasenaPerfilOrigen(txtPasswordOrigen.getValue());
-            medio.setPerfilDestino(txtCuentaDestino.getValue());
+        medio.setUsuarioPerfilOrigen(txtUsuarioOrigen.getValue());
+        medio.setContrasenaPerfilOrigen(txtPasswordOrigen.getValue());
+        medio.setPerfilDestino(txtCuentaDestino.getValue());
 
         nuevaAccion.setMedio(medio);
     }
@@ -229,18 +201,17 @@ public class ABMAccionController extends HorizontalLayout {
         panelRedes.setVisible(false);
     }
 
-
     public void crearAccion(AccionPublicitaria accion) {
-        validateFields();
         this.nuevaAccion = accion;
         if (accion != null) {
             formFieldBindings = BeanFieldGroup.bindFieldsBuffered(accion, this);
         }
     }
 
-
     public void guardarAccion() {
         try {
+            clearValidators();
+
             boolean areValid = formFieldBindings.isValid();
             if(areValid) {
                 // Commit the fields from UI to DAO
@@ -250,9 +221,10 @@ public class ABMAccionController extends HorizontalLayout {
 
                 actual.addAccion(nuevaAccion);
                 accionView.refreshAcciones(actual);
-                clearValidators();
+                AccionView.setNuevaCcionVisibility();
                 setVisible(false);
             }
+
         } catch (FieldGroup.CommitException e) {
             e.printStackTrace();
         }
@@ -265,4 +237,6 @@ public class ABMAccionController extends HorizontalLayout {
         actual.removeAccion(selectedRow);
         accionView.refreshAcciones(actual);
     }
+
+
 }

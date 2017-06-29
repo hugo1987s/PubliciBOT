@@ -26,7 +26,7 @@ public class AccionView extends VerticalLayout{
     ABMAccionController abmAccionController ;
 
     EstadisticasCampanaController estadisticasCampanaController ;
-    Button nuevaAccion = new Button ("+ Accion");
+    static Button nuevaAccion = new Button ("+ Accion");
     AccionPublicitaria seleccionada;
     Button eliminarAccion = new Button("Eliminar Accion");
     EstadoABMAccion estadoABMAccion;
@@ -55,6 +55,7 @@ public class AccionView extends VerticalLayout{
                 abmAccionController.setVisible(true);
                 abmAccionController.crearAccion(new AccionPublicitaria());
                 accionList.deselect(accionList.getSelectedRow());
+                setNuevaCcionVisibility();
             }
         });
 
@@ -94,7 +95,6 @@ public class AccionView extends VerticalLayout{
             }
         });
         accionList.setContainerDataSource(new BeanItemContainer<>(AccionPublicitaria.class));
-
     }
 
     private void buildLayout() {
@@ -121,7 +121,10 @@ public class AccionView extends VerticalLayout{
                AccionPublicitaria.class, acciones));
     }
 
-    public EstadoABMAccion getEstadoABMAccion(){
-        return estadoABMAccion ;
+    public static void setNuevaCcionVisibility(){
+        if(nuevaAccion.isVisible())
+            nuevaAccion.setVisible(false);
+        else
+            nuevaAccion.setVisible(true);
     }
 }

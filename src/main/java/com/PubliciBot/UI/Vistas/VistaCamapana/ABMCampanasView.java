@@ -49,6 +49,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
 
         refreshCampanas();
         this.setSpacing(false);
+        abmCampanasController.setVisible(false);
     }
 
     Grid campanasList = new Grid();
@@ -56,12 +57,13 @@ public class ABMCampanasView extends VerticalLayout implements View {
 
     ABMCampanasController abmCampanasController = new ABMCampanasController(this);
     EstadisticasCampanaController estadisticasCampanaController ;
-    Button nuevaCampana = new Button("+ Campaña");
+    static Button nuevaCampana = new Button("+ Campaña");
     Button btnEditarCampaña = new Button("Editar");
     Button borrarCampaña = new Button ("Eliminar");
     Button verImagen = new Button("Imagen");
     Campana seleccionada;
     EstadoABMCampana estadoABMCampana;
+
 
 
     /* Hundreds of widgets.
@@ -101,6 +103,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
                     removeComponent(estadisticasCampanaController);
                 actions.removeComponent(btnEditarCampaña);
                 actions.removeComponent(borrarCampaña);
+                setNuevaCampanaVisibility();
             }
         });
 
@@ -176,6 +179,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
                actions.removeComponent(btnEditarCampaña);
                actions.removeComponent(borrarCampaña);
                actions.removeComponent(verImagen);
+               setNuevaCampanaVisibility();
            }
        });
 
@@ -296,9 +300,6 @@ public void addComponentScrollable(){
         return new Usuario();
     }
 
-    public EstadoABMCampana getEstadoABMCampana(){
-        return  this.estadoABMCampana;
-    }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
@@ -311,4 +312,12 @@ public void addComponentScrollable(){
      *  class name and turn on production mode when you have finished developing the application.
      */
 
+
+
+    public static void setNuevaCampanaVisibility(){
+        if(nuevaCampana.isVisible())
+            nuevaCampana.setVisible(false);
+        else
+            nuevaCampana.setVisible(true);
+    }
 }
