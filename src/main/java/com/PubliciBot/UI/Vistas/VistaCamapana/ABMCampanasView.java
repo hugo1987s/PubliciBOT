@@ -200,7 +200,6 @@ public class ABMCampanasView extends VerticalLayout implements View {
                //TODO aca agregar el popup para imagen (HUGO) TIP: RECORDAR QUE LA CAMPANA "seleccionada" ES LA CAMPANA QUE SE PUEDE VER LA IMAGEN
                seleccionada = (Campana)campanasList.getSelectedRow();
                removeComponent(estadisticasCampanaController);
-               abmCampanasController.eliminar(seleccionada);
                //ESTO ESTA POR SI DA CONFLICTOS SALIR DE UN POPUP Y SELECCIONAR OTRA CAMPAÑA SI QUERES COMENTALO Y PROBA SI NO TIRA ERROR
                campanasList.deselect(campanasList.getSelectedRow());
 
