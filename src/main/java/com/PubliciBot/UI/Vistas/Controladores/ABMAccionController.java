@@ -36,7 +36,7 @@ public class ABMAccionController extends HorizontalLayout {
     AccionPublicitaria nuevaAccion;
 
     BeanFieldGroup<AccionPublicitaria> formFieldBindings;
-private AccionPublicitariaService publicitariaService;
+    private AccionPublicitariaService publicitariaService;
 
     ABMCampanasController abmCampanasController;
     AccionView accionView;
@@ -105,11 +105,11 @@ private AccionPublicitariaService publicitariaService;
         });
     }
 
-private void clearValidators(){
+    private void clearValidators(){
         nombreAccion.removeAllValidators();
         destino.removeAllValidators();
         periodicidadSegundos.removeAllValidators();
-}
+    }
 
     private void validateFields(){
         nombreAccion.addValidator(

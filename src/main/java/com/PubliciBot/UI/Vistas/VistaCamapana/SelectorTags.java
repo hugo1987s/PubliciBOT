@@ -93,5 +93,9 @@ public class SelectorTags extends Window {
         this.seleccionados = new ArrayList<Tag>();
     }
 
+    public ArbolTagsService getArbolTagService(){
+        return this.arbolTagService;
+    }
+
 
 }

@@ -97,6 +97,9 @@ public class ABMCampanasController extends HorizontalLayout {
                         public void buttonClick(Button.ClickEvent clickEvent) {
                             ArrayList<Tag> tagsCampana = tagger.getSeleccionados();
                             for (Tag t : tagsCampana) {
+                                ArrayList<Tag> hijos = tagger.getArbolTagService().buscarTagPorPadre(t);
+                                for(Tag hijo : hijos)
+                                    campanaService.agregarTagACampana(nuevaCampana,hijo);
                                 campanaService.agregarTagACampana(nuevaCampana, t);
                             }
                             tagger.vaciarSeleccionados();
