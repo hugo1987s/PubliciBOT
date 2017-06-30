@@ -59,6 +59,7 @@ public class Menu extends CssLayout {
             @Override
             public void menuSelected(MenuItem selectedItem) {
                 VaadinSession.getCurrent().getSession().invalidate();
+                VaadinSession.getCurrent().close();
                 Page.getCurrent().reload();
             }
         });

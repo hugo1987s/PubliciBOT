@@ -6,6 +6,8 @@ import com.PubliciBot.UI.Vistas.VistaCamapana.ABMCampanasView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.Page;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 
@@ -46,24 +48,33 @@ public class MainScreen extends HorizontalLayout {
 
             menu.addView(new ABMCampanasView(),ABMCampanasView.VIEW_NAME, ABMCampanasView.VIEW_NAME,
                     VaadinIcons.FIRE);
+            menu.addView(new AboutView(), AboutView.VIEW_NAME, AboutView.VIEW_NAME,
+                    VaadinIcons.INFO_CIRCLE);
         }
         else if(esTecnico){
             menu.addView(new ABMTagsView(), ABMTagsView.VIEW_NAME,
                     ABMTagsView.VIEW_NAME, VaadinIcons.EDIT);
+            menu.addView(new AboutView(), AboutView.VIEW_NAME, AboutView.VIEW_NAME,
+                    VaadinIcons.INFO_CIRCLE);
         }
 
         else if(esCliente){
             menu.addView(new ABMCampanasView(),ABMCampanasView.VIEW_NAME, ABMCampanasView.VIEW_NAME,
                     VaadinIcons.SEARCH);
 
-
+            menu.addView(new AboutView(), AboutView.VIEW_NAME, AboutView.VIEW_NAME,
+                    VaadinIcons.INFO_CIRCLE);
+        }
+        else{
+            VaadinSession.getCurrent().getSession().invalidate();
+            VaadinSession.getCurrent().close();
+            Page.getCurrent().reload();
         }
 
        /* menu.addView(new AddressbookUIView(),AddressbookUIView.VIEW_NAME, AddressbookUIView.VIEW_NAME,
                 VaadinIcons.SEARCH);
 */
-        menu.addView(new AboutView(), AboutView.VIEW_NAME, AboutView.VIEW_NAME,
-                VaadinIcons.INFO_CIRCLE);
+
 
         navigator.addViewChangeListener(viewChangeListener);
 
