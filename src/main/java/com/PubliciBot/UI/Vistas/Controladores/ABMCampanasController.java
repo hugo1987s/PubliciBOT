@@ -170,7 +170,7 @@ public class ABMCampanasController extends HorizontalLayout {
         return nuevaCampana.getTags().size() == 0;
     }
 
-    private UnidadMedida obtenerUnidadMedida() {
+    public UnidadMedida obtenerUnidadMedida() {
 
         return (UnidadMedida) unidadMedida.getValue();
 
