@@ -5,6 +5,7 @@ import com.PubliciBot.DM.EstadoCampana;
 import com.PubliciBot.DM.Usuario;
 import com.PubliciBot.Services.CampanaService;
 import com.PubliciBot.Services.UsuarioService;
+import com.PubliciBot.Services.Utils;
 import com.PubliciBot.UI.MyUI;
 import com.PubliciBot.UI.Vistas.Controladores.ABMCampanasController;
 import com.PubliciBot.UI.Vistas.Controladores.EstadisticasCampanaController;
@@ -201,11 +202,17 @@ public class ABMCampanasView extends VerticalLayout implements View {
        verImagen.addClickListener(new Button.ClickListener() {
            @Override
            public void buttonClick(Button.ClickEvent clickEvent) {
-               //TODO aca agregar el popup para imagen (HUGO) TIP: RECORDAR QUE LA CAMPANA "seleccionada" ES LA CAMPANA QUE SE PUEDE VER LA IMAGEN
                seleccionada = (Campana)campanasList.getSelectedRow();
                removeComponent(estadisticasCampanaController);
-               //ESTO ESTA POR SI DA CONFLICTOS SALIR DE UN POPUP Y SELECCIONAR OTRA CAMPAÑA SI QUERES COMENTALO Y PROBA SI NO TIRA ERROR
-               campanasList.deselect(campanasList.getSelectedRow());
+
+               if(Utils.isExistFile(seleccionada.getMensaje().getImagenMensajePath())) {
+                   VisualizadorImagenView imageViewer = new VisualizadorImagenView(seleccionada.getMensaje().getImagenMensajePath());
+                   UI.getCurrent().addWindow(imageViewer);
+               }
+               else
+                   Notification.show("No existe la imagen");
+
+                campanasList.deselect(campanasList.getSelectedRow());
 
            }
        });
