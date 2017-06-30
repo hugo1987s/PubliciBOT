@@ -77,7 +77,7 @@ public class ABMAccionController extends HorizontalLayout {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 setVisible(false);
-                AccionView.setNuevaCcionVisibility();
+                accionView.setNuevaCcionVisibility();
             }
         });
     }
@@ -221,7 +221,7 @@ public class ABMAccionController extends HorizontalLayout {
 
                 actual.addAccion(nuevaAccion);
                 accionView.refreshAcciones(actual);
-                AccionView.setNuevaCcionVisibility();
+                accionView.setNuevaCcionVisibility();
                 setVisible(false);
             }
 

@@ -58,7 +58,7 @@ public class ABMCampanasView extends VerticalLayout implements View {
 
     ABMCampanasController abmCampanasController = new ABMCampanasController(this);
     EstadisticasCampanaController estadisticasCampanaController ;
-    static Button nuevaCampana = new Button("+ Campaña");
+    Button nuevaCampana = new Button("+ Campaña");
     Button btnEditarCampaña = new Button("Editar");
     Button borrarCampaña = new Button ("Eliminar");
     Button verImagen = new Button("Imagen");
@@ -321,7 +321,7 @@ public void addComponentScrollable(){
 
 
 
-    public static void setNuevaCampanaVisibility(){
+    public void setNuevaCampanaVisibility(){
         if(nuevaCampana.isVisible())
             nuevaCampana.setVisible(false);
         else

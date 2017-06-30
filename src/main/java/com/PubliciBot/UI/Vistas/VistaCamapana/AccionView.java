@@ -26,7 +26,7 @@ public class AccionView extends Panel {
     ABMAccionController abmAccionController ;
 
     EstadisticasCampanaController estadisticasCampanaController ;
-    static Button nuevaAccion = new Button ("+ Accion");
+    Button nuevaAccion = new Button ("+ Accion");
     AccionPublicitaria seleccionada;
     Button eliminarAccion = new Button("Eliminar Accion");
     EstadoABMAccion estadoABMAccion;
@@ -135,7 +135,7 @@ public class AccionView extends Panel {
 
     }
 
-    public static void setNuevaCcionVisibility(){
+    public void setNuevaCcionVisibility(){
         if(nuevaAccion.isVisible())
             nuevaAccion.setVisible(false);
         else

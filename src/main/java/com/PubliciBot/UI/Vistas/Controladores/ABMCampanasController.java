@@ -70,6 +70,7 @@ public class ABMCampanasController extends HorizontalLayout {
     Button cancelar;
 
 
+
 //comment
 
     public ABMCampanasController(ABMCampanasView adbUI) {
@@ -80,7 +81,6 @@ public class ABMCampanasController extends HorizontalLayout {
         initComponents();
         dibujarControles();
         cargarComboDuracion();
-
         //SE ABRE VENTANA PARA ASIGNAR TAGS A CAMPAÑA
         seleccionarTags.addClickListener(new Button.ClickListener() {
             @Override
@@ -157,7 +157,7 @@ public class ABMCampanasController extends HorizontalLayout {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 setVisible(false);
-                ABMCampanasView.setNuevaCampanaVisibility();
+               addressbookUIView.setNuevaCampanaVisibility();
             }
         });
         this.addStyleName("v-scrollable");
@@ -371,7 +371,8 @@ public class ABMCampanasController extends HorizontalLayout {
                 setVisible(false);
 
                 addressbookUIView.refreshCampanas();
-                ABMCampanasView.setNuevaCampanaVisibility();
+               addressbookUIView.setNuevaCampanaVisibility();
+
             }
         } catch (FieldGroup.CommitException e) {
             // Validation exceptions could be shown here
