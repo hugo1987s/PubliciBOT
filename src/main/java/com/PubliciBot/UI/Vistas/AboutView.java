@@ -18,9 +18,7 @@ public class AboutView extends VerticalLayout implements View {
 
         // you can add Vaadin components in predefined slots in the custom
         // layout
-        aboutContent.addComponent(
-                new Label("Un Producto de:", ContentMode.HTML), "info");
-
+      
         setSizeFull();
         setMargin(false);
         setStyleName("about-view");
