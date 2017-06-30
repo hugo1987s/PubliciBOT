@@ -323,9 +323,8 @@ public class ABMCampanasController extends HorizontalLayout {
                 new StringLengthValidator(
                         "Debe estar entre 0 y 50 caracteres", 0,50,true));
         Date now = fechaInicio.getValue();
-        now.setTime(now.getTime() - 1000000);
-        fechaInicio.addValidator(
-                new DateRangeValidator("La fecha de inicio no puede ser antes que hoy",now,null, Resolution.YEAR ));
+       // now.setTime(now.getTime() - 1000000);
+
 
         duracion.addValidator(
                     new IntegerRangeValidator("Como minimo 1", 1, Integer.MAX_VALUE ));
