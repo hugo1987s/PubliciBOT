@@ -19,13 +19,16 @@ public class HomeView extends VerticalLayout implements View {
         // you can add Vaadin components in predefined slots in the custom
         // layout
 
-        Image image = new Image(null, new ThemeResource("img/Logoazul2x2.png"));
+       /* Image image = new Image(null, new ThemeResource("img/Logoazul2x2.png"));
       //  image.setStyleName("logo");
-        aboutContent.addComponent(image);
+        aboutContent.addComponent(image);*/
+            String nombre=MyUI.get().getAccessControl().getPrincipalName();
+
 
         aboutContent.addComponent(
-                new Label( "  Bienvenido  "
-                        + MyUI.get().getAccessControl().getPrincipalName(), ContentMode.HTML), "info");
+                new Label( " <img src=\"http://i.imgur.com/6vp87Ak.png\" />  Bienvenido  "
+                        +  nombre.substring(0, 1).toUpperCase() + nombre.substring(1), ContentMode.HTML), "info");
+
 
         setSizeFull();
         setMargin(false);

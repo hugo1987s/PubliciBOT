@@ -101,8 +101,11 @@ public class LoginScreen extends CssLayout {
                 "<h1>Información de inicio de Sesion</h1>"
                         + "Loggearse como &quot;admin&quot; para control total. \n Como &quot;cliente&quot; para tener acceso solo a Campañas y como &quot;tecnico&quot; para tener acceso solo a Tags. \n Las contraseñas son iguales al usuario ingresado!",
                 ContentMode.HTML);
+
+
         loginInfoText.setSizeFull();
         loginInformation.addComponent(loginInfoText);
+
         return loginInformation;
     }
 

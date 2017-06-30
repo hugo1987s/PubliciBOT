@@ -2,8 +2,10 @@ package com.PubliciBot.UI.Vistas;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CustomLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 public class AboutView extends VerticalLayout implements View {
@@ -16,10 +18,8 @@ public class AboutView extends VerticalLayout implements View {
 
         // you can add Vaadin components in predefined slots in the custom
         // layout
-       /* aboutContent.addComponent(
-                new Label(VaadinIcons.INFO_CIRCLE.getHtml()
-                        + " This application is using Vaadin "
-                        + Version.getFullVersion(), ContentMode.HTML), "info");*/
+        aboutContent.addComponent(
+                new Label("Un Producto de:", ContentMode.HTML), "info");
 
         setSizeFull();
         setMargin(false);
