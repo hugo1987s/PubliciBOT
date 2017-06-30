@@ -2,6 +2,7 @@ package com.PubliciBot.UI.Vistas.Controladores;
 
 import com.PubliciBot.DM.*;
 import com.PubliciBot.Services.AccionPublicitariaService;
+import com.PubliciBot.Services.CampanaService;
 import com.PubliciBot.Services.PostService;
 import com.PubliciBot.UI.Vistas.Validators.EnteroValidator;
 import com.PubliciBot.UI.Vistas.VistaCamapana.AccionView;
@@ -13,7 +14,10 @@ import com.vaadin.data.validator.IntegerRangeValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Calendar;
 import com.vaadin.ui.themes.ValoTheme;
+
+import java.util.*;
 
 /**
  * Created by Hugo on 10/06/2017.
@@ -105,8 +109,12 @@ public class ABMAccionController extends HorizontalLayout {
                     }
                 }
         );
+
+
         periodicidadSegundos.addValidator(
                 new IntegerRangeValidator("Como minimo 1", 1, Integer.MAX_VALUE ));
+
+
     }
 
 
@@ -208,12 +216,40 @@ public class ABMAccionController extends HorizontalLayout {
         }
     }
 
+    private boolean isPeridiciodadValida()
+    {
+        Campana actualTemp = abmCampanasController.getNuevaCampana();
+
+        PeriodicidadAccion periodicidadAccion = (PeriodicidadAccion) cboPeriodicidad.getValue();
+        UnidadMedida unidadCampana = abmCampanasController.obtenerUnidadMedida();
+
+        int valAccion = periodicidadAccion.periodicidadASegundos() * Integer.parseInt(periodicidadSegundos.getValue());
+        int valCampana = unidadCampana.unidadASegundos() * actualTemp.getDuracion();
+
+        if(valCampana <= valAccion) {
+            return false;
+        }
+
+        return true;
+    }
+
     public void guardarAccion() {
         try {
             clearValidators();
 
             boolean areValid = formFieldBindings.isValid();
             if(areValid) {
+
+               ///agregado HS
+
+                if(!isPeridiciodadValida()) {
+                    Notification.show("La periodicidad es igual o supera la duracion de la campaña");
+                    return;
+                }
+                ///////////////// fin de agregado HS
+
+
+
                 // Commit the fields from UI to DAO
                 formFieldBindings.commit();
                 agregarMedio();
@@ -237,6 +273,7 @@ public class ABMAccionController extends HorizontalLayout {
         actual.removeAccion(selectedRow);
         accionView.refreshAcciones(actual);
     }
+
 
 
 }
