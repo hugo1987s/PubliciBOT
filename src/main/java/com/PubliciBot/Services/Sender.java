@@ -1,14 +1,14 @@
 package com.PubliciBot.Services;
 
-import com.PubliciBot.DAO.Interfaces.Task;
-import java.util.Stack;
+
+import com.PubliciBot.DM.Post;
 
 public class Sender extends Thread{
-    Tasker tasker;
+    Tasker Tasker;
     private boolean run=false;
 
-    public Sender(Tasker tasker){
-        this.tasker=tasker;
+    public Sender(Tasker Tasker){
+        this.Tasker = Tasker;
     }
 
 
@@ -18,10 +18,10 @@ public class Sender extends Thread{
         run=true;
 
         while (run){
-            Task task=tasker.giveMeaTask();
-            if(task!=null) {
-                System.out.println("Sender: Task Recibida y Ejecutada");
-                task.execute();
+            Post Post= Tasker.giveMeaPost();
+            if(Post!=null) {
+                System.out.println("Sender: Post Recibida y Ejecutada");
+                Post.execute();
             }
             else{
 

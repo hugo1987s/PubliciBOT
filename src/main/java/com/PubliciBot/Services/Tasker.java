@@ -1,6 +1,4 @@
 package com.PubliciBot.Services;
-
-import com.PubliciBot.DAO.Interfaces.Task;
 import com.PubliciBot.DAO.Neodatis.DAONeodatis;
 import com.PubliciBot.DM.Campana;
 import com.PubliciBot.DM.EstadoCampana;
@@ -12,17 +10,19 @@ import java.util.*;
 public class Tasker extends Thread{
 
 //SINGLETON
-    private static Tasker tasker;
-    private static Stack<Task> tasks;
+    private static Tasker Tasker;
+    private static Stack<Post> Posts;
     private static boolean run=false;
     private static ArrayList<Sender> senders;
-    private static HashSet<Post> dbtasks;
+    private static ArrayList<Post> dbPosts;
+    private static ArrayList<Post> tobeErasedPosts;
 
 
     private Tasker (){
-        tasks=new Stack<>();
+        Posts=new Stack<>();
         senders =new ArrayList<>();
-        dbtasks=new HashSet<>();
+        dbPosts=new ArrayList<>();
+        tobeErasedPosts=new ArrayList<>();
         int cantsenders=1;
         for(int i=0; i<1;i++) {
             Sender sender = new Sender(this);
@@ -42,7 +42,7 @@ public class Tasker extends Thread{
         for( Campana campana : campanas) {
             if (campana.getEstadoCampana().equals(EstadoCampana.ACTIVA)) {
                     for(Post post :campana.getPosts()) {
-                        dbtasks.add(post);
+                        dbPosts.add(post);
                     }
             }
         }
@@ -58,6 +58,7 @@ public class Tasker extends Thread{
 
         while (run) {
             System.out.println("\n\n");
+            findAndDestroyTobeErasedPosts();
             System.out.println("/////////Tasker: Buscando Tareas...//////////");
             buscaTareas();
             for(Sender sender : senders){
@@ -84,9 +85,9 @@ public class Tasker extends Thread{
         Instant NOW=Instant.now();
         long nowinSeconds=NOW.getEpochSecond();
 
-        System.out.println(dbtasks);
+        System.out.println(dbPosts);
 
-        for (Post p:dbtasks
+        for (Post p:dbPosts
              ) {
 
            if(p!=null) {
@@ -108,13 +109,13 @@ public class Tasker extends Thread{
                            System.out.print("Cooldown: Supero el Cooldown? ");
                            if (Math.abs(nowinSeconds - ultimaejSeconds) > p.getAccion().getPeriodicidadSegundos()) {  //SI LE TOCA EJECUTARSE (PASO EL COOLDOWN )
                                System.out.println("Cooldown: SI, agregada a col de ejecucion");
-                               tasks.add(p);
+                               Posts.add(p);
                                return;
                            }
                        } else {
                            System.out.println("Cooldown: Nunca ejecutada antes, agegada a cola de ejecucion");
                            System.out.println("\n");
-                           tasks.add(p);
+                           Posts.add(p);
                            return;
                        }
 
@@ -135,33 +136,59 @@ public class Tasker extends Thread{
 
 
 
-    public Task giveMeaTask(){
-        if(tasks.size()!=0) {
-            return tasks.pop();
+    public Post giveMeaPost(){
+        if(Posts.size()!=0) {
+            return Posts.pop();
         }
         return null;
     }
 
-    public void stopTasker(){
-        run=false;
+
+    public static void addPost(Post Post){
+       dbPosts.add((Post)Post);
     }
 
-    public static void addTask(Task task){
-       dbtasks.add((Post)task);
+    public static void findAndDestroyTobeErasedPosts(){
+
+        for (int i=0;i<tobeErasedPosts.size();i++){
+            Post post=tobeErasedPosts.get(i);
+            for (int j=0;j<dbPosts.size();j++){
+                Post p=dbPosts.get(j);
+                if(p.getID()==post.getID()) {
+                    dbPosts.remove(p);
+
+                }
+            }
+        }
+
+
+
     }
 
-    public static void removeTask(Task task){
-        dbtasks.remove(task);
+
+
+    public static void removePost(Post Post){
+
+        for (Post p:dbPosts
+             ) {
+
+            if(p.getID()==Post.getID()){
+                System.out.println("Borrado"+ p );
+                tobeErasedPosts.add(p);
+            }
+
+        }
+
 
     }
 
 
 
     public static Tasker getTasker(){
-        if(tasker==null){
-            tasker=new Tasker();
+        if(Tasker==null){
+            Tasker=new Tasker();
         }
-        return tasker;
+        return Tasker;
     }
 
 

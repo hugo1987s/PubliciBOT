@@ -1,23 +1,49 @@
 package com.PubliciBot.DM;
 
 
-import com.PubliciBot.DAO.Interfaces.Task;
+
 import com.PubliciBot.Services.AccionPublicitariaService;
 
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Post implements Task{
+public class Post {
     private Date fechaUltimaEjecucion;
     private Date fechaCaducidad;
+
+
     private Date fechaInicio;
     private AccionPublicitaria accion;
     private Mensaje mensaje;
-
+    private int ID;
 
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Post post = (Post) o;
+
+        if (ID != post.ID) return false;
+        if (fechaCaducidad != null ? !fechaCaducidad.equals(post.fechaCaducidad) : post.fechaCaducidad != null)
+            return false;
+        if (fechaInicio != null ? !fechaInicio.equals(post.fechaInicio) : post.fechaInicio != null) return false;
+        if (accion != null ? !accion.equals(post.accion) : post.accion != null) return false;
+        return mensaje != null ? mensaje.equals(post.mensaje) : post.mensaje == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = fechaCaducidad != null ? fechaCaducidad.hashCode() : 0;
+        result = 31 * result + (fechaInicio != null ? fechaInicio.hashCode() : 0);
+        result = 31 * result + (accion != null ? accion.hashCode() : 0);
+        result = 31 * result + (mensaje != null ? mensaje.hashCode() : 0);
+        result = 31 * result + ID;
+        return result;
+    }
+
     public void execute() {
         AccionPublicitariaService APS=new AccionPublicitariaService();
        boolean enviado= APS.publicar(accion,mensaje);
@@ -49,7 +75,16 @@ public class Post implements Task{
         this.accion = accion;
     }
 
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
     public Date getFechaInicio() {
+
 
         return fechaInicio;
     }
@@ -63,6 +98,7 @@ public class Post implements Task{
         this.fechaInicio=fechaInicio;
         this.accion=accion;
         this.mensaje=mensaje;
+        this.ID=hashCode();
     }
 
 
@@ -82,26 +118,4 @@ public class Post implements Task{
         this.fechaCaducidad = fechaCaducidad;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Post post = (Post) o;
-
-        if (fechaCaducidad != null ? !fechaCaducidad.equals(post.fechaCaducidad) : post.fechaCaducidad != null)
-            return false;
-        if (fechaInicio != null ? !fechaInicio.equals(post.fechaInicio) : post.fechaInicio != null) return false;
-        if (accion != null ? !accion.equals(post.accion) : post.accion != null) return false;
-        return mensaje != null ? mensaje.equals(post.mensaje) : post.mensaje == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = fechaCaducidad != null ? fechaCaducidad.hashCode() : 0;
-        result = 31 * result + (fechaInicio != null ? fechaInicio.hashCode() : 0);
-        result = 31 * result + (accion != null ? accion.hashCode() : 0);
-        result = 31 * result + (mensaje != null ? mensaje.hashCode() : 0);
-        return result;
-    }
 }

@@ -1,6 +1,6 @@
 package com.PubliciBot.Services;
 
-import com.PubliciBot.DAO.Interfaces.Task;
+
 import com.PubliciBot.DAO.Neodatis.DAONeodatis;
 import com.PubliciBot.DM.AccionPublicitaria;
 import com.PubliciBot.DM.Campana;
@@ -12,13 +12,13 @@ public class PostService {
 
 
 
-    public void agregarPost(Campana campana, AccionPublicitaria accion){
+   private void agregarPost(Campana campana, AccionPublicitaria accion){
 
         System.out.println(" Caducidad: "+ campana.calcularCaducidad());
         Post post=new Post(campana.getFechaInicio(),campana.calcularCaducidad(),accion,campana.getMensaje());
         campana.getPosts().add(post);
         // System.out.println("Campana: "+this.nombre+" Duracion: "+duracion+" "+unidadMedida+" lo que equivale a :"+ duracion*unidadMedida.unidadASegundos()+" Segundos");
-        Tasker.addTask(post);
+        Tasker.addPost(post);
     }
 
     public void generarPosts(Campana campana){
@@ -34,7 +34,7 @@ public class PostService {
         for(int i=0 ;i<campana.getPosts().size();i++) {
             Post post = campana.getPosts().get(i);
             campana.borrarPost(post);
-            Tasker.getTasker().removeTask(post);
+            Tasker.getTasker().removePost(post);
         }
 
 
@@ -45,7 +45,7 @@ public class PostService {
             Post post = campana.getPosts().get(i);
             if (post.getAccion().equals(accionPublicitaria)) {
                 campana.borrarPost(post);
-                Tasker.getTasker().removeTask(post);
+                Tasker.getTasker().removePost(post);
             }
         }
 
