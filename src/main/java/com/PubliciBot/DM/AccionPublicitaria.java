@@ -14,7 +14,7 @@ public class AccionPublicitaria {
     public AccionPublicitaria()
     {
         this.nombreAccion = "";
-        this.periodicidadSegundos = 60;
+        this.periodicidadSegundos = 1;
         this.medio = new Medio();
         this.destino = "";
     }

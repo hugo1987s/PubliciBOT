@@ -318,21 +318,21 @@ public class ABMCampanasController extends HorizontalLayout {
     private void validateFields(){
         nombre.addValidator(
                 new StringLengthValidator(
-                        "Must be between 2 and 10 characters in length", 2, 10, false));
+                        "Debe estar entre 1 y 10 caracteres", 1, 10, false));
         descripcion.addValidator(
                 new StringLengthValidator(
-                        "Debe estar entre 8 y 13 caracteres", 8,13,false));
+                        "Debe estar entre 0 y 50 caracteres", 0,50,true));
         Date now = fechaInicio.getValue();
         now.setTime(now.getTime() - 1000000);
         fechaInicio.addValidator(
-                new DateRangeValidator("La fecha de inicio no puede ser antes hoy",now,null, Resolution.YEAR ));
+                new DateRangeValidator("La fecha de inicio no puede ser antes que hoy",now,null, Resolution.YEAR ));
 
         duracion.addValidator(
-                new IntegerRangeValidator("Como minimo 1", 1, Integer.MAX_VALUE ));
+                    new IntegerRangeValidator("Como minimo 1", 1, Integer.MAX_VALUE ));
 
-        txtMensaje.addValidator(new StringLengthValidator(
-                "Debe estar por debajo de los 20 caracteres", 0,100,false));
-    }
+            txtMensaje.addValidator(new StringLengthValidator(
+                    "Debe estar por debajo de los 300 caracteres", 0,300,false));
+        }
 
     public void crearCampana(Campana campana){
         this.nuevaCampana = campana;
@@ -389,14 +389,11 @@ public class ABMCampanasController extends HorizontalLayout {
         Usuario actual = getUsuarioSesion();
 
 
+
+        PostService PS=new PostService();
+        PS.eliminarPosts(seleccionada);
         actual.getCampanas().remove(seleccionada.getId());
         usuarioService.guardarUsuario(actual);
-        for(Post post : seleccionada.getPosts()){
-            Tasker.getTasker().removeTask(post);
-            System.out.println("Tasker: Eliminando posts:"+post);
-        }
-
-
         addressbookUIView.refreshCampanas();
     }
 }

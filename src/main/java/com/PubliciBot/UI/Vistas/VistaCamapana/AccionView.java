@@ -2,22 +2,22 @@ package com.PubliciBot.UI.Vistas.VistaCamapana;
 
 import com.PubliciBot.DM.AccionPublicitaria;
 import com.PubliciBot.DM.Campana;
+import com.PubliciBot.DM.Medio;
 import com.PubliciBot.UI.Vistas.Controladores.ABMAccionController;
 import com.PubliciBot.UI.Vistas.Controladores.ABMCampanasController;
 import com.PubliciBot.UI.Vistas.Controladores.EstadisticasCampanaController;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.SelectionEvent;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
+import eu.livotov.tpt.gui.widgets.TPTSizer;
 
 import java.util.ArrayList;
 
 /**
  * Created by Max on 6/24/2017.
  */
-public class AccionView extends VerticalLayout{
+public class AccionView extends Panel {
 
 
     public enum EstadoABMAccion{ NUEVAACCION, EDICIONACCION}
@@ -30,6 +30,7 @@ public class AccionView extends VerticalLayout{
     AccionPublicitaria seleccionada;
     Button eliminarAccion = new Button("Eliminar Accion");
     EstadoABMAccion estadoABMAccion;
+    HorizontalLayout actions;
 
 
     public AccionView(ABMCampanasController abmCampanasController){
@@ -37,11 +38,13 @@ public class AccionView extends VerticalLayout{
 
         abmAccionController  = new ABMAccionController(this, abmCampanasController);
         abmAccionController.setVisible(false);
-        configureComponents();
+
         buildLayout();
+        configureComponents();
         //Scrolleable
         this.addStyleName("v-scrollable");
         this.setHeight("100%");
+
 
 
     }
@@ -65,23 +68,23 @@ public class AccionView extends VerticalLayout{
             public void select(SelectionEvent selectionEvent) {
                 if(seleccionada == null) {
                     seleccionada = (AccionPublicitaria) accionList.getSelectedRow();
-                    addComponent(eliminarAccion);
+                    actions.addComponent(eliminarAccion);
                 }
                 else {
                     AccionPublicitaria seleccionadaGrid = (AccionPublicitaria) accionList.getSelectedRow();
                     if(seleccionadaGrid != null) {
                         if(estadisticasCampanaController != null) {
-                            removeComponent(eliminarAccion);
+                            actions.removeComponent(eliminarAccion);
                             seleccionada = seleccionadaGrid;
-                            addComponent(eliminarAccion);
+                            actions.addComponent(eliminarAccion);
                         }
                         else{
                             seleccionada = seleccionadaGrid;
-                            addComponent(eliminarAccion);
+                            actions.addComponent(eliminarAccion);
                         }
                     }
                     else{
-                        removeComponent(eliminarAccion);
+                        actions.removeComponent(eliminarAccion);
                     }
                 }
             }
@@ -95,12 +98,18 @@ public class AccionView extends VerticalLayout{
             }
         });
         accionList.setContainerDataSource(new BeanItemContainer<>(AccionPublicitaria.class));
+        accionList.removeColumn("valorPeriodicidad");
+
+        accionList.setColumnOrder("nombreAccion","medio","destino","periodicidadSegundos");
     }
 
     private void buildLayout() {
-        HorizontalLayout actions = new HorizontalLayout(nuevaAccion);
+        nuevaAccion.setStyleName(ValoTheme.BUTTON_PRIMARY);
+         actions = new HorizontalLayout();
+         actions.addComponent(nuevaAccion);
+         actions.setSpacing(true);
 
-        VerticalLayout left = new VerticalLayout(actions,accionList);
+        VerticalLayout left = new VerticalLayout(new TPTSizer( null, "15px") ,accionList,actions);
 
         left.setSizeFull();
         accionList.setSizeFull();
@@ -109,8 +118,9 @@ public class AccionView extends VerticalLayout{
         HorizontalLayout mainLayout = new HorizontalLayout(left, abmAccionController);
         mainLayout.setSizeFull();
         mainLayout.setExpandRatio(left, 1);
-
-        this.addComponent(mainLayout);
+        mainLayout.setSpacing(true);
+        mainLayout.setMargin(true);
+        setContent(mainLayout);
         // Split and allow resizing
     }
 
@@ -119,6 +129,10 @@ public class AccionView extends VerticalLayout{
         ArrayList<AccionPublicitaria> acciones = camp.getAcciones();
         accionList.setContainerDataSource(new BeanItemContainer<>(
                AccionPublicitaria.class, acciones));
+
+
+
+
     }
 
     public static void setNuevaCcionVisibility(){

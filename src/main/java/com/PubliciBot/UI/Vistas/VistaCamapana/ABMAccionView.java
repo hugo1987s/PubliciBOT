@@ -12,7 +12,8 @@ public class ABMAccionView  extends Window {
 
     public ABMAccionView(AccionView accionView) {
         this.setContent(accionView);
-        this.setSizeFull();
+        this.setHeight(80,Unit.PERCENTAGE);
+        this.setWidth(80,Unit.PERCENTAGE);
 
 		//commmnbet
     }
