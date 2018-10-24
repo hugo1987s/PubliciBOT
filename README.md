@@ -1,4 +1,4 @@
 # PubliciBot
-Sistema para generar camapañas publicitarias en redes sociales.
+Sistema para generar campañas publicitarias en redes sociales.
 
 
